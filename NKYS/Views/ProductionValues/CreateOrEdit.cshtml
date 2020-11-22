@@ -1,0 +1,56 @@
+﻿@model NKYS.Models.ProductionValue
+
+@{
+    ViewData["Title"] = "Create";
+    
+    var title = "";
+    if (ViewData["Action"] == "Update")
+    {
+        title = "Update";
+    }
+    else
+    {
+        title = "Create";
+    }
+}
+
+<h1>@title</h1>
+
+<h4>ProductionValue</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CycleId" class="control-label"></label><span class="text-danger">*</span>
+                <select asp-for="CycleId" class="form-control" asp-items="ViewBag.CycleId" disabled="@(ViewData["Action"]=="Update")"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductionValueTypeId" class="control-label"></label><span class="text-danger">*</span>
+                <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()" disabled="@(ViewData["Action"]=="Update")"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label><span class="text-danger">*</span>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <textarea class="form-control" asp-for="Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,65 @@
+﻿@model NKYS.Models.Groups
+
+@{
+    ViewData["Title"] = "Create";
+    var title = "";
+    if (ViewData["Action"] == "Update")
+    {
+        title = "Update";
+    }
+    else
+    {
+        title = "Create";
+    }
+}
+
+<h1>@title</h1>
+<h4>Groups</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label><span class="text-danger">*</span>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmentId" class="control-label"></label><span class="text-danger">*</span>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SharePropotion" class="control-label"></label>
+                <input asp-for="SharePropotion" class="form-control" />
+                <span asp-validation-for="SharePropotion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductionValueTypeId" class="control-label"></label>
+                <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()"></select>
+                <span asp-validation-for="ProductionValueTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsFixSalary" /> @Html.DisplayNameFor(model => model.IsFixSalary)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <textarea class="form-control" asp-for="Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@Model.Id">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

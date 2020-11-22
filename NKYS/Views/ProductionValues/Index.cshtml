@@ -1,0 +1,78 @@
+﻿@model NKYS.Models.ViewModel.ProductionValuesIndex
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CreateOrEdit">Create New</a>
+</p>
+<form class="row" asp-controller="ProductionValues" asp-action="Index" method="get">
+    <div class="col-3 form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <select asp-for="Year" class="form-control" asp-items="ViewBag.Year">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="Month" class="control-label"></label>
+        <select asp-for="Month" class="form-control" asp-items="ViewBag.Month">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="ProductionValueTypeId" class="control-label"></label>
+        <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3">
+        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;"/>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cycle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionValueTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ProductionValues) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cycle.Label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionValueTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+
+            <td>
+                <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

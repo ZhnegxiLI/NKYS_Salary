@@ -1,0 +1,151 @@
+﻿@model IEnumerable<NKYS.Models.Employe>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CreateOrEdit">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Groups)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalId)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.SelfPaySocialSercurity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SelfPayHousingReserves)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasDorm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsChefOfGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeniorityPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeductionPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTemporaryEmploye)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Groups.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalId)
+            </td>
+
+            <td>
+                @if (item.SelfPaySocialSercurity == true)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+            <td>
+                @if (item.SelfPayHousingReserves == true)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+            <td>
+                @if (item.HasDorm == true)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionPay)
+            </td>
+
+            <td>
+                @if (item.IsChefOfGroup == true)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.SeniorityPay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FixSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeductionPercentage)
+            </td>
+
+            <td>
+                @if (item.IsTemporaryEmploye == true)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+
+
+            <td>
+                <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

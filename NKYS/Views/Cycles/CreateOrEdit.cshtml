@@ -1,0 +1,108 @@
+﻿@model NKYS.Models.Cycle
+
+@{
+    ViewData["Title"] = "Create";
+    var title = "";
+    if (ViewData["Action"] == "Update")
+    {
+        title = "Update";
+    }
+    else
+    {
+        title = "Create";
+    }
+}
+
+
+<h1>@title</h1>
+
+<h4>Cycle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Label" class="control-label"></label><span class="text-danger">*</span>
+                <input asp-for="Label" class="form-control" type="text" required />
+                <span asp-validation-for="Label" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FromDate" class="control-label" required></label><span class="text-danger">*</span>
+                <input asp-for="FromDate" class="form-control" type="date" required />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToDate" class="control-label" required></label><span class="text-danger">*</span>
+                <input asp-for="ToDate" class="form-control" type="date" required />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Validity" checked="@(ViewData["Action"] == "Create")" /> @Html.DisplayNameFor(model => model.Validity)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="StandardWorkingHours" class="control-label"></label><span class="text-danger">*</span>
+                <input asp-for="StandardWorkingHours" class="form-control" required />
+                <span asp-validation-for="StandardWorkingHours" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <textarea class="form-control" asp-for="Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+        @if (ViewData["Action"] == "Update")
+        {
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCycleModal">
+                Delete
+            </button>
+        }
+
+    </div>
+</div>
+
+@if (ViewData["Action"] == "Update")
+{
+    <!-- Modal -->
+    <div class="modal fade" id="deleteCycleModal" tabindex="-1" role="dialog" aria-labelledby="deleteCycleModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you ready want to delete this cycle
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form form asp-action="Delete">
+                        <input asp-for="Id" hidden/>
+                        <input type="submit" value="Delete" class="btn btn-danger" asp-route-id="Id" asp-action="Delete"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script src="~/js/Cycles/CreateOrEdit.js" type="text/javascript"></script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
