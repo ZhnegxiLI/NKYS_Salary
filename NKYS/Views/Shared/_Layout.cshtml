@@ -5,15 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - NKYS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" /> <!--Import fa -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <environment include="Development">
         <link rel="stylesheet" asp-href-include="css/*" asp-href-exclude="css/all.min.css" />
+
+        <!-- Import js files  -->
+        <script src="~/js/framework/NameSpaces.js"></script>
+        <script src="~/js/framework/Main.js"></script>
+        
+        <script src="~/js/Salaries/Salaries.js"></script>
+
     </environment>
     <environment include="Production">
-
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="~/min/site.min.js" asp-append-version="true"></script>
     </environment>
 </head>
 <body>
@@ -42,6 +51,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Salaries" asp-action="Index">Salaries</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -61,6 +73,7 @@
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

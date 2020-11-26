@@ -24,11 +24,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CycleId" class="control-label"></label><span class="text-danger">*</span>
-                <select asp-for="CycleId" class="form-control" asp-items="ViewBag.CycleId" disabled="@(ViewData["Action"]=="Update")"></select>
+                <select asp-for="CycleId" class="form-control" asp-items="ViewBag.CycleId" >
+                    <option></option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="ProductionValueTypeId" class="control-label"></label><span class="text-danger">*</span>
-                <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()" disabled="@(ViewData["Action"]=="Update")"></select>
+                <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Value" class="control-label"></label><span class="text-danger">*</span>

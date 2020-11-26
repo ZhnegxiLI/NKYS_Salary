@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,7 +50,9 @@ namespace NKYS.Models
         [DisplayName("离职日期")]
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime? DepartDate { get; set; }// 离职日期
-
+        [DisplayName("提成产值类型")]
+        [NotMapped]
+        public List<ProductionValueType> ProductionValueTypeId { get; set; }
         public List<EmployeDeductionConfiguration> EmployeDeductionConfiguration { get; set; }
     }
 }

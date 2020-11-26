@@ -84,33 +84,33 @@ namespace NKYS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrEdit([Bind("CycleId,Value,Comment,ProductionValueTypeId,Id,CreatedBy,UpdatedBy,CreatedOn,UpdatedOn")] ProductionValue productionValue)
+        public async Task<IActionResult> CreateOrEdit([Bind("CycleId,Value,Comment,ProductionValueTypeId,Id,CreatedBy,UpdatedBy,CreatedOn,UpdatedOn,Validity")] ProductionValue productionValue)
         {
             if (ModelState.IsValid)
             {
-                if (productionValue.Id>0)
+                var existantProductionValue = _context.ProductionValue.Where(p => p.CycleId == productionValue.CycleId && p.ProductionValueTypeId == productionValue.ProductionValueTypeId).FirstOrDefault();
+                /* Production Value not yet exist */
+                if (existantProductionValue == null)
                 {
-                    _context.Update(productionValue);
-                }
-                else
-                {
-                    var existantProductionValue = _context.ProductionValue.Where(p => p.CycleId == productionValue.CycleId && p.ProductionValueTypeId == productionValue.ProductionValueTypeId).FirstOrDefault();
-                    /* Production Value not yet exist */
-                    if (existantProductionValue == null)
+                    if (productionValue.Id>0)
+                    {
+                        _context.Update(productionValue);
+                    }
+                    else
                     {
                         productionValue.CreatedOn = DateTime.Now;
                         _context.Add(productionValue);
                     }
-                    else
-                    {
-                        ViewData["CycleId"] = new SelectList(_context.Cycle, "Id", "Label");
-                        ModelState.AddModelError(string.Empty, "This type of production value is already exists, cannot create repeately");
-                        return View(productionValue);
-                    }
-                  
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    ViewData["CycleId"] = new SelectList(_context.Cycle, "Id", "Label");
+                    ModelState.AddModelError(string.Empty, "This type of production value is already exists, cannot create repeately");
+                    return View(productionValue);
+                }
+            
             }
             ViewData["CycleId"] = new SelectList(_context.Cycle, "Id", "Label", productionValue.CycleId);
             return View(productionValue);

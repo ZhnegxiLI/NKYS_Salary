@@ -323,7 +323,13 @@ namespace NKYS.Migrations
                     b.Property<long>("CycleId")
                         .HasColumnType("bigint");
 
+                    b.Property<decimal?>("DeferredHolidayHours")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal?>("DormFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("DormOtherFee")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("EmployeId")
@@ -341,6 +347,12 @@ namespace NKYS.Migrations
                     b.Property<decimal?>("OvertimePay")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal?>("SelfPaySocialSercurityFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SeniorityPay")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal?>("SocialSercurityFee")
                         .HasColumnType("decimal(18,2)");
 
@@ -354,6 +366,7 @@ namespace NKYS.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("WorkingHours")
+                        .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("WorkingScore")
@@ -382,7 +395,7 @@ namespace NKYS.Migrations
             modelBuilder.Entity("NKYS.Models.EmployeDeductionConfiguration", b =>
                 {
                     b.HasOne("NKYS.Models.Employe", "Employe")
-                        .WithMany()
+                        .WithMany("EmployeDeductionConfiguration")
                         .HasForeignKey("EmployeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -434,6 +447,11 @@ namespace NKYS.Migrations
             modelBuilder.Entity("NKYS.Models.Department", b =>
                 {
                     b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("NKYS.Models.Employe", b =>
+                {
+                    b.Navigation("EmployeDeductionConfiguration");
                 });
 
             modelBuilder.Entity("NKYS.Models.Groups", b =>

@@ -1,0 +1,141 @@
+﻿@model IEnumerable<NKYS.Models.Salary>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script type="text/javascript">
+    Application.Main.CurrentView = "Salaries";
+</script>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkingHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkingScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AbsentHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocialSercurityFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HousingReserves)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullPresencePay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OvertimePay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AbsentDeduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DormFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OtherFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cycle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedOn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkingHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkingScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbsentHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SocialSercurityFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HousingReserves)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullPresencePay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OvertimePay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbsentDeduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DormFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OtherFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cycle.Label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employe.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedOn)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
