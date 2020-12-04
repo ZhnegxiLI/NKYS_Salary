@@ -21,6 +21,16 @@ namespace NKYS.Controllers
         // GET: Salaries
         public async Task<IActionResult> Index()
         {
+
+            int[] yearList = { 2020, 2021, 2022, 2023, 2024, 2025 };
+            int[] monthList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+            var departments = await _context.Department.ToListAsync();
+            var periods = await _context.Cycle.ToListAsync();
+
+            ViewData["Departments"] = new SelectList(departments,"Id", "Name",null);
+            ViewData["Periods"] = new SelectList(periods,"Id", "Label",null);
+
             var context = _context.Salary.Include(s => s.Cycle).Include(s => s.Employe);
             return View(await context.ToListAsync());
         }

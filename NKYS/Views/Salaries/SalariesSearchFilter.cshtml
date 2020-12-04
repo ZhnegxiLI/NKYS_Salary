@@ -1,0 +1,27 @@
+﻿@model NKYS.Models.ViewModel.SalarieSearchModel
+
+
+
+<div class="row">
+    <div class="col-3 form-group">
+        <label asp-for="DepartmentId" class="control-label"></label>
+        <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="GroupsId" class="control-label"></label>
+        <select  class="form-control">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="PeriodId" class="control-label"></label>
+        <select asp-for="PeriodId" class="form-control" asp-items="ViewBag.Periods">
+            <option selected></option>
+        </select>
+    </div>
+    <div class="col-3">
+        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;" />
+    </div>
+</div>

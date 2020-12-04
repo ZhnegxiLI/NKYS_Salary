@@ -6,4 +6,4 @@
     }
 }
 
-Application.ViewsScript["Salaries"] = new Salaries();
+Application.ViewsScript["SalarieSearch"] = new SalarieSearch();

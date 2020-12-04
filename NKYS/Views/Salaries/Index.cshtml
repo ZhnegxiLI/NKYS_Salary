@@ -5,7 +5,7 @@
 }
 
 <script type="text/javascript">
-    Application.Main.CurrentView = "Salaries";
+    Application.Main.CurrentView = "SalarieSearch";
 </script>
 
 <h1>Index</h1>
@@ -13,6 +13,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<partial name="SalariesSearchFilter"  view-data="ViewData" />
+
 <table class="table">
     <thead>
         <tr>
@@ -74,68 +76,69 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkingHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkingScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AbsentHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialSercurityFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HousingReserves)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullPresencePay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OvertimePay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AbsentDeduct)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DormFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransportFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OtherFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cycle.Label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employe.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedOn)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkingHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkingScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AbsentHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocialSercurityFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HousingReserves)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullPresencePay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OvertimePay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AbsentDeduct)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DormFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransportFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OtherFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cycle.Label)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employe.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedOn)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
