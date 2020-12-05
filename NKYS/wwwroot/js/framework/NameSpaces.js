@@ -3,6 +3,7 @@
     Constants : {},
     Controls: {},
     ViewsScript: {},
+    Services: {},
     Bussiness: {
         Services: {
         }

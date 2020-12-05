@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using NKYS.Models;
 
@@ -12,27 +14,36 @@ namespace NKYS.Controllers
     public class SalariesController : Controller
     {
         private readonly Context _context;
+        private readonly GroupsController _GroupController;
 
         public SalariesController(Context context)
         {
             _context = context;
+            _GroupController = new GroupsController(context);
         }
 
         // GET: Salaries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? DepartmentId, long? GroupsId, long? PeriodId)
         {
-
-            int[] yearList = { 2020, 2021, 2022, 2023, 2024, 2025 };
-            int[] monthList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
             var departments = await _context.Department.ToListAsync();
             var periods = await _context.Cycle.ToListAsync();
+            var GroupList = new List<Groups>();
 
             ViewData["Departments"] = new SelectList(departments,"Id", "Name",null);
             ViewData["Periods"] = new SelectList(periods,"Id", "Label",null);
+            ViewData["Groups"] = new SelectList(GroupList, "Id", "Name", null);
 
-            var context = _context.Salary.Include(s => s.Cycle).Include(s => s.Employe);
-            return View(await context.ToListAsync());
+            return View(new List<Salary>());
+        }
+
+
+        public async Task<PartialViewResult> OnGetSalaryTablePartial(long? DepartmentId, long? GroupsId, long? PeriodId)
+        {
+            var SalariesList = await SalariesSearchData(DepartmentId, GroupsId, PeriodId);
+
+            var myViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = SalariesList };
+            return new PartialViewResult() { ViewData = myViewData, ViewName = "SalariesSearchTable" };
         }
 
         // GET: Salaries/Details/5
@@ -170,6 +181,29 @@ namespace NKYS.Controllers
         private bool SalaryExists(long id)
         {
             return _context.Salary.Any(e => e.Id == id);
+        }
+        // Api 
+        public async Task<JsonResult> SalariesSearch(long? DepartmentId, long? GroupsId, long? PeriodId)
+        {
+            var salaries = await (from s in _context.Salary
+                            join e in _context.Employe on s.EmployeId equals e.Id
+                            join g in _context.Groups on e.GroupsId equals g.Id
+                            where (DepartmentId == null || g.DepartmentId == DepartmentId) && (GroupsId == null || g.Id == GroupsId)
+                            && (PeriodId == null || s.CycleId == PeriodId)
+                            select s).Include(s => s.Cycle).Include(s => s.Employe).ToListAsync();
+            return Json(salaries);
+        }
+
+
+        public async Task<List<Salary>> SalariesSearchData(long? DepartmentId, long? GroupsId, long? PeriodId)
+        {
+            var salaries = await (from s in _context.Salary
+                                  join e in _context.Employe on s.EmployeId equals e.Id
+                                  join g in _context.Groups on e.GroupsId equals g.Id
+                                  where (DepartmentId == null || g.DepartmentId == DepartmentId) && (GroupsId == null || g.Id == GroupsId)
+                                  && (PeriodId == null || s.CycleId == PeriodId)
+                                  select s).Include(s => s.Cycle).Include(s => s.Employe).ToListAsync();
+            return salaries;
         }
     }
 }

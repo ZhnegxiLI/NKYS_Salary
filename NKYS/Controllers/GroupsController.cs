@@ -124,5 +124,20 @@ namespace NKYS.Controllers
         {
             return _context.Groups.Any(e => e.Id == id);
         }
+
+        // API
+       [HttpGet]
+        public async Task<JsonResult> FindGroupList(long? DepartmentId)
+        {
+            return Json(await FindGroupListData(DepartmentId));
+        }
+
+        public async Task<List<Groups>> FindGroupListData(long? DepartmentId)
+        {
+            var groups = await(from g in _context.Groups
+                               where (DepartmentId == null || g.DepartmentId == DepartmentId)
+                               select g).ToListAsync();
+            return groups;
+        }
     }
 }
