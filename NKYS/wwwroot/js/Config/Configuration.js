@@ -1,3 +1,3 @@
 ﻿Application.Configuration = {
-    baseUrl:'localhost/NKYS'
+    baseUrl:'http://localhost/NKYS/'
 }

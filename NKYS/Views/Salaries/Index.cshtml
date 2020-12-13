@@ -13,58 +13,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<partial name="SalariesSearchFilter" model="null"  view-bag="ViewBag" />
+<partial name="SalariesSearchFilter" model="null" view-bag="ViewBag" />
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkingHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkingScore)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AbsentHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialSercurityFee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HousingReserves)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullPresencePay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OvertimePay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AbsentDeduct)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DormFee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransportFee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OtherFee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cycle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employe)
-            </th>
-            <th></th>
-        </tr>
+    <thead id="SalariesSearch_Table_Head">
     </thead>
     <tbody id="SalariesSearch_Table_Body">
-        <partial name="SalariesSearchTable"></partial>
     </tbody>
 </table>
+
+<script type="text/html" id="Tp1_SalariesSearch_Table_Head">
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+</script>
+
+<script type="text/html" id="Tp1_SalariesSearch_Table_Body">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</script>
 
 

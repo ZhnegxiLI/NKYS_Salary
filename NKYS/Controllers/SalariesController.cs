@@ -30,20 +30,11 @@ namespace NKYS.Controllers
             var periods = await _context.Cycle.ToListAsync();
             var GroupList = new List<Groups>();
 
-            ViewData["Departments"] = new SelectList(departments,"Id", "Name",null);
-            ViewData["Periods"] = new SelectList(periods,"Id", "Label",null);
+            ViewData["Departments"] = new SelectList(departments, "Id", "Name", null);
+            ViewData["Periods"] = new SelectList(periods, "Id", "Label", null);
             ViewData["Groups"] = new SelectList(GroupList, "Id", "Name", null);
 
             return View(new List<Salary>());
-        }
-
-
-        public async Task<PartialViewResult> OnGetSalaryTablePartial(long? DepartmentId, long? GroupsId, long? PeriodId)
-        {
-            var SalariesList = await SalariesSearchData(DepartmentId, GroupsId, PeriodId);
-
-            var myViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = SalariesList };
-            return new PartialViewResult() { ViewData = myViewData, ViewName = "SalariesSearchTable" };
         }
 
         // GET: Salaries/Details/5
@@ -182,20 +173,10 @@ namespace NKYS.Controllers
         {
             return _context.Salary.Any(e => e.Id == id);
         }
+
         // Api 
+        [HttpGet]
         public async Task<JsonResult> SalariesSearch(long? DepartmentId, long? GroupsId, long? PeriodId)
-        {
-            var salaries = await (from s in _context.Salary
-                            join e in _context.Employe on s.EmployeId equals e.Id
-                            join g in _context.Groups on e.GroupsId equals g.Id
-                            where (DepartmentId == null || g.DepartmentId == DepartmentId) && (GroupsId == null || g.Id == GroupsId)
-                            && (PeriodId == null || s.CycleId == PeriodId)
-                            select s).Include(s => s.Cycle).Include(s => s.Employe).ToListAsync();
-            return Json(salaries);
-        }
-
-
-        public async Task<List<Salary>> SalariesSearchData(long? DepartmentId, long? GroupsId, long? PeriodId)
         {
             var salaries = await (from s in _context.Salary
                                   join e in _context.Employe on s.EmployeId equals e.Id
@@ -203,7 +184,7 @@ namespace NKYS.Controllers
                                   where (DepartmentId == null || g.DepartmentId == DepartmentId) && (GroupsId == null || g.Id == GroupsId)
                                   && (PeriodId == null || s.CycleId == PeriodId)
                                   select s).Include(s => s.Cycle).Include(s => s.Employe).ToListAsync();
-            return salaries;
+            return Json(salaries);
         }
     }
 }

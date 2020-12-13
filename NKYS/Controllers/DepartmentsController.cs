@@ -120,5 +120,20 @@ namespace NKYS.Controllers
         {
             return _context.Department.Any(e => e.Id == id);
         }
+
+
+        // API
+        [HttpGet]
+        public async Task<JsonResult> FindDepartmentList()
+        {
+            return Json(await FindDepartmentListData());
+        }
+        public async Task<List<Department>> FindDepartmentListData()
+        {
+            var departments = await (from d in _context.Department
+                                select d).ToListAsync();
+            return departments;
+        }
+
     }
 }

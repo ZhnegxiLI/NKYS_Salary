@@ -9,6 +9,15 @@
     {
       "library": "bootstrap-select@1.13.18",
       "destination": "wwwroot/lib/boostrap-select"
+    },
+    {
+      "library": "jquery.numeric@1.0.0",
+      "destination": "wwwroot/lib/jquery-numeric"
+    },
+    {
+      "library": "jquery.loadtemplate@1.5.10",
+      "destination": "wwwroot/lib/loadtemplate"
     }
+   
   ]
 }

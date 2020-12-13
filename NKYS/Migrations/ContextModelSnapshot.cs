@@ -128,8 +128,8 @@ namespace NKYS.Migrations
                     b.Property<DateTime?>("EntreEntrepriseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("ExternalId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("FixSalary")
                         .HasColumnType("decimal(18,2)");

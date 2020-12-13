@@ -27,6 +27,11 @@ namespace NKYS.Controllers
             return View(await context.ToListAsync());
         }
 
+        public IActionResult EmployeSearch()
+        {
+            return View();
+        }
+
         // GET: Employes/Details/5
         public async Task<IActionResult> Details(long? id)
         {
@@ -151,6 +156,78 @@ namespace NKYS.Controllers
         private bool EmployeExists(long id)
         {
             return _context.Employe.Any(e => e.Id == id);
+        }
+
+
+        // API
+        [HttpGet]
+        public async Task<JsonResult> GetEmployeList(long? DepartmentId, long? GroupsId)
+        {
+            var employeeList = await (from e in _context.Employe
+                                where (GroupsId == null || e.GroupsId == GroupsId)
+                                select e).Include(p => p.Groups).ToListAsync();
+            return Json(employeeList);
+        }
+
+        public class InsertOrUpdateEmployeCriteria: Employe
+        {
+            public long? UserId { get; set; }
+        }
+
+        [HttpPost]
+        public async Task<long> InsertOrUpdateEmploye(InsertOrUpdateEmployeCriteria criteria)
+        {
+            var employeToInsertOrUpdate = new Employe();
+            if (criteria.Id>0)
+            {
+                employeToInsertOrUpdate = await _context.Employe.FirstOrDefaultAsync(p=>p.Id == criteria.Id);
+                employeToInsertOrUpdate.UpdatedBy = criteria.UserId;
+            }
+            else
+            {
+                employeToInsertOrUpdate.CreatedBy = criteria.UserId;
+                employeToInsertOrUpdate.CreatedOn = DateTime.Now;
+
+            }
+
+            if (employeToInsertOrUpdate!= null)
+            {
+                employeToInsertOrUpdate.Name = criteria.Name;
+
+                employeToInsertOrUpdate.GroupsId = criteria.GroupsId;
+                employeToInsertOrUpdate.EntreEntrepriseDate = criteria.EntreEntrepriseDate;
+                employeToInsertOrUpdate.ExternalId = criteria.ExternalId;
+                employeToInsertOrUpdate.TechnicalLevel = criteria.TechnicalLevel;
+                employeToInsertOrUpdate.SelfPaySocialSercurity = criteria.SelfPaySocialSercurity;
+                employeToInsertOrUpdate.SelfPayHousingReserves = criteria.SelfPayHousingReserves;
+
+                employeToInsertOrUpdate.HasDorm = criteria.HasDorm;
+                employeToInsertOrUpdate.TransportFee = criteria.TransportFee;
+                employeToInsertOrUpdate.PositionPay = criteria.PositionPay;
+
+                employeToInsertOrUpdate.IsChefOfGroup = criteria.IsChefOfGroup;
+                employeToInsertOrUpdate.SeniorityPay = criteria.SeniorityPay;
+                employeToInsertOrUpdate.FixSalary = criteria.FixSalary;
+
+                employeToInsertOrUpdate.DeductionPercentage = criteria.DeductionPercentage;
+                employeToInsertOrUpdate.IsTemporaryEmploye = criteria.IsTemporaryEmploye;
+                employeToInsertOrUpdate.DepartDate = criteria.DepartDate;
+
+                // todo add deductionConfiguration 
+            }
+
+            if (employeToInsertOrUpdate.Id >0)
+            {
+                 _context.Update(employeToInsertOrUpdate);
+            }
+            else
+            {
+                await _context.AddAsync(employeToInsertOrUpdate);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return employeToInsertOrUpdate.Id;
         }
     }
 }

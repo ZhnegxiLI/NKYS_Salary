@@ -1,6 +1,9 @@
 ﻿SalarieSearch = function () {
     var self = this;
 
+    self.employeeList = [];
+    self.salarieList = [];
+
     self.searchCriteria = {
         DepartmentId: -1,
         GroupId: -1,
@@ -9,7 +12,7 @@
 
     self.groupList = [];
     self.init = function () {
-        console.log(Application.Main.CurrentView);
+
         Application.Services.CommonService.FindGroupList(null, function (result) {
             if (result!=null && result.length >0) {
                 self.groupList = result;
@@ -17,7 +20,7 @@
             }
         });
 
-    
+        self.formatData();
     }
 
     self.OnChangeCriteria = function (event) {
@@ -69,15 +72,88 @@
             self.searchCriteria.GroupId != null && self.searchCriteria.GroupId != -1 &&
             self.searchCriteria.CycleId != null && self.searchCriteria.CycleId != -1) {
             $('button#SalariesSearchFilter_Button_Search').removeAttr('disabled');
+            return true;
         }
         else {
             $('button#SalariesSearchFilter_Button_Search').prop('disabled', true);
+            return false;
         }
     };
 
     self.RefreshData = function () {
-        $('#SalariesSearch_Table_Body').load('Salaries/OnGetSalaryTablePartial', self.searchCriteria);
+        if (self.checkCriteriaValidity() == true) {
+            // var employeeList = Application.Services.CommonService.FindGroupList()
+            var dfEmployeeList = $.Deferred().done(function (result) {
+                if (result!= null && result.length >0) {
+
+                    self.employeeList = result;
+                }
+                else {
+                    self.employeeList = [];
+                }
+            });
+
+            var dfSaleriesList = $.Deferred().done(function (result) {
+                if (result != null && result.length > 0) {
+
+                    self.salarieList = result;
+                }
+                else {
+                    self.salarieList = [];
+                }
+            });
+
+            $.when(dfEmployeeList, dfSaleriesList).done(function (result) {
+                var formatedData = self.formatData();
+            });
+
+            self.GetEmployeList(dfEmployeeList);
+            self.SalariesSearch(dfSaleriesList);
+        }
     };
+
+    self.formatData = function () {
+        if (self.employeeList != null && self.employeeList.length>0) {
+            self.employeeList.map(employee => {
+                var salary = self.salarieList.find(s => {
+                    return s.EmployeId == employee.Id; 
+                });
+
+                if (salary!=null) {
+
+                }
+            });
+        }
+        else {
+            self.NoDataToDisplay();
+        }
+    };
+
+    self.NoDataToDisplay = function () {
+        $('#SalariesSearch_Table_Body').html('<tr><td>' + 'No data to display' + '</td></tr>');
+    }
+
+    self.GetEmployeList = function (pGetEmployeList) {
+        Application.Services.CommonService.GetEmployeList(self.searchCriteria, function (result) {
+            if (result != null) {
+                pGetEmployeList.resolve(result);
+            }
+            else {
+                pGetEmployeList.reject();
+            }
+        });
+    }
+
+    self.SalariesSearch = function (pSalaryList) {
+        Application.Services.CommonService.SalariesSearch(self.searchCriteria, function (result) {
+            if (result != null) {
+                pSalaryList.resolve(result);
+            }
+            else {
+                pSalaryList.reject();
+            }
+        });
+    }
 }
 
 Application.ViewsScript["SalarieSearch"] = new SalarieSearch();

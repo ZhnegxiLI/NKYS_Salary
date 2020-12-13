@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using NKYS.Models;
 
 namespace NKYS
@@ -25,10 +26,12 @@ namespace NKYS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddJsonOptions(option =>
-            {
-                option.JsonSerializerOptions.PropertyNamingPolicy = null; // Output json case follow the property
-            });
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                }
+            ) ;
 
             services.AddDbContext<Context>(
                 /* Get connections string from config */

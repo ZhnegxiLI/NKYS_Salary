@@ -18,7 +18,7 @@ namespace NKYS.Models
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime? EntreEntrepriseDate { get; set; }
         [DisplayName("打卡机编号")]
-        public long? ExternalId { get; set; } // 打卡机上的序号
+        public string ExternalId { get; set; } // 打卡机上的序号
 
         [DisplayName("技术级别")]
         public decimal? TechnicalLevel { get; set; } // 技术级别

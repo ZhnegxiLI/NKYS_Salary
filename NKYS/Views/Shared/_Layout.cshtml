@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" /> <!--Import fa -->
+    <link rel="stylesheet" href="~/lib/mask/jquery.loadmask.css" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <environment include="Development">
         <link rel="stylesheet" asp-href-include="css/*" asp-href-exclude="css/all.min.css" />
@@ -19,9 +20,10 @@
 
         <script src="~/js/Config/Configuration.js"></script>
         <script src="~/js/Salaries/SalarieSearch.js"></script>
+        <script src="~/js/Employe/EmployeSearch.js"></script>
         <script src="~/js/Services//CommonService.js"></script>
-       
 
+        <script src="~/js/site.js"></script>
     </environment>
     <environment include="Production">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
@@ -57,6 +59,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Salaries" asp-action="Index">Salaries</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employes" asp-action="EmployeSearch">Employes</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -77,7 +82,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-numeric/jquery.numeric.min.js"></script>
+    <script src="~/lib/loadtemplate/dist/jquery.loadTemplate.min.js"></script>
+    <script src="~/lib/mask/jquery.loadmask.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
