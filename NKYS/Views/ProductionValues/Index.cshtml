@@ -11,15 +11,9 @@
 </p>
 <form class="row" asp-controller="ProductionValues" asp-action="Index" method="get">
     <div class="col-3 form-group">
-        <label asp-for="Year" class="control-label"></label>
-        <select asp-for="Year" class="form-control" asp-items="ViewBag.Year">
-            <option selected></option>
-        </select>
-    </div>
-    <div class="col-3 form-group">
-        <label asp-for="Month" class="control-label"></label>
-        <select asp-for="Month" class="form-control" asp-items="ViewBag.Month">
-            <option selected></option>
+        <label asp-for="CycleId" class="control-label"></label>
+        <select asp-for="CycleId" class="form-control" asp-items="ViewBag.CycleId">
+            <option></option>
         </select>
     </div>
     <div class="col-3 form-group">
@@ -29,7 +23,7 @@
         </select>
     </div>
     <div class="col-3">
-        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;"/>
+        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;" />
     </div>
 </form>
 <table class="table">

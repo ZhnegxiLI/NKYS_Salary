@@ -91,7 +91,7 @@ namespace NKYS.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (employe.Id != null && employe.Id > 0)
+                if (employe.Id > 0)
                 {
                     _context.Update(employe);
                 }

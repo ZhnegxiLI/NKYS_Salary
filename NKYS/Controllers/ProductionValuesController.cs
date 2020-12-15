@@ -20,18 +20,14 @@ namespace NKYS.Controllers
         }
 
         // GET: ProductionValues
-        public async Task<IActionResult> Index(int? Year, int? Month, ProductionValueType? ProductionValueTypeId)
+        public async Task<IActionResult> Index(long? CycleId, ProductionValueType? ProductionValueTypeId)
         {
-      
-            int[] yearList = { 2020,2021,2022,2023,2024,2025};
-            int[] monthList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-            ViewData["Year"] = new SelectList(yearList);
-            ViewData["Month"] = new SelectList(monthList);
+            ViewData["CycleId"] = new SelectList(_context.Cycle, "Id", "Label");
 
             var list = await (from value in _context.ProductionValue
                         join c in _context.Cycle on value.CycleId equals c.Id
-                        where (Year == null || c.Year == Year) && (Month == null || c.Month == Month) && (ProductionValueTypeId == null || value.ProductionValueTypeId == ProductionValueTypeId)
-                        orderby c.Year, c.Month
+                        where (CycleId == null || c.Id == CycleId ) && (ProductionValueTypeId == null || value.ProductionValueTypeId == ProductionValueTypeId)
+                        orderby c.Year descending, c.Month descending
                         select value).Include(p => p.Cycle).ToListAsync();
            
             var obj = new ProductionValuesIndex();

@@ -29,6 +29,7 @@
             self.buildSelectOption($('#EmployeSearch_Select_DepartmentId'), self.departmentList, 'Id', 'Name');
         });
 
+        self.searchEmploye();
     }
 
     /* Search employee zoom */
@@ -64,23 +65,45 @@
         }
         else {
             $('button#EmployeSearch_Button_Search').prop('disabled', true);
+            $('button#EmployeSearch_Button_Create').prop('disabled', true);
             return false;
         }
     };
-
-
+     
     self.buildEmployeTable = function () {
         if (self.employeList != null && self.employeList.length > 0) {
 
+            self.employeList.map(employe => {
+
+                if (isDefined(employe.Groups)) {
+                    if (isDefined(employe.Groups.Name)) {
+                        employe.GroupsLabel = employe.Groups.Name;
+                    }
+                    if (isDefined(employe.Groups.IsFixSalary)) {
+                        employe.IsFixSalary = employe.Groups.IsFixSalary;
+                    }
+                }
+                if (isDefined(employe.IsTemporaryEmploye) && employe.IsTemporaryEmploye == true) {
+                    employe.TemporaryEmployeChecked = true;
+                }
+                else {
+                    employe.TemporaryEmployeNoChecked = true;
+                }
+                
+            });
+
+            $('table#EmployeSearch_Table tbody').loadTemplate($('#Tp1_EmployeTable'), self.employeList);
         }
         else {
-            $('#EmployeSearch_Table tbody').html('<tr><td>No data to display</td></tr>')
+            var numberOfColum = $('#EmployeSearch_Table thead tr th').length;
+            $('#EmployeSearch_Table tbody').html('<tr><td colspan="' + numberOfColum+ '">No data to display</td></tr>')
         }
     };
 
     self.searchEmploye = function () {
         if (self.checkEmployeSearchCriteriaValidity() == true) {
             Application.Services.CommonService.GetEmployeList(self.searchCriteria, function (result) {
+                $('button#EmployeSearch_Button_Create').removeAttr('disabled');
                 if (result != null && result.length > 0) {
                     self.employeList = result;
                 }
@@ -91,6 +114,10 @@
                 self.buildEmployeTable();
             });
         }
+        else {
+            self.employeList = [];
+            self.buildEmployeTable();
+        }
     };
 
     /* Create / update employee zoom  */
@@ -100,8 +127,15 @@
         if (action == 'Create') {
            self.Employe = self.getEmptyEmploye();
         }
-        else if (action == 'Modify') {
+        else if (action == 'Edit') {
+            var employeId = $(event.currentTarget).closest('tr').attr('data-employe-id');
+            if (isDefined(self.employeList) && self.employeList.length>0) {
+                var targetEmploye = self.employeList.find(p => p.Id == employeId);
 
+                if (isDefined(targetEmploye)) {
+                    self.Employe = targetEmploye;
+                }
+            }
         }
         else {
             self.Employe = null;
@@ -145,11 +179,46 @@
             { title: isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id >0? 'Modify': 'Create'},
             function () { $('#' + self.modalEmployeeTicks).remove(); },
             function () {
-
+                // Step 1: Refresh select
                 $('.selectpicker').selectpicker('refresh');
-
+                // Step 2: Build Department select options
                 if (isDefined(self.departmentList) && self.departmentList.length>0) {
                     self.buildSelectOption($('#EmployeModal_Select_DepartmentId'), self.departmentList, 'Id', 'Name');
+                }
+                // Step 3: Bind data 
+                if (isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id >0) {
+                    if (isDefined(self.Employe.Groups) && isDefined(self.Employe.Groups.DepartmentId) && self.Employe.Groups.DepartmentId >0) {
+                        $('#EmployeModal_Select_DepartmentId').val(self.Employe.Groups.DepartmentId);
+                        $('.selectpicker').selectpicker('refresh');
+                        $('#EmployeModal_Select_DepartmentId').trigger('change');
+
+                        if (isDefined(self.Employe.GroupsId)) {
+                            $('#EmployeModal_Select_GroupsId').val(self.Employe.GroupsId);
+                            $('.selectpicker').selectpicker('refresh');
+
+                            $('#EmployeModal_Select_GroupsId').trigger('change');
+                        }
+                    }
+
+                    if (isDefined(self.Employe.Name) && self.Employe.Name!='') {
+                        $('#EmployeModal_Input_Name').val(self.Employe.Name);
+                    }
+
+                    if (isDefined(self.Employe.EntreEntrepriseDate) && self.Employe.EntreEntrepriseDate != '') {
+                        $('#EmployeModal_Input_EntreEntrepriseDate').val(self.Employe.EntreEntrepriseDate.slice(0,10));
+                    }
+
+                    if (isDefined(self.Employe.ExternalId) && self.Employe.ExternalId != '') {
+                        $('#EmployeModal_Input_ExternalId').val(self.Employe.ExternalId);
+                    }
+
+                    if (isDefined(self.Employe.TechnicalLevel) && self.Employe.TechnicalLevel != '') {
+                        $('#EmployeModal_Input_TechnicalLevel').val(self.Employe.TechnicalLevel);
+                    }
+
+                    if (isDefined(self.Employe.FixSalary) && self.Employe.FixSalary != '') {
+                        $('#EmployeModal_Input_FixSalary').val(self.Employe.FixSalary);
+                    }
                 }
 
 
@@ -198,8 +267,41 @@
                     $('#EmployeModal_Select_GroupsId').removeClass('is-invalid');
                     $('#EmployeModal_Select_GroupsId').closest('div').removeClass('is-invalid');
                     $('.selectpicker').selectpicker('refresh');
+
+
+                    // Get group information 
+                    var targetGroup = self.groupList.find(p => p.Id == value);
+                    if (isDefined(targetGroup)) {
+                        if (isDefined(targetGroup.IsFixSalary) && targetGroup.IsFixSalary == true) {
+                            $('[data-specific="FixSalary"]').removeClass('d-none');
+                            $('[data-specific="DeductionPercentage"]').removeClass('d-none');
+                            $('[data-specific="DeductionConfiguration"]').removeClass('d-none');
+                            
+                            $('[data-specific="TechnicalLevel"]').addClass('d-none');
+
+                            self.Employe.TechnicalLevel = null;
+                        }
+                        else if (isDefined(targetGroup.SharePropotion) && isDefined(targetGroup.ProductionValueTypeId) ) {
+
+                            $('[data-specific="FixSalary"]').addClass('d-none');
+                            $('[data-specific="DeductionPercentage"]').addClass('d-none');
+                            $('[data-specific="DeductionConfiguration"]').addClass('d-none');
+
+                            $('[data-specific="TechnicalLevel"]').removeClass('d-none');
+
+                            self.Employe.FixSalary = null;
+                            self.Employe.DeductionPercentage = null;
+                        }
+                        else {
+                            $('[data-specific]').removeClass('d-none');
+                        }
+                    }
+                    else {
+                        $('[data-specific]').removeClass('d-none');
+                    }
                 }
                 else {
+                    $('[data-specific]').removeClass('d-none');
                     self.Employe.GroupsId = -1;
                 }
                 break;
@@ -261,7 +363,7 @@
                 break;
 
             case 'EmployeModal_Input_FixSalary':
-                self.Employe.DeductionPercentage = value;
+                self.Employe.FixSalary = value;
                 break;
 
             case 'EmployeModal_Input_DeductionPercentage':
@@ -303,10 +405,21 @@
     };
 
     self.checkEmployeModalValidity = function () {
+        var salaryModelValidity = false;
+        var targetGroup = self.groupList.find(p => p.Id == self.Employe.GroupsId);
+        if (isDefined(targetGroup)) {
+            if (isDefined(targetGroup.IsFixSalary) && targetGroup.IsFixSalary == true && isDefined(self.Employe.FixSalary) && self.Employe.FixSalary>0) {
+                salaryModelValidity = true;
+            }
+            else if (isDefined(targetGroup.SharePropotion) && isDefined(targetGroup.ProductionValueTypeId) && isDefined(self.Employe.TechnicalLevel) && self.Employe.TechnicalLevel>0) {
+                salaryModelValidity = true;
+            }
+        }
+
         if (isDefined(self.Employe) && isDefined(self.Employe.DepartmentId) && self.Employe.DepartmentId > 0
             && isDefined(self.Employe.GroupsId) && self.Employe.GroupsId > 0 && isDefined(self.Employe.Name) && self.Employe.Name != ''
             && isDefined(self.Employe.EntreEntrepriseDate) && self.Employe.EntreEntrepriseDate != '' && isDefined(self.Employe.ExternalId) && self.Employe.ExternalId != ''
-            ) {
+            && salaryModelValidity==true) {
 
             return true;
         }

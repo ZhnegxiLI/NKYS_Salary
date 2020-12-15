@@ -23,7 +23,7 @@
     </div>
 
     <div class="col-3">
-        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create"/>Create</button>
+        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create"/>Create</button>
     </div>
 </div>
 <table class="table" id="EmployeSearch_Table">
@@ -77,7 +77,27 @@
 </table>
 
 
-
+<script type="text/html" id="Tp1_EmployeTable">
+    <tr data-template-bind='[{"attribute": "data-employe-id", "value": "Id"}]'>
+        <td data-content-append="GroupsLabel"></td>
+        <td data-content-append="Name"></td>
+        <td data-content-append="ExternalId"></td>
+        <td>
+            <span data-template-bind='[{"attribute": "data-check", "value": "TemporaryEmployeChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-check" style="color:green"></i>
+            </span>
+            <span data-template-bind='[{"attribute": "data-check", "value": "TemporaryEmployeNoChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-times" style="color:red"></i>
+            </span>
+        </td>
+     
+        <td>
+            <button type="button" class="btn btn-primary" onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Edit">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+        </td>
+    </tr>
+</script>
 <script type="text/html" id="Tp1_EmployeModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -87,100 +107,117 @@
 
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-3" data-specific="Name">
-                        <div class="control-label">Name <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_Name" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-                    <div class="col-3" data-specific="DepartmentId">
-                        <div class="control-label">Department <span class="text-danger">*</span></div>
-                        <select class="form-control selectpicker" id="EmployeModal_Select_DepartmentId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
-                    </div>
-                    <div class="col-3" data-specific="GroupsId">
-                        <div class="control-label">Groups<span class="text-danger">*</span></div>
-                        <select class="form-control selectpicker" id="EmployeModal_Select_GroupsId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
-                    </div>
-                    <div class="col-3" data-specific="EntreEntrepriseDate">
-                        <div class="control-label"> EntreEntrepriseDate <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_EntreEntrepriseDate" class="form-control" type="date" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-                    <div class="col-3" data-specific="ExternalId">
-                        <div class="control-label">ExternalId <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_ExternalId" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
 
-                    <div class="col-3" data-specific="ExternalId">
-                        <div class="control-label">TechnicalLevel <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_TechnicalLevel" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
+                <div class="card">
+                    <div class="card-header h5">Basic information</div>
+                    <div class="row card-body">
+                        <div class="col-3" data-specific="Name">
+                            <div class="control-label"> @Html.DisplayNameFor(model => model.Name) <span class="text-danger">*</span></div>
+                            <input id="EmployeModal_Input_Name" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+                        <div class="col-3" data-specific="DepartmentId">
+                            <div class="control-label"> @Html.DisplayNameFor(model => model.Groups.Department) <span class="text-danger">*</span></div>
+                            <select class="form-control selectpicker" id="EmployeModal_Select_DepartmentId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
+                        </div>
+                        <div class="col-3" data-specific="GroupsId">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.Groups)<span class="text-danger">*</span></div>
+                            <select class="form-control selectpicker" id="EmployeModal_Select_GroupsId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
+                        </div>
+                        <div class="col-3" data-specific="EntreEntrepriseDate">
+                            <div class="control-label">  @Html.DisplayNameFor(model => model.EntreEntrepriseDate) <span class="text-danger">*</span></div>
+                            <input id="EmployeModal_Input_EntreEntrepriseDate" class="form-control" type="date" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+                        <div class="col-3" data-specific="ExternalId">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.ExternalId) <span class="text-danger">*</span></div>
+                            <input id="EmployeModal_Input_ExternalId" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
 
-                    <div class="col-3">
-                        <div class="control-label">SelfPaySocialSercurity <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_SelfPaySocialSercurity" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
+                        <div class="col-3" data-specific="DepartDate">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.DepartDate)</div>
+                            <input id="EmployeModal_Input_DepartDate" class="form-control" type="date" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
 
-                    <div class="col-3">
-                        <div class="control-label">SelfPayHousingReserves <span class="text-danger">*</span></div>
-                        <input id="EmployeModal_Input_SelfPayHousingReserves" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_HasDorm" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
-                            <label class="form-check-label" for="EmployeModal_CheckBox_HasDorm">HasDorm</label>
+                        <div class="col-3" data-specific="IsTemporaryEmploye">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="EmployeModal_Input_IsTemporaryEmploye" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
+                                <label class="form-check-label" for="EmployeModal_Input_IsTemporaryEmploye">@Html.DisplayNameFor(model => model.IsTemporaryEmploye)</label>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-3">
-                        <div class="control-label">TransportFee</div>
-                        <input id="EmployeModal_Input_TransportFee" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">TransportFee</div>
-                        <input id="EmployeModal_Input_PositionPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_IsChefOfGroup" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
-                            <label class="form-check-label" for="EmployeModal_CheckBox_IsChefOfGroup">IsChefOfGroup</label>
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">SeniorityPay</div>
-                        <input id="EmployeModal_Input_SeniorityPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">FixSalary</div>
-                        <input id="EmployeModal_Input_FixSalary" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">DeductionPercentage</div>
-                        <input id="EmployeModal_Input_DeductionPercentage" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="EmployeModal_Input_IsTemporaryEmploye" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
-                            <label class="form-check-label" for="EmployeModal_Input_IsTemporaryEmploye">IsTemporaryEmploye</label>
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">DepartDate</div>
-                        <input id="EmployeModal_Input_DepartDate" class="form-control" type="date" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                    </div>
-
-                    <div class="col-3">
-                        <div class="control-label">EmployeDeductionConfiguration</div>
-                        <select class="form-control selectpicker" id="EmployeModal_Select_DeductionConfiguration" multiple onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
-                    </div>
-
                 </div>
+
+                <div class="card mt-2">
+                    <div class="card-header h5">Salary options</div>
+                    <div class="card-body row">
+                        <div class="col-3" data-specific="TechnicalLevel">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.TechnicalLevel) <span class="text-danger">*</span></div>
+                            <input id="EmployeModal_Input_TechnicalLevel" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+                        <div class="col-3" data-specific="FixSalary">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.FixSalary) <span class="text-danger">*</span></div>
+                            <input id="EmployeModal_Input_FixSalary" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3" data-specific="DeductionPercentage">
+                            <div class="control-label">DeductionPercentage</div>
+                            <input id="EmployeModal_Input_DeductionPercentage" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+
+                        <div class="col-3" data-specific="DeductionConfiguration">
+                            <div class="control-label">EmployeDeductionConfiguration</div>
+                            <select class="form-control selectpicker" id="EmployeModal_Select_DeductionConfiguration" multiple onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card mt-2">
+                    <div class="card-header h5">Salary configuration</div>
+                    <div class="card-body row">
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.SelfPaySocialSercurity)</div>
+                            <input id="EmployeModal_Input_SelfPaySocialSercurity" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.SelfPayHousingReserves)</div>
+                            <input id="EmployeModal_Input_SelfPayHousingReserves" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.PositionPay)</div>
+                            <input id="EmployeModal_Input_PositionPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.TransportFee)</div>
+                            <input id="EmployeModal_Input_TransportFee" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.SeniorityPay)</div>
+                            <input id="EmployeModal_Input_SeniorityPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_HasDorm" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
+                                <label class="form-check-label" for="EmployeModal_CheckBox_HasDorm">@Html.DisplayNameFor(model => model.HasDorm)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_IsChefOfGroup" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
+                                <label class="form-check-label" for="EmployeModal_CheckBox_IsChefOfGroup">@Html.DisplayNameFor(model => model.IsChefOfGroup)</label>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close">
