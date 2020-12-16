@@ -13,6 +13,9 @@
     self.groupList = [];
     self.init = function () {
 
+        $('.selectpicker').selectpicker('refresh');
+        $('#SalariesSearch_Table_Head').loadTemplate('#Tp1_SalariesSearch_Table_Head');
+
         Application.Services.CommonService.FindGroupList(null, function (result) {
             if (result!=null && result.length >0) {
                 self.groupList = result;
@@ -21,7 +24,6 @@
     }
 
     self.OnChangeCriteria = function (event) {
-        console.log(event.currentTarget)
         var Id = event.currentTarget.id; 
         var value = event.currentTarget.value;
         switch (Id) {
@@ -61,7 +63,9 @@
         }
         if (pSelector!=null) {
             pSelector.html(options);
+            pSelector.selectpicker('refresh');
         }
+
     };
 
     self.checkCriteriaValidity = function () {

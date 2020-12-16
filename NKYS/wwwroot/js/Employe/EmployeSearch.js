@@ -202,6 +202,10 @@
             { title: isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id >0? 'Modify': 'Create'},
             function () { $('#' + self.modalEmployeeTicks).remove(); },
             function () {
+
+                // Step 0: Only number input 
+                $('#EmployeModal_Input_FixSalary').numeric({ negative: false, decimal: '.' });
+                $('#EmployeModal_Input_TechnicalLevel').numeric({ negative: false, decimal: '.' });
                 // Step 1: Refresh select
                 $('.selectpicker').selectpicker('refresh');
                 // Step 2: Build Department select options
@@ -432,7 +436,7 @@
             $('#' + self.modalEmployeeTicks).mask();
 
             Application.Services.CommonService.CheckExternalIdNotExists({
-                EmployeId: self.Employe.id,
+                EmployeId: self.Employe.Id,
                 ExternalId: self.Employe.ExternalId
             }, function (employeWithSameExternalId) {
                     if (!isDefined(employeWithSameExternalId)) {
@@ -449,6 +453,7 @@
                     else {
                         $('#' + self.modalEmployeeTicks).unmask();
                         // TODO translate error message 
+                        $('#EmployeModal_ErrorMessage').removeClass('d-none');
                         $('#EmployeModal_ErrorMessage').html('Cannot save the employee with the same externalId, externalId should be unique');
                     }
             });

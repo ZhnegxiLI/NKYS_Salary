@@ -164,7 +164,7 @@ namespace NKYS.Controllers
         public async Task<JsonResult> GetEmployeList(long? DepartmentId, long? GroupsId, string Name, string ExternalId)
         {
             var employeeList = await (from e in _context.Employe
-                                where (GroupsId == null || e.GroupsId == GroupsId) && (Name == null || e.Name == Name) && (ExternalId== null || e.ExternalId == ExternalId)
+                                where (GroupsId == null || GroupsId <=0 || e.GroupsId == GroupsId) && (Name == null || e.Name.Contains(Name)) && (ExternalId== null || e.ExternalId.Contains(ExternalId))
                                 select e).Include(p => p.Groups).ToListAsync();
             return Json(employeeList);
         }

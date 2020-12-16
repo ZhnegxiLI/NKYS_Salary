@@ -17,19 +17,19 @@
         <div class="control-label">Groups</div>
         <select class="form-control" id="EmployeSearch_Select_GroupsId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></select>
     </div>
-    <div class="col-3 form-group">
+    <div class="col-2 form-group">
         <div class="control-label">Name</div>
         <input class="form-control" type="text" id="EmployeSearch_Input_Name" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
     </div>
-    <div class="col-3 form-group">
+    <div class="col-2 form-group">
         <div class="control-label">ExternalId</div>
         <input class="form-control" type="text" id="EmployeSearch_Input_ExternalId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
     </div>
-    <div class="col-3">
+    <div class="col-1">
         <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Search" disabled onclick="Application.ViewsScript['EmployeSearch'].searchEmploye(event)" />Search</button>
     </div>
 
-    <div class="col-3">
+    <div class="col-1">
         <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create" />Create</button>
     </div>
 </div>
@@ -158,7 +158,7 @@
                     <div class="card-body row">
                         <div class="col-3" data-specific="TechnicalLevel">
                             <div class="control-label">@Html.DisplayNameFor(model => model.TechnicalLevel) <span class="text-danger">*</span></div>
-                            <input id="EmployeModal_Input_TechnicalLevel" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                            <input id="EmployeModal_Input_TechnicalLevel" class="form-control" type="number" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
                         <div class="col-3" data-specific="FixSalary">
                             <div class="control-label">@Html.DisplayNameFor(model => model.FixSalary) <span class="text-danger">*</span></div>
@@ -227,7 +227,9 @@
 
             </div>
             <div class="modal-footer">
-                <p id="EmployeModal_ErrorMessage"></p>
+                <div class="alert alert-danger d-none" role="alert" id="EmployeModal_ErrorMessage" >
+                </div>
+
                 <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close">
                     Close
                 </button>
