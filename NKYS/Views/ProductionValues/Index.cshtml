@@ -46,27 +46,35 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ProductionValues) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cycle.Label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductionValueTypeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
+        @if (Model.ProductionValues.Count() > 0)
+        {
+            @foreach (var item in Model.ProductionValues)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cycle.Label)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductionValueTypeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
 
-            <td>
-                <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                    <td>
+                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="5">No data to display</td></tr>
+        }
     </tbody>
 </table>

@@ -3,7 +3,9 @@
 
     self.searchCriteria = {
         DepartmentId: -1,
-        GroupsId: -1
+        GroupsId: -1,
+        Name: null,
+        ExternalId: null
     };
 
     self.Employe = null;
@@ -50,6 +52,24 @@
                 self.searchCriteria.GroupsId = value;
                 break;
 
+            case 'EmployeSearch_Input_Name':
+                if (isDefined(value) && value!= '') {
+                    self.searchCriteria.Name = value;
+                }
+                else {
+                    self.searchCriteria.Name = null;
+                }
+                break;
+
+            case 'EmployeSearch_Input_ExternalId':
+                if (isDefined(value) && value != '') {
+                    self.searchCriteria.ExternalId = value;
+                }
+                else {
+                    self.searchCriteria.ExternalId = null;
+                }
+                break;
+
             default:
                 break;
         }
@@ -58,8 +78,10 @@
     };
 
     self.checkEmployeSearchCriteriaValidity = function () {
-        if (self.searchCriteria.DepartmentId != null && self.searchCriteria.DepartmentId != -1 &&
-            self.searchCriteria.GroupsId != null && self.searchCriteria.GroupsId != -1) {
+        if ((self.searchCriteria.DepartmentId != null && self.searchCriteria.DepartmentId != -1 &&
+            self.searchCriteria.GroupsId != null && self.searchCriteria.GroupsId != -1)
+            || (isDefined(self.searchCriteria.Name) && self.searchCriteria.Name != '')
+            || (isDefined(self.searchCriteria.ExternalId) && self.searchCriteria.ExternalId != '')) {
             $('button#EmployeSearch_Button_Search').removeAttr('disabled');
             return true;
         }
@@ -89,6 +111,8 @@
                 else {
                     employe.TemporaryEmployeNoChecked = true;
                 }
+
+                // todo reste of column 
                 
             });
 
@@ -121,7 +145,6 @@
     };
 
     /* Create / update employee zoom  */
- 
     self.initEmployeModal = function (event) {
         var action = $(event.currentTarget).data('action');
         if (action == 'Create') {
@@ -218,6 +241,21 @@
 
                     if (isDefined(self.Employe.FixSalary) && self.Employe.FixSalary != '') {
                         $('#EmployeModal_Input_FixSalary').val(self.Employe.FixSalary);
+                    }
+                }
+                else {
+                    // If department and group is selected in search, bind automaticly in creation employee
+                    if (isDefined(self.searchCriteria.DepartmentId) && self.searchCriteria.DepartmentId>0) {
+                        $('#EmployeModal_Select_DepartmentId').val(self.searchCriteria.DepartmentId);
+                        $('.selectpicker').selectpicker('refresh');
+                        $('#EmployeModal_Select_DepartmentId').trigger('change');
+
+                        if (isDefined(self.searchCriteria.GroupsId) && self.searchCriteria.GroupsId>0) {
+                            $('#EmployeModal_Select_GroupsId').val(self.searchCriteria.GroupsId);
+                            $('.selectpicker').selectpicker('refresh');
+
+                            $('#EmployeModal_Select_GroupsId').trigger('change');
+                        }
                     }
                 }
 
@@ -392,14 +430,27 @@
     self.saveEmployee = function () {
         if (self.checkEmployeModalValidity() == true) {
             $('#' + self.modalEmployeeTicks).mask();
-            Application.Services.CommonService.InsertOrUpdateEmploye(self.Employe, function (result) {
-                if (result > 0) {
 
-                    $('#' + self.modalEmployeeTicks).unmask();
-                    $("#" + self.modalEmployeeTicks).modal('hide');
-                    // Refresh page 
-                    self.searchEmploye();
-                }
+            Application.Services.CommonService.CheckExternalIdNotExists({
+                EmployeId: self.Employe.id,
+                ExternalId: self.Employe.ExternalId
+            }, function (employeWithSameExternalId) {
+                    if (!isDefined(employeWithSameExternalId)) {
+                        Application.Services.CommonService.InsertOrUpdateEmploye(self.Employe, function (result) {
+                            if (result > 0) {
+
+                                $('#' + self.modalEmployeeTicks).unmask();
+                                $("#" + self.modalEmployeeTicks).modal('hide');
+                                // Refresh page 
+                                self.searchEmploye();
+                            }
+                        });
+                    }
+                    else {
+                        $('#' + self.modalEmployeeTicks).unmask();
+                        // TODO translate error message 
+                        $('#EmployeModal_ErrorMessage').html('Cannot save the employee with the same externalId, externalId should be unique');
+                    }
             });
         }
     };

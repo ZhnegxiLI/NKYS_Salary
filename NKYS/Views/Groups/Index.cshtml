@@ -1,5 +1,4 @@
-﻿@model IEnumerable<NKYS.Models.Groups>
-
+﻿@model NKYS.Models.ViewModel.GroupsIndex
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,6 +8,19 @@
 <p>
     <a asp-action="CreateOrEdit">Create New</a>
 </p>
+
+<form class="row" asp-controller="Groups" asp-action="Index" method="get">
+    <div class="col-3 form-group">
+        <label asp-for="DepartmentId" class="control-label"></label>
+        <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId">
+            <option></option>
+        </select>
+    </div>
+
+    <div class="col-3">
+        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;" />
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -37,43 +49,52 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @if (item.IsFixSalary)
-                {
-                    <i class="fa fa-check" style="color:green"></i>
-                }
-                else
-                {
-                    <i class="fa fa-times" style="color:red"></i>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SharePropotion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductionValueTypeId)
-            </td>
+        @if (Model.Groups.Count() > 0)
+        {
+            @foreach (var item in Model.Groups)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @if (item.IsFixSalary)
+                        {
+                            <i class="fa fa-check" style="color:green"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-times" style="color:red"></i>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SharePropotion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductionValueTypeId)
+                    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                  @item.Employes.Count()
-            </td>
-            <td>
-                <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Employes" asp-action="Index" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @item.Employes.Count()
+                    </td>
+                    <td>
+                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Employes" asp-action="Index" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr><td colspan="8">No data to display</td></tr>
+        }
     </tbody>
 </table>

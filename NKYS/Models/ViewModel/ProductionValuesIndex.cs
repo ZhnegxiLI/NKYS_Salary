@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 namespace NKYS.Models.ViewModel
 {
-    public class ProductionValuesIndex: ProductionValue
+    public class GroupsIndex : Groups
     {
-        public ProductionValuesIndex()
+        public GroupsIndex()
         {
-            ProductionValues = new List<ProductionValue>();
+            Groups = new List<Groups>();
         }
-        public List<ProductionValue> ProductionValues { get; set; }
-
-        [DisplayName("年")]
-        public int Year { get; set; }
-        [DisplayName("月")]
-        public int Month { get; set; }
+        public List<Groups> Groups { get; set; }
     }
 
 }

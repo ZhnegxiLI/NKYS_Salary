@@ -17,13 +17,20 @@
         <div class="control-label">Groups</div>
         <select class="form-control" id="EmployeSearch_Select_GroupsId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></select>
     </div>
-
+    <div class="col-3 form-group">
+        <div class="control-label">Name</div>
+        <input class="form-control" type="text" id="EmployeSearch_Input_Name" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
+    </div>
+    <div class="col-3 form-group">
+        <div class="control-label">ExternalId</div>
+        <input class="form-control" type="text" id="EmployeSearch_Input_ExternalId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
+    </div>
     <div class="col-3">
-        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Search" disabled onclick="Application.ViewsScript['EmployeSearch'].searchEmploye(event)"/>Search</button>
+        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Search" disabled onclick="Application.ViewsScript['EmployeSearch'].searchEmploye(event)" />Search</button>
     </div>
 
     <div class="col-3">
-        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create"/>Create</button>
+        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create" />Create</button>
     </div>
 </div>
 <table class="table" id="EmployeSearch_Table">
@@ -220,6 +227,7 @@
 
             </div>
             <div class="modal-footer">
+                <p id="EmployeModal_ErrorMessage"></p>
                 <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close">
                     Close
                 </button>

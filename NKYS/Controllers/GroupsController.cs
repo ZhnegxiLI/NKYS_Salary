@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NKYS.Models;
+using NKYS.Models.ViewModel;
 
 namespace NKYS.Controllers
 {
@@ -19,10 +20,21 @@ namespace NKYS.Controllers
         }
 
         // GET: Groups
-        public async Task<IActionResult> Index(long? id)
+        public async Task<IActionResult> Index(long? DepartmentId)
         {
-            var context = _context.Groups.Where(p=>p.DepartmentId == id).Include(g => g.Department).Include(g=>g.Employes);
-            return View(await context.ToListAsync());
+            var obj = new GroupsIndex();
+            if (DepartmentId == null)
+            {
+                ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name");
+            }
+            else
+            {
+                ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", DepartmentId);
+                var list = _context.Groups.Where(p => p.DepartmentId == DepartmentId).Include(g => g.Department).Include(g => g.Employes);
+                obj.Groups = await list.ToListAsync();
+            }
+
+            return View(obj);
         }
 
         // GET: Groups/Details/5

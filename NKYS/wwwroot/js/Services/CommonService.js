@@ -51,6 +51,17 @@
             success: cb
         });
     };
+
+    self.CheckExternalIdNotExists = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'Employes/CheckExternalIdNotExists', // Add into config 
+            type: "get",
+            data: criteira,
+            dataType: "json",
+            success: cb
+        });
+    };
+    
     
 }
 Application.Services.CommonService = new CommonService();

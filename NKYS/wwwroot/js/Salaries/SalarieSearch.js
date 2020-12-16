@@ -16,11 +16,8 @@
         Application.Services.CommonService.FindGroupList(null, function (result) {
             if (result!=null && result.length >0) {
                 self.groupList = result;
-                console.log(self.groupList);
             }
         });
-
-        self.formatData();
     }
 
     self.OnChangeCriteria = function (event) {
@@ -103,8 +100,15 @@
                 }
             });
 
-            $.when(dfEmployeeList, dfSaleriesList).done(function (result) {
+            $.when(dfEmployeeList, dfSaleriesList).done(function () {
                 var formatedData = self.formatData();
+                if (isDefined(formatedData) && formatedData.length >0 ) {
+                    $('#SalariesSearch_Table_Body').loadTemplate($('#Tp1_SalariesSearch_Table_Body'), formatedData);
+                }
+                else {
+                    self.NoDataToDisplay();
+                }
+               
             });
 
             self.GetEmployeList(dfEmployeeList);
@@ -113,6 +117,7 @@
     };
 
     self.formatData = function () {
+        var formatedDataList = [];
         if (self.employeeList != null && self.employeeList.length>0) {
             self.employeeList.map(employee => {
                 var salary = self.salarieList.find(s => {
@@ -124,9 +129,7 @@
                 }
             });
         }
-        else {
-            self.NoDataToDisplay();
-        }
+        return formatedDataList;
     };
 
     self.NoDataToDisplay = function () {
