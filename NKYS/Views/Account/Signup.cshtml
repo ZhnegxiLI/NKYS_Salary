@@ -1,0 +1,26 @@
+﻿@model NKYS.Account.Model.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<h1>注册用户</h1>
+<form asp-action="Signup" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Username">Username</label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username"></span>
+    </div>
+    <div>
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword">ConfirmPassword</label>
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <div>
+        <input type="submit" value="Register" />
+    </div>
+</form>

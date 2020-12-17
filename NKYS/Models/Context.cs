@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using NKYS.Account.Model;
 using NKYS.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NKYS.Models
 {
-    public class Context: DbContext
+    public class Context: IdentityDbContext<User, IdentityRole<long>, long>
     {
         public Context(DbContextOptions<Context> options)
          : base(options)

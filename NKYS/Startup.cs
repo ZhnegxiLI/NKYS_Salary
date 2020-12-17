@@ -5,11 +5,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using NKYS.Account.Model;
 using NKYS.Models;
 
 namespace NKYS
@@ -37,6 +39,8 @@ namespace NKYS
                 /* Get connections string from config */
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"))
             );
+
+            services.AddIdentity<User, IdentityRole<long>>().AddEntityFrameworkStores<Context>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +57,8 @@ namespace NKYS
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
