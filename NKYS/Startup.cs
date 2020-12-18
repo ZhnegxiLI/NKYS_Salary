@@ -40,6 +40,16 @@ namespace NKYS
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"))
             );
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+            });
+
             services.AddIdentity<User, IdentityRole<long>>().AddEntityFrameworkStores<Context>();
         }
 
