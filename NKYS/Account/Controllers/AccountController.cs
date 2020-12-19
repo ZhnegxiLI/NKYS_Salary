@@ -25,6 +25,11 @@ namespace NKYS.Account.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)

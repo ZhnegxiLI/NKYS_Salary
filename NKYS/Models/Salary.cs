@@ -12,7 +12,7 @@ namespace NKYS.Models
         public long CycleId { get; set; }
 
         public long EmployeId { get; set; }
-        [Required]
+
         [DisplayName("工时")]
         public decimal? WorkingHours { get; set; }// 工时
         [DisplayName("分数")]

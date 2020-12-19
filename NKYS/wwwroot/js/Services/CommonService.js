@@ -31,6 +31,16 @@
         });
     };
 
+    self.SaveSalaries = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'Salaries/SaveSalaries', // Add into config 
+            type: "post",
+            data: criteira,
+            dataType: "json",
+            success: cb
+        });
+    };
+    
 
     self.FindDepartmentList = function (criteira, cb) {
         $.ajax({

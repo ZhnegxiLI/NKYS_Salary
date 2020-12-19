@@ -1,0 +1,148 @@
+﻿@model NKYS.Models.ViewModel.SalarieSearchModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script type="text/javascript">
+    Application.Main.CurrentView = "SalarieSearch";
+</script>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<div class="row">
+    <div class="col-3 form-group">
+        <label asp-for="DepartmentId" class="control-label"></label>
+        <select asp-for="DepartmentId" class="form-control selectpicker" asp-items="ViewBag.Departments" id="SalariesSearchFilter_Select_DepartmentId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)">
+            <option selected value="-1"></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="GroupsId" class="control-label"></label>
+        <select asp-for="GroupsId" class="form-control selectpicker" id="SalariesSearchFilter_Select_GroupId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)" asp-items="ViewBag.Groups">
+            <option selected value="-1"></option>
+        </select>
+    </div>
+    <div class="col-3 form-group">
+        <label asp-for="PeriodId" class="control-label"></label>
+        <select asp-for="PeriodId" class="form-control selectpicker" asp-items="ViewBag.Periods" id="SalariesSearchFilter_Select_PeriodId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)">
+            <option selected value="-1"></option>
+        </select>
+    </div>
+    <div class="col-3">
+        <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Search" onclick="Application.ViewsScript['SalarieSearch'].RefreshData()" />
+        Search
+        </button>
+        <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
+        Edit
+        </button>
+    </div>
+
+</div>
+<table class="table">
+    <thead id="SalariesSearch_Table_Head">
+    </thead>
+    <tbody id="SalariesSearch_Table_Body">
+    </tbody>
+</table>
+
+<script type="text/html" id="Tp1_SalariesSearch_Table_Head">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Employe.Groups)</th>
+        <th>@Html.DisplayNameFor(model => model.Employe.Name)</th>
+        <th>@Html.DisplayNameFor(model => model.Employe.ExternalId)</th>
+        <th>@Html.DisplayNameFor(model => model.Employe.TechnicalLevel)</th>
+        <th>@Html.DisplayNameFor(model => model.Employe.FixSalary)</th>
+        <th>@Html.DisplayNameFor(model => model.WorkingHours)</th>
+        <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
+
+        <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherFee)</th>
+        <th>@Html.DisplayNameFor(model => model.Comment)</th>
+
+        <th></th>
+        <th></th>
+    </tr>
+</script>
+
+<script type="text/html" id="Tp1_SalariesSearch_Table_Body">
+    <tr data-template-bind='[{"attribute": "data-salary-id", "value": "SalaryId"},{"attribute": "data-employee-id", "value": "Id"},{"attribute": "data-cycle-id", "value": "CycleId"}]'>
+        <td data-content="GroupLabel"></td>
+        <td data-content="Name"></td>
+        <td data-content="ExternalId"></td>
+        <td data-content="TechnicalLevel"></td>
+        <td data-content="FixSalary"></td>
+        <td data-content="WorkingHoursValue"></td>
+        <td data-content="WorkingScoreValue"> </td>
+
+        <td data-content="FullPresencePayValue"> </td>
+        <td data-content="OtherFeeValue"> </td>
+        <td data-content="CommentValue"> </td>
+        <td></td>
+    </tr>
+</script>
+
+<script type="text/html" id="Tp1_SalariesEdit_Table_Head">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Employe.Groups)</th>
+        <th>@Html.DisplayNameFor(model => model.Employe.Name)</th>
+        <th>@Html.DisplayNameFor(model => model.WorkingHours)</th>
+        <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
+
+        <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherFee)</th>
+        <th>@Html.DisplayNameFor(model => model.Comment)</th>
+    </tr>
+</script>
+<script type="text/html" id="Tp1_SalariesEdit_Table_Body">
+    <tr  data-template-bind='[{"attribute": "data-salary-id", "value": "SalaryId"},{"attribute": "data-employee-id", "value": "Id"},{"attribute": "data-cycle-id", "value": "CycleId"}]'>
+        <td data-content="GroupLabel"></td>
+        <td data-content="Name"></td>
+
+        <td><input type="text" data-type="WorkingHours" class="form-control" data-template-bind='[{"attribute": "value", "value": "WorkingHoursValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
+        <td><input type="text" data-type="WorkingScore" class="form-control" data-template-bind='[{"attribute": "value", "value": "WorkingScoreValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
+        <td><input data-type="FullPresencePay" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "FullPresencePayValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
+        <td><input data-type="OtherFee" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "OtherFeeValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
+        <td><textarea data-type="Comment"  class="form-control" data-template-bind='[{"attribute": "value", "value": "CommentValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/>  </td>
+
+    </tr>
+</script>
+
+
+<script type="text/html" id="Tp1_EditSalariesModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" data-content="title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead id="EditSalariesModal_Table_Head">
+                    </thead>
+                    <tbody id="EditSalariesModal_Table_Body">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <div class="alert alert-danger d-none" role="alert" id="EditSalariesModal_ErrorMessage">
+                </div>
+
+                <button type="button" class="btn btn-danger" id="EditSalariesModal_Button_Close">
+                    Close
+                </button>
+
+                <button type="button" class="btn btn-primary" id="EditSalariesModal_Button_Save" onclick="Application.ViewsScript['SalarieSearch'].saveSalaries(event)">
+                    Validate
+                </button>
+            </div>
+        </div>
+    </div>
+</script>

@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace NKYS.Models.ViewModel
 {
-    public class SalarieSearchModel
+    public class SalarieSearchModel: Salary
     {
+        public SalarieSearchModel()
+        {
+            Salaries = new List<Salary>();
+        }
+
+        public List<Salary> Salaries { get; set; }
+
         [DisplayName("部门")]
         public long? DepartmentId { get; set; }
         [DisplayName("小组")]

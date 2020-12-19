@@ -73,3 +73,7 @@ body {
 input.btn:disabled, button.btn:disabled {
     opacity: 0.5;
 }
+
+input.IsModified, textarea.IsModified {
+    background-color: palegoldenrod !important;
+}

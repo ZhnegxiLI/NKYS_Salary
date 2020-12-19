@@ -96,7 +96,7 @@ namespace NKYS.Controllers
                     _context.Add(groups);
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { id= groups.DepartmentId});
+                return RedirectToAction(nameof(Index), new { DepartmentId = groups.DepartmentId});
             }
             ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", groups.DepartmentId);
             return View(groups);

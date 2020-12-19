@@ -33,12 +33,16 @@ namespace NKYS
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 }
-            ) ;
+            );
 
             services.AddDbContext<Context>(
                 /* Get connections string from config */
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"))
             );
+
+            services.Configure<AppSettings>(Configuration);
+
+            var appSettings = Configuration.Get<AppSettings>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -51,6 +55,13 @@ namespace NKYS
             });
 
             services.AddIdentity<User, IdentityRole<long>>().AddEntityFrameworkStores<Context>();
+
+            services.AddAuthentication().AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/Forbidden/";
+                options.LoginPath = "/Account/Login/";
+                options.ExpireTimeSpan = TimeSpan.FromHours(appSettings.CookieExpirationTime);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

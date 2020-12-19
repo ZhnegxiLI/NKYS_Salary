@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NKYS.Account.Model;
 using NKYS.Models;
 using NKYS.Models.ViewModel;
 
 namespace NKYS.Controllers
 {
+    [Authorize]
     public class EmployesController : Controller
     {
         private readonly Context _context;
+        private readonly UserManager<User> _userManager;
 
-        public EmployesController(Context context)
+        public EmployesController(Context context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Employes
@@ -185,11 +191,12 @@ namespace NKYS.Controllers
                 if (criteria.Id > 0)
                 {
                     employeToInsertOrUpdate = await _context.Employe.FirstOrDefaultAsync(p => p.Id == criteria.Id);
-                    employeToInsertOrUpdate.UpdatedBy = criteria.UserId;
+                    employeToInsertOrUpdate.UpdatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
                 }
                 else
                 {
-                    employeToInsertOrUpdate.CreatedBy = criteria.UserId;
+                    // Get current user info
+                    employeToInsertOrUpdate.CreatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
                     employeToInsertOrUpdate.CreatedOn = DateTime.Now;
 
                 }
