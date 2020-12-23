@@ -83,6 +83,7 @@ GO
 CREATE OR ALTER PROC SP_CalculSalaries(@CycleId BIGINT, @UserId BIGINT, @EmployeeId BIGINT, @IsUpdate BIT ) 
 AS
 BEGIN
+	DECLARE @CalculStartTime DATETIME = GETDATE()
 	/* Step 1: Create temp employee table */
 	DROP TABLE IF EXISTS #tempEmployees
 	CREATE TABLE #tempEmployees(EmployeId BIGINT, ExternalId BIGINT, TechnicalLevel DECIMAL(18,2), HasTransportFee BIT, HasDorm BIT, SocialSercurityFee DECIMAL(18,2),
@@ -277,9 +278,19 @@ BEGIN
 	SET S.SalaryTax = - [dbo].[FN_CalculRevenueTax](S.NetSalary), S.FinalSalary = S.NetSalary - [dbo].[FN_CalculRevenueTax](S.NetSalary)
 	FROM #tempSalaries S 
 
+	IF @IsUpdate IS NOT NULL AND @IsUpdate = 1 
+	BEGIN
+		-- todo update salary table here 
 
-	SELECT * FROM #tempSalaries
-
+		DECLARE @CalculEndTime DATETIME = GETDATE()
+		INSERT INTO SalaryCalculLog(UserId, PeriodId, StatusSuccess, CreatedBy, CreatedOn, CalculTime)
+		VALUES(@UserId, @CycleId, 'Success', -1, @CalculEndTime,@CalculStartTime)
+		
+	END
+	ELSE
+	BEGIN
+		SELECT * FROM #tempSalaries
+	END
 END
 GO
 /* 
