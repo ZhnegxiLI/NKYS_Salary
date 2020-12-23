@@ -48,16 +48,16 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.SelfPaySocialSercurity)
+                @Html.DisplayNameFor(model => model.SocialSercurityFee)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SelfPayHousingReserves)
+                @Html.DisplayNameFor(model => model.SelfPaySocialSercurityFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HousingReservesFee)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.HasDorm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransportFee)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PositionPay)
@@ -183,12 +183,17 @@
                     <div class="card-header h5">Salary configuration</div>
                     <div class="card-body row">
                         <div class="col-3">
-                            <div class="control-label">@Html.DisplayNameFor(model => model.SelfPaySocialSercurity)</div>
+                            <div class="control-label">@Html.DisplayNameFor(model => model.SocialSercurityFee)</div>
                             <input id="EmployeModal_Input_SelfPaySocialSercurity" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
 
                         <div class="col-3">
-                            <div class="control-label">@Html.DisplayNameFor(model => model.SelfPayHousingReserves)</div>
+                            <div class="control-label">@Html.DisplayNameFor(model => model.SelfPaySocialSercurityFee)</div>
+                            <input id="EmployeModal_Input_SelfPaySocialSercurity" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                        </div>
+
+                        <div class="col-3">
+                            <div class="control-label">@Html.DisplayNameFor(model => model.HousingReservesFee)</div>
                             <input id="EmployeModal_Input_SelfPayHousingReserves" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
                         <div class="col-3">
@@ -196,10 +201,7 @@
                             <input id="EmployeModal_Input_PositionPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
 
-                        <div class="col-3">
-                            <div class="control-label">@Html.DisplayNameFor(model => model.TransportFee)</div>
-                            <input id="EmployeModal_Input_TransportFee" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                        </div>
+
 
                         <div class="col-3">
                             <div class="control-label">@Html.DisplayNameFor(model => model.SeniorityPay)</div>
@@ -210,6 +212,13 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_HasDorm" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
                                 <label class="form-check-label" for="EmployeModal_CheckBox_HasDorm">@Html.DisplayNameFor(model => model.HasDorm)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_HasTransportFee" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
+                                <label class="form-check-label" for="EmployeModal_CheckBox_HasTransportFee">@Html.DisplayNameFor(model => model.HasTransportFee)</label>
                             </div>
                         </div>
 

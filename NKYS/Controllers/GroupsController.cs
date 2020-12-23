@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NKYS.Account.Model;
 using NKYS.Models;
 using NKYS.Models.ViewModel;
 
@@ -13,10 +15,12 @@ namespace NKYS.Controllers
     public class GroupsController : Controller
     {
         private readonly Context _context;
+        private readonly UserManager<User> _userManager;
 
-        public GroupsController(Context context)
+        public GroupsController(Context context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Groups
@@ -37,25 +41,6 @@ namespace NKYS.Controllers
             return View(obj);
         }
 
-        // GET: Groups/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var groups = await _context.Groups
-                .Include(g => g.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groups == null)
-            {
-                return NotFound();
-            }
-
-            return View(groups);
-        }
-
         // GET: Groups/Create
         public async Task<IActionResult> CreateOrEdit(long? id)
         {
@@ -73,6 +58,8 @@ namespace NKYS.Controllers
             {
                 return NotFound();
             }
+
+            group.SharePropotion = group.SharePropotion * 100;
             ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", group.DepartmentId);
             return View(group);
         }
@@ -82,16 +69,19 @@ namespace NKYS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrEdit([Bind("Name,DepartmentId,SharePropotion,ProductionValueTypeId,IsFixSalary,Comment,Id,CreatedBy,UpdatedBy,CreatedOn,UpdatedOn")] Groups groups)
+        public async Task<IActionResult> CreateOrEdit(Groups groups)
         {
             if (ModelState.IsValid)
             {
+                groups.SharePropotion = groups.SharePropotion / 100;
                 if (groups.Id != null && groups.Id > 0)
                 {
+                    groups.UpdatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
                     _context.Update(groups);
                 }
                 else
                 {
+                    groups.CreatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
                     groups.CreatedOn = DateTime.Now;
                     _context.Add(groups);
                 }
@@ -100,41 +90,6 @@ namespace NKYS.Controllers
             }
             ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", groups.DepartmentId);
             return View(groups);
-        }
-
-        // GET: Groups/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var groups = await _context.Groups
-                .Include(g => g.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groups == null)
-            {
-                return NotFound();
-            }
-
-            return View(groups);
-        }
-
-        // POST: Groups/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var groups = await _context.Groups.FindAsync(id);
-            _context.Groups.Remove(groups);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool GroupsExists(long id)
-        {
-            return _context.Groups.Any(e => e.Id == id);
         }
 
         // API

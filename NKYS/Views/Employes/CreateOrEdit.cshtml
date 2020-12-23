@@ -44,11 +44,6 @@
         <h5>补贴</h5>
         <div class="row">
             <div class="form-group col-4">
-                <label asp-for="TransportFee" class="control-label"></label>
-                <input asp-for="TransportFee" class="form-control" />
-                <span asp-validation-for="TransportFee" class="text-danger"></span>
-            </div>
-            <div class="form-group col-4">
                 <label asp-for="PositionPay" class="control-label"></label>
                 <input asp-for="PositionPay" class="form-control" />
                 <span asp-validation-for="PositionPay" class="text-danger"></span>
@@ -84,17 +79,23 @@
         <h5>杂项</h5>
         <div class="form-group">
             <label asp-for="ProductionValueTypeId" class="control-label"></label>
-            <select asp-for="ProductionValueTypeId" class="form-control multi-select selectpicker"  multiple="multiple" asp-items="Html.GetEnumSelectList<ProductionValueType>()"></select>
+            <select asp-for="ProductionValueTypeId" class="form-control multi-select selectpicker" multiple="multiple" asp-items="Html.GetEnumSelectList<ProductionValueType>()"></select>
             <span asp-validation-for="ProductionValueTypeId" class="text-danger"></span>
         </div>
         <div class="form-group form-check">
             <label class="form-check-label">
-                <input class="form-check-input" asp-for="SelfPaySocialSercurity" /> @Html.DisplayNameFor(model => model.SelfPaySocialSercurity)
+                <input class="form-check-input" asp-for="SelfPaySocialSercurityFee" /> @Html.DisplayNameFor(model => model.SelfPaySocialSercurityFee)
             </label>
         </div>
         <div class="form-group form-check">
             <label class="form-check-label">
-                <input class="form-check-input" asp-for="SelfPayHousingReserves" /> @Html.DisplayNameFor(model => model.SelfPayHousingReserves)
+                <input class="form-check-input" asp-for="HousingReservesFee" /> @Html.DisplayNameFor(model => model.HousingReservesFee)
+            </label>
+        </div>
+
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="SocialSercurityFee" /> @Html.DisplayNameFor(model => model.SocialSercurityFee)
             </label>
         </div>
         <div class="form-group form-check">

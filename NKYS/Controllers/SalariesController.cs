@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NKYS.Account.Model;
 using NKYS.Models;
@@ -17,13 +19,11 @@ namespace NKYS.Controllers
     public class SalariesController : Controller
     {
         private readonly Context _context;
-        private readonly GroupsController _GroupController;
         private readonly UserManager<User> _userManager;
 
         public SalariesController(Context context, UserManager<User> userManager)
         {
             _context = context;
-            _GroupController = new GroupsController(context);
             _userManager = userManager;
         }
 
@@ -81,6 +81,19 @@ namespace NKYS.Controllers
                 }
                 NumberOfModifiedSalaries =  await _context.SaveChangesAsync();
             }
+            return NumberOfModifiedSalaries;
+        }
+
+
+        [HttpPost]
+        public int CalculSalaries(long CycleId)
+        {
+
+            var NumberOfModifiedSalaries = 0;
+
+            var cycleId = new SqlParameter("CycleId", CycleId);
+
+            NumberOfModifiedSalaries = _context.Database.ExecuteSqlRaw("EXECUTE dbo.SP_CalculSalaries @CycleId", cycleId);
             return NumberOfModifiedSalaries;
         }
     }

@@ -209,11 +209,11 @@ namespace NKYS.Controllers
                     employeToInsertOrUpdate.EntreEntrepriseDate = criteria.EntreEntrepriseDate;
                     employeToInsertOrUpdate.ExternalId = criteria.ExternalId;
                     employeToInsertOrUpdate.TechnicalLevel = criteria.TechnicalLevel;
-                    employeToInsertOrUpdate.SelfPaySocialSercurity = criteria.SelfPaySocialSercurity;
-                    employeToInsertOrUpdate.SelfPayHousingReserves = criteria.SelfPayHousingReserves;
+                    employeToInsertOrUpdate.SelfPaySocialSercurityFee = criteria.SelfPaySocialSercurityFee;
+                    employeToInsertOrUpdate.HousingReservesFee = criteria.HousingReservesFee;
+                    employeToInsertOrUpdate.SocialSercurityFee = criteria.SocialSercurityFee;
 
                     employeToInsertOrUpdate.HasDorm = criteria.HasDorm;
-                    employeToInsertOrUpdate.TransportFee = criteria.TransportFee;
                     employeToInsertOrUpdate.PositionPay = criteria.PositionPay;
 
                     employeToInsertOrUpdate.IsChefOfGroup = criteria.IsChefOfGroup;

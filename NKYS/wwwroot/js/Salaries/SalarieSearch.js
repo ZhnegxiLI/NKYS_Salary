@@ -154,10 +154,13 @@
                         employee.FullPresencePayValue = salary.FullPresencePay;
                     }
 
-                    if (isDefined(salary.OtherFee)) {
-                        employee.OtherFeeValue = salary.OtherFee;
+                    if (isDefined(salary.OtherRewardFee)) {
+                        employee.OtherRewardFeeValue = salary.OtherRewardFee;
                     }
-
+                    if (isDefined(salary.OtherPenaltyFee)) {
+                        employee.OtherPenaltyFeeValue = salary.OtherPenaltyFee;
+                    }
+                    
                     if (isDefined(salary.Comment) && salary.Comment !='') {
                         employee.CommentValue = salary.Comment;
                     }
@@ -202,7 +205,8 @@
             AbsentDeduct: null,
             DormFee: null,
             TransportFee: null,
-            OtherFee: null,
+            OtherRewardFee: null,
+            OtherPenaltyFee: null,
             Comment: null,
             DeferredHolidayHours: null,
             DormOtherFee: null,
@@ -258,7 +262,7 @@
                 
                 //// Step 0: Only number input 
                 $('input[data-type="WorkingHours"],input[data-type="WorkingScore"],input[data-type="FullPresencePay"]').numeric({ negative: false, decimal: '.' });
-                $('input[data-type="OtherFee"]').numeric({ negative: true, decimal: '.' });
+                $('input[data-type="OtherPenaltyFee"],input[data-type="OtherRewardFee"]').numeric({ negative: true, decimal: '.' });
                 //$('#EmployeModal_Input_TechnicalLevel').numeric({ negative: false, decimal: '.' });
                 //// Step 1: Refresh select
                 //$('.selectpicker').selectpicker('refresh');
@@ -345,9 +349,14 @@
                         case 'FullPresencePay':
                             employee.Salary.FullPresencePay = value;
                             break;
-                        case 'OtherFee':
-                            employee.Salary.OtherFee = value;
+
+                        case 'OtherRewardFee':
+                            employee.Salary.OtherRewardFee = value;
                             break;
+                        case 'OtherPenaltyFee':
+                            employee.Salary.OtherPenaltyFee = value;
+                            break;
+
                         case 'Comment':
                             employee.Salary.Comment = value;
                             break;

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NKYS.Models;
 
 namespace NKYS.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20201221194919_ModifySalaryAndEmployeeModel")]
+    partial class ModifySalaryAndEmployeeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,9 +395,6 @@ namespace NKYS.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DeductionSharePropotion")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<long>("EmployeId")
                         .HasColumnType("bigint");
 
@@ -434,9 +433,6 @@ namespace NKYS.Migrations
                     b.Property<long>("DepartmentId")
                         .HasColumnType("bigint");
 
-                    b.Property<decimal?>("GroupVariableSharePropotion")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<bool>("IsFixSalary")
                         .HasColumnType("bit");
 
@@ -448,7 +444,7 @@ namespace NKYS.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("SharePropotion")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
@@ -544,9 +540,6 @@ namespace NKYS.Migrations
                     b.Property<long>("EmployeId")
                         .HasColumnType("bigint");
 
-                    b.Property<decimal?>("FinalSalary")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal?>("FullPresencePay")
                         .HasColumnType("decimal(18,2)");
 
@@ -623,8 +616,8 @@ namespace NKYS.Migrations
                         .HasColumnType("bigint")
                         .UseIdentityColumn();
 
-                    b.Property<long?>("CalculTime")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime?>("CalculTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");

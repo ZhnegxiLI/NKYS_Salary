@@ -14,11 +14,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CycleId" class="control-label"></label>
-                <select asp-for="CycleId" class ="form-control" asp-items="ViewBag.CycleId"></select>
+                <select asp-for="CycleId" class="form-control" asp-items="ViewBag.CycleId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="EmployeId" class="control-label"></label>
-                <select asp-for="EmployeId" class ="form-control" asp-items="ViewBag.EmployeId"></select>
+                <select asp-for="EmployeId" class="form-control" asp-items="ViewBag.EmployeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="WorkingHours" class="control-label"></label>
@@ -41,9 +41,9 @@
                 <span asp-validation-for="SocialSercurityFee" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="HousingReserves" class="control-label"></label>
-                <input asp-for="HousingReserves" class="form-control" />
-                <span asp-validation-for="HousingReserves" class="text-danger"></span>
+                <label asp-for="HousingReservesFee" class="control-label"></label>
+                <input asp-for="HousingReservesFee" class="form-control" />
+                <span asp-validation-for="HousingReservesFee" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FullPresencePay" class="control-label"></label>
@@ -71,9 +71,14 @@
                 <span asp-validation-for="TransportFee" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OtherFee" class="control-label"></label>
-                <input asp-for="OtherFee" class="form-control" />
-                <span asp-validation-for="OtherFee" class="text-danger"></span>
+                <label asp-for="OtherPenaltyFee" class="control-label"></label>
+                <input asp-for="OtherPenaltyFee" class="form-control" />
+                <span asp-validation-for="OtherPenaltyFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherRewardFee" class="control-label"></label>
+                <input asp-for="OtherRewardFee" class="form-control" />
+                <span asp-validation-for="OtherRewardFee" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Comment" class="control-label"></label>

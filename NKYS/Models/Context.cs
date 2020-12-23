@@ -24,5 +24,7 @@ namespace NKYS.Models
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<ProductionValue> ProductionValue { get; set; }
         public virtual DbSet<Salary> Salary { get; set; }
+        public virtual DbSet<SalaryCalculLog> SalaryCalculLog { get; set; }
+        
     }
 }

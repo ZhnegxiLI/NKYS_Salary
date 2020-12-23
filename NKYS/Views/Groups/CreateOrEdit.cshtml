@@ -13,6 +13,10 @@
     }
 }
 
+<script type="text/javascript">
+    Application.Main.CurrentView = "GroupModuleView";
+</script>
+
 <h1>@title</h1>
 <h4>Groups</h4>
 <hr />
@@ -26,22 +30,29 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DepartmentId" class="control-label"></label><span class="text-danger">*</span>
+                <label asp-for="Department" class="control-label"></label><span class="text-danger">*</span>
                 <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group"  data-specific="SharePropotion">
                 <label asp-for="SharePropotion" class="control-label"></label>
-                <input asp-for="SharePropotion" class="form-control" />
+                <input asp-for="SharePropotion" class="form-control" id="GroupModuleView_Input_SharePropotion"/>
                 <span asp-validation-for="SharePropotion" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" data-specific="GroupVariableSharePropotion">
+                <label asp-for="GroupVariableSharePropotion" class="control-label"></label>
+                <input asp-for="GroupVariableSharePropotion" class="form-control"  id="GroupModuleView_Input_GroupVariableSharePropotion"  />
+                <span asp-validation-for="GroupVariableSharePropotion" class="text-danger"></span>
+            </div>
+            <div class="form-group" data-specific="ProductionValueTypeId">
                 <label asp-for="ProductionValueTypeId" class="control-label"></label>
-                <select asp-for="ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()"></select>
+                <select asp-for="ProductionValueTypeId"  id="GroupModuleView_Select_ProductionValueTypeId" class="form-control" asp-items="Html.GetEnumSelectList<ProductionValueType>()">
+                    <option></option>
+                </select>
                 <span asp-validation-for="ProductionValueTypeId" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsFixSalary" /> @Html.DisplayNameFor(model => model.IsFixSalary)
+                    <input class="form-check-input" asp-for="IsFixSalary" id="GroupModuleView_Checkbox_IsFixSalary" onchange="Application.ViewsScript['GroupModuleView'].onChangeGroupsField(event)"/> @Html.DisplayNameFor(model => model.IsFixSalary)
                 </label>
             </div>
             <div class="form-group">

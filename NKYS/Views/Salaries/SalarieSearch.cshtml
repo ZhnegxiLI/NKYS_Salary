@@ -62,7 +62,8 @@
         <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
 
         <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
-        <th>@Html.DisplayNameFor(model => model.OtherFee)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherRewardFee)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherPenaltyFee)</th>
         <th>@Html.DisplayNameFor(model => model.Comment)</th>
 
         <th></th>
@@ -81,7 +82,8 @@
         <td data-content="WorkingScoreValue"> </td>
 
         <td data-content="FullPresencePayValue"> </td>
-        <td data-content="OtherFeeValue"> </td>
+        <td data-content="OtherRewardFeeValue"> </td>
+        <td data-content="OtherPenaltyFeeValue"> </td>
         <td data-content="CommentValue"> </td>
         <td></td>
     </tr>
@@ -95,20 +97,24 @@
         <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
 
         <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
-        <th>@Html.DisplayNameFor(model => model.OtherFee)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherRewardFee)</th>
+        <th>@Html.DisplayNameFor(model => model.OtherPenaltyFee)</th>
         <th>@Html.DisplayNameFor(model => model.Comment)</th>
     </tr>
 </script>
 <script type="text/html" id="Tp1_SalariesEdit_Table_Body">
-    <tr  data-template-bind='[{"attribute": "data-salary-id", "value": "SalaryId"},{"attribute": "data-employee-id", "value": "Id"},{"attribute": "data-cycle-id", "value": "CycleId"}]'>
+    <tr data-template-bind='[{"attribute": "data-salary-id", "value": "SalaryId"},{"attribute": "data-employee-id", "value": "Id"},{"attribute": "data-cycle-id", "value": "CycleId"}]'>
         <td data-content="GroupLabel"></td>
         <td data-content="Name"></td>
 
         <td><input type="text" data-type="WorkingHours" class="form-control" data-template-bind='[{"attribute": "value", "value": "WorkingHoursValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
-        <td><input type="text" data-type="WorkingScore" class="form-control" data-template-bind='[{"attribute": "value", "value": "WorkingScoreValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
-        <td><input data-type="FullPresencePay" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "FullPresencePayValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
-        <td><input data-type="OtherFee" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "OtherFeeValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/> </td>
-        <td><textarea data-type="Comment"  class="form-control" data-template-bind='[{"attribute": "value", "value": "CommentValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)"/>  </td>
+        <td><input type="text" data-type="WorkingScore" class="form-control" data-template-bind='[{"attribute": "value", "value": "WorkingScoreValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
+        <td><input data-type="FullPresencePay" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "FullPresencePayValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
+
+        <td><input data-type="OtherRewardFee" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "OtherRewardFeeValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
+        <td><input data-type="OtherPenaltyFee" type="text" class="form-control" data-template-bind='[{"attribute": "value", "value": "OtherPenaltyFeeValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" /> </td>
+
+        <td><textarea data-type="Comment" class="form-control" data-template-bind='[{"attribute": "value", "value": "CommentValue"}]' onchange="Application.ViewsScript['SalarieSearch'].OnChangeEditSalarieModalField(event)" />  </td>
 
     </tr>
 </script>
