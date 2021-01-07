@@ -16,6 +16,10 @@ function getElementOfArrayByPropertyValue(array, property, value) {
     return elementFounded;
 };
 
+function translate(val) {
+    return val;
+}
+
 function areEqual(o1, o2) {
     var eq = false;
 
@@ -44,6 +48,36 @@ function isUndefined(parameterValue) {
 
 function isNull(reference) {
     return (reference == null);
+};
+
+
+function CloneObject(o) {
+    if (!o || typeof o != "object" || typeof (o) == 'function') {
+        return o;
+    }
+    if (o.nodeType && "cloneNode" in o) {
+        return o.cloneNode(true);
+    }
+    if (o instanceof Date) {
+        return new Date(o.getTime());
+    }
+    var r, i, l, s, name;
+    if ($.isArray(o)) {
+        r = [];
+        for (i = 0, l = o.length; i < l; ++i) {
+            if (i in o) {
+                r.push(CloneObject(o[i]));
+            }
+        }
+    } else {
+        // serialize the object to a JSON string
+        var jsonString = JSON.stringify(o);
+
+        // deserialize JSON string to a new object
+        r = jQuery.parseJSON(jsonString);
+    }
+
+    return r;
 };
 
 /*

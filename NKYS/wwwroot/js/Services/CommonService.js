@@ -40,6 +40,37 @@
             success: cb
         });
     };
+
+    self.SalariesValidation = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'Salaries/SalariesValidation', // Add into config 
+            type: "post",
+            data: criteira,
+            dataType: "json",
+            success: cb
+        });
+    };
+
+    self.CalculSalaries = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'Salaries/CalculSalaries', // Add into config 
+            type: "post",
+            data: criteira,
+            dataType: "json",
+            success: cb
+        });
+    };
+
+    self.CheckSalaryCalculValidity = function (criteira, cb) {
+        return  $.ajax({
+            url: Application.Configuration.baseUrl + 'Salaries/CheckSalaryCalculValidity', // Add into config 
+            type: "get",
+            data: criteira,
+            dataType: "json"
+        });
+    };
+    
+    
     
 
     self.FindDepartmentList = function (criteira, cb) {
@@ -71,7 +102,16 @@
             success: cb
         });
     };
-    
+
+    self.GetProductionValueTypeList = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'ProductionValues/GetProductionValueTypeList', // Add into config 
+            type: "get",
+            data: criteira,
+            dataType: "json",
+            success: cb
+        });
+    };
     
 }
 Application.Services.CommonService = new CommonService();

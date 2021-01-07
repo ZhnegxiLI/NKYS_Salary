@@ -12,6 +12,7 @@
 
     self.groupList = [];
     self.init = function () {
+        $('.container').css('min-width', '100%');
 
         $('.selectpicker').selectpicker('refresh');
         $('#SalariesSearch_Table_Head').loadTemplate('#Tp1_SalariesSearch_Table_Head');
@@ -142,9 +143,18 @@
                         employee.CycleId = salary.CycleId;
                     }
 
-                    if (isDefined(salary.WorkingHours) && salary.WorkingHours >0) {
-                        employee.WorkingHoursValue = salary.WorkingHours;
+                    if (isDefined(salary.WorkingHoursDay) && salary.WorkingHoursDay >0) {
+                        employee.WorkingHoursDayValue = salary.WorkingHoursDay;
                     }
+
+                    if (isDefined(salary.WorkingHoursNight) && salary.WorkingHoursNight > 0) {
+                        employee.WorkingHoursNightValue = salary.WorkingHoursNight;
+                    }
+
+                    if (isDefined(salary.WorkingHoursHoliday) && salary.WorkingHoursHoliday > 0) {
+                        employee.WorkingHoursHolidayValue = salary.WorkingHoursHoliday;
+                    }
+
 
                     if (isDefined(salary.WorkingScore) && salary.WorkingScore > 0) {
                         employee.WorkingScoreValue = salary.WorkingScore;
@@ -154,6 +164,10 @@
                         employee.FullPresencePayValue = salary.FullPresencePay;
                     }
 
+                    if (isDefined(salary.DormOtherFee)) {
+                        employee.DormOtherFeeValue = salary.DormOtherFee;
+                    }
+                    
                     if (isDefined(salary.OtherRewardFee)) {
                         employee.OtherRewardFeeValue = salary.OtherRewardFee;
                     }
@@ -173,7 +187,9 @@
                     employee.CycleId = self.searchCriteria.CycleId;
 
                     // Create un empty salary object for employee
-                    employee.Salary = self.GetEmptySalary(employee.Id,employee.CycleId);
+                    employee.Salary = self.GetEmptySalary(employee.Id, employee.CycleId);
+
+                    employee.SalaryLineClass = 'table-warning';
 
                 }
 
@@ -182,7 +198,22 @@
                     if (isDefined(employee.Groups.Name)) {
                         employee.GroupLabel = employee.Groups.Name;
                     }
+
+                    if (isDefined(employee.Groups.IsFixSalary) && employee.Groups.IsFixSalary == true ) {
+                        employee.IsFixSalary = true;
+                    }
+                    else {
+                        employee.IsProductionValueBasedSalary = true;
+                    }
                 }
+
+                if (isDefined(employee) && isDefined(employee.HasDorm) && employee.HasDorm == true) {
+                    employee.HasDormLabel = true;
+                }
+                else {
+                    employee.HasNoDormLabel = true;
+                }
+             
 
                 formatedDataList.push(employee);
             });
@@ -195,7 +226,9 @@
             Id:null,
             CycleId: CycleId,
             EmployeId: EmployeeId,
-            WorkingHours: null,
+            WorkingHoursDay: null,
+            WorkingHoursNight: null,
+            WorkingHoursHoliday: null,
             WorkingScore: null,
             AbsentHours: null,
             SocialSercurityFee: null,
@@ -259,67 +292,9 @@
                 if (isDefined(formatedData) && formatedData.length > 0) {
                     $('#EditSalariesModal_Table_Body').loadTemplate($('#Tp1_SalariesEdit_Table_Body'), formatedData);
                 }
-                
-                //// Step 0: Only number input 
-                $('input[data-type="WorkingHours"],input[data-type="WorkingScore"],input[data-type="FullPresencePay"]').numeric({ negative: false, decimal: '.' });
-                $('input[data-type="OtherPenaltyFee"],input[data-type="OtherRewardFee"]').numeric({ negative: true, decimal: '.' });
-                //$('#EmployeModal_Input_TechnicalLevel').numeric({ negative: false, decimal: '.' });
-                //// Step 1: Refresh select
-                //$('.selectpicker').selectpicker('refresh');
-                //// Step 2: Build Department select options
-                //if (isDefined(self.departmentList) && self.departmentList.length > 0) {
-                //    self.buildSelectOption($('#EmployeModal_Select_DepartmentId'), self.departmentList, 'Id', 'Name');
-                //}
-                //// Step 3: Bind data 
-                //if (isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id > 0) {
-                //    if (isDefined(self.Employe.Groups) && isDefined(self.Employe.Groups.DepartmentId) && self.Employe.Groups.DepartmentId > 0) {
-                //        $('#EmployeModal_Select_DepartmentId').val(self.Employe.Groups.DepartmentId);
-                //        $('.selectpicker').selectpicker('refresh');
-                //        $('#EmployeModal_Select_DepartmentId').trigger('change');
-
-                //        if (isDefined(self.Employe.GroupsId)) {
-                //            $('#EmployeModal_Select_GroupsId').val(self.Employe.GroupsId);
-                //            $('.selectpicker').selectpicker('refresh');
-
-                //            $('#EmployeModal_Select_GroupsId').trigger('change');
-                //        }
-                //    }
-
-                //    if (isDefined(self.Employe.Name) && self.Employe.Name != '') {
-                //        $('#EmployeModal_Input_Name').val(self.Employe.Name);
-                //    }
-
-                //    if (isDefined(self.Employe.EntreEntrepriseDate) && self.Employe.EntreEntrepriseDate != '') {
-                //        $('#EmployeModal_Input_EntreEntrepriseDate').val(self.Employe.EntreEntrepriseDate.slice(0, 10));
-                //    }
-
-                //    if (isDefined(self.Employe.ExternalId) && self.Employe.ExternalId != '') {
-                //        $('#EmployeModal_Input_ExternalId').val(self.Employe.ExternalId);
-                //    }
-
-                //    if (isDefined(self.Employe.TechnicalLevel) && self.Employe.TechnicalLevel != '') {
-                //        $('#EmployeModal_Input_TechnicalLevel').val(self.Employe.TechnicalLevel);
-                //    }
-
-                //    if (isDefined(self.Employe.FixSalary) && self.Employe.FixSalary != '') {
-                //        $('#EmployeModal_Input_FixSalary').val(self.Employe.FixSalary);
-                //    }
-                //}
-                //else {
-                //    // If department and group is selected in search, bind automaticly in creation employee
-                //    if (isDefined(self.searchCriteria.DepartmentId) && self.searchCriteria.DepartmentId > 0) {
-                //        $('#EmployeModal_Select_DepartmentId').val(self.searchCriteria.DepartmentId);
-                //        $('.selectpicker').selectpicker('refresh');
-                //        $('#EmployeModal_Select_DepartmentId').trigger('change');
-
-                //        if (isDefined(self.searchCriteria.GroupsId) && self.searchCriteria.GroupsId > 0) {
-                //            $('#EmployeModal_Select_GroupsId').val(self.searchCriteria.GroupsId);
-                //            $('.selectpicker').selectpicker('refresh');
-
-                //            $('#EmployeModal_Select_GroupsId').trigger('change');
-                //        }
-                //    }
-                //}
+                //// Step 0: Only number input  
+                $('input[data-type="WorkingHoursDayValue"],input[data-type="WorkingHoursNight"],input[data-type="WorkingHoursHolidayValue"],input[data-type="WorkingScore"],input[data-type="FullPresencePay"]').numeric({ negative: false, decimal: '.' });
+                $('input[data-type="OtherPenaltyFee"],input[data-type="OtherRewardFee"],input[data-type="DormOtherFee"]').numeric({ negative: true, decimal: '.' });
 
 
                 $('button#EditSalariesModal_Button_Close').on("click", function (e) { $("#" + self.modalEditSalariesTicks).modal('hide'); });
@@ -340,14 +315,26 @@
                     employee.Salary.IsChanged = true;
                     // todo complete other attribute  
                     switch (type) {
-                        case 'WorkingHours':
-                            employee.Salary.WorkingHours = value;
+
+                        case 'WorkingHoursDay':
+                            employee.Salary.WorkingHoursDay = value;
                             break;
+                        case 'WorkingHoursNight':
+                            employee.Salary.WorkingHoursNight = value;
+                            break;
+                        case 'WorkingHoursHoliday':
+                            employee.Salary.WorkingHoursHoliday = value;
+                            break;
+
                         case 'WorkingScore':
                             employee.Salary.WorkingScore = value;
                             break;
                         case 'FullPresencePay':
                             employee.Salary.FullPresencePay = value;
+                            break;
+
+                        case 'DormOtherFee':
+                            employee.Salary.DormOtherFee = value;
                             break;
 
                         case 'OtherRewardFee':
@@ -401,6 +388,36 @@
             // TODO show error message
         }
     }
+
+    // Validation salaries  
+    self.ValidationSalariesModal = function () {
+
+        
+        //self.modalValidationSalariesTicks = "Modal_" + getTicks();
+
+        //Application.Main.initModal(
+        //    self.modalValidationSalariesTicks,
+        //    'Tp1_ValidationSalariesModal',
+        //    { title: 'Validation' },
+        //    function () { $('#' + self.modalValidationSalariesTicks).remove(); },
+        //    function () {
+
+
+
+
+
+
+        //        $('button#ValidationSalariesModal_Button_Close').on("click", function (e) { $("#" + self.modalValidationSalariesTicks).modal('hide'); });
+        //        $("#" + self.modalValidationSalariesTicks).modal();
+        //    });
+    };
+
+
+    self.validateSalaries = function () {
+
+    };
+
+
 }
 
 Application.ViewsScript["SalarieSearch"] = new SalarieSearch();

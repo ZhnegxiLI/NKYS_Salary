@@ -42,9 +42,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.ExternalId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TechnicalLevel)
             </th>
 
             <th>
@@ -56,23 +61,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.HousingReservesFee)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.HasDorm)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PositionPay)
+                @Html.DisplayNameFor(model => model.HasTransportFee)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsChefOfGroup)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PositionPay)
+            </th>
+
+            <th>
                 @Html.DisplayNameFor(model => model.SeniorityPay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FixSalary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeductionPercentage)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsTemporaryEmploye)
@@ -89,6 +93,41 @@
         <td data-content-append="GroupsLabel"></td>
         <td data-content-append="Name"></td>
         <td data-content-append="ExternalId"></td>
+        <td data-content-append="FixSalary"></td>
+        <td data-content-append="TechnicalLevel"></td>
+
+        <td data-content-append="SocialSercurityFee"></td>
+        <td data-content-append="SelfPaySocialSercurityFee"></td>
+        <td data-content-append="HousingReservesFee"></td>
+
+        <td>
+            <span data-template-bind='[{"attribute": "data-check", "value": "HasDormChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-check" style="color:green"></i>
+            </span>
+            <span data-template-bind='[{"attribute": "data-check", "value": "HasDormNoChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-times" style="color:red"></i>
+            </span>
+        </td>
+        <td>
+            <span data-template-bind='[{"attribute": "data-check", "value": "HasTransportFeeChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-check" style="color:green"></i>
+            </span>
+            <span data-template-bind='[{"attribute": "data-check", "value": "HasTransportFeeNoChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-times" style="color:red"></i>
+            </span>
+        </td>
+        <td>
+            <span data-template-bind='[{"attribute": "data-check", "value": "IsChefOfGroupChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-check" style="color:green"></i>
+            </span>
+            <span data-template-bind='[{"attribute": "data-check", "value": "IsChefOfGroupNoChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <i class="fa fa-times" style="color:red"></i>
+            </span>
+        </td>
+
+        <td data-content-append="PositionPay"></td>
+        <td data-content-append="SeniorityPay"></td>
+
         <td>
             <span data-template-bind='[{"attribute": "data-check", "value": "TemporaryEmployeChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
                 <i class="fa fa-check" style="color:green"></i>
@@ -97,7 +136,7 @@
                 <i class="fa fa-times" style="color:red"></i>
             </span>
         </td>
-     
+
         <td>
             <button type="button" class="btn btn-primary" onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Edit">
                 <i class="bi bi-pencil-square"></i>
@@ -105,7 +144,26 @@
         </td>
     </tr>
 </script>
-<script type="text/html" id="Tp1_EmployeModal">
+
+
+<script type="text/html" id="TP1_EmployeModal_EmployeDeductionConfiguration_Table">
+    <tr data-template-bind='[{"attribute": "data-ticks", "value": "Ticks"}]'>
+        <td>
+            <span data-content-append="TypeLabel"></span> 
+        </td>
+        <td data-content-append="DeductionSharePropotionlLabel"></td>
+        <td>
+            <button type="button" class="btn btn-primary btn-sm" data-action="Edit" data-template-bind='[{"attribute": "onclick", "value": "EmployeDeductionConfigurationEditEvent"}]'>
+                <i class="bi bi-pencil-square"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" data-action="Delete" data-template-bind='[{"attribute": "onclick", "value": "EmployeDeductionConfigurationDeleteEvent"}]'>
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="Tp1_EmployeProductionValueModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,6 +172,42 @@
 
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-6" data-specific="LinkedProductionValueTypeId">
+                        <div class="control-label"> @Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.LinkedProductionValueTypeId) <span class="text-danger">*</span></div>
+                        <select class="form-control selectpicker" id="EmployeProductionValueModal_Select_TypeId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
+                    </div>
+                    <div class="col-6" data-specific="DeductionSharePropotion">
+                        <div class="control-label">@Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.DeductionSharePropotion) <span class="text-danger">*</span></div>
+                        <input id="EmployeProductionValueModal_Input_Value" class="form-control" type="text" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="alert alert-danger d-none" role="alert" id="EmployeProductionValueModal_ErrorMessage">
+                </div>
+
+                <button type="button" class="btn btn-danger" id="EmployeProductionValueModal_Button_Close">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="EmployeProductionValueModal_Button_Save" onclick="Application.ViewsScript['EmployeSearch'].saveEmployeProductionValue(event)">
+                    Validate
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/html" id="Tp1_EmployeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" data-content-append="title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body" style="overflow-y: auto; height: 80vh;">
 
                 <div class="card">
                     <div class="card-header h5">Basic information</div>
@@ -165,15 +259,21 @@
                             <input id="EmployeModal_Input_FixSalary" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
 
-                        <div class="col-3" data-specific="DeductionPercentage">
-                            <div class="control-label">DeductionPercentage</div>
-                            <input id="EmployeModal_Input_DeductionPercentage" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
-                        </div>
-
-
-                        <div class="col-3" data-specific="DeductionConfiguration">
-                            <div class="control-label">EmployeDeductionConfiguration</div>
-                            <select class="form-control selectpicker" id="EmployeModal_Select_DeductionConfiguration" multiple onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)"></select>
+                        <div class="col-9" data-specific="EmployeDeductionConfigurationZoom">
+                            <div class="card-header h5">Configuration<button class="btn-primary float-right btn btn-sm" type="button" onclick="Application.ViewsScript['EmployeSearch'].buildEmployeProductionValueConfigurationModal()" > Add</button></div>
+                            <div class="card-body p-0">
+                                <table class="table table-bordered" id="EmployeModal_EmployeDeductionConfiguration_Table">
+                                    <thead>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.LinkedProductionValueTypeId)</th>
+                                            <th>@Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.DeductionSharePropotion)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </div>
@@ -184,7 +284,7 @@
                     <div class="card-body row">
                         <div class="col-3">
                             <div class="control-label">@Html.DisplayNameFor(model => model.SocialSercurityFee)</div>
-                            <input id="EmployeModal_Input_SelfPaySocialSercurity" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
+                            <input id="EmployeModal_Input_SocialSercurityFee" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
 
                         <div class="col-3">
@@ -196,13 +296,11 @@
                             <div class="control-label">@Html.DisplayNameFor(model => model.HousingReservesFee)</div>
                             <input id="EmployeModal_Input_SelfPayHousingReserves" class="form-control" type="text" required onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
+
                         <div class="col-3">
                             <div class="control-label">@Html.DisplayNameFor(model => model.PositionPay)</div>
                             <input id="EmployeModal_Input_PositionPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
-
-
-
                         <div class="col-3">
                             <div class="control-label">@Html.DisplayNameFor(model => model.SeniorityPay)</div>
                             <input id="EmployeModal_Input_SeniorityPay" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
@@ -229,14 +327,12 @@
                             </div>
                         </div>
 
-
-
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <div class="alert alert-danger d-none" role="alert" id="EmployeModal_ErrorMessage" >
+                <div class="alert alert-danger d-none" role="alert" id="EmployeModal_ErrorMessage">
                 </div>
 
                 <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close">

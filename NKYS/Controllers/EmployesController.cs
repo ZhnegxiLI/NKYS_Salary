@@ -29,7 +29,7 @@ namespace NKYS.Controllers
         public async Task<IActionResult> Index(long? id)
         {
 
-            var context = _context.Employe.Where(p=>p.GroupsId == id).Include(e => e.Groups).Include(p=>p.EmployeDeductionConfiguration);
+            var context = _context.Employe.Where(p=>p.GroupsId == id).Include(e => e.Groups).Include(p=>p.EmployeDeductionConfigurations);
             return View(await context.ToListAsync());
         }
 
@@ -67,11 +67,11 @@ namespace NKYS.Controllers
                 ViewData["Action"] = "Create";
                 return View();
             }
-            var employe = await _context.Employe.Where(p=>p.Id == id).Include(p=>p.EmployeDeductionConfiguration).FirstOrDefaultAsync();
+            var employe = await _context.Employe.Where(p=>p.Id == id).Include(p=>p.EmployeDeductionConfigurations).FirstOrDefaultAsync();
             employe.ProductionValueTypeId = new List<ProductionValueType>();
-            if (employe.EmployeDeductionConfiguration.Count()>0)
+            if (employe.EmployeDeductionConfigurations.Count()>0)
             {
-                foreach (var item in employe.EmployeDeductionConfiguration)
+                foreach (var item in employe.EmployeDeductionConfigurations)
                 {
                     employe.ProductionValueTypeId.Add((ProductionValueType)item.LinkedProductionValueTypeId);
                 }
@@ -171,7 +171,7 @@ namespace NKYS.Controllers
         {
             var employeeList = await (from e in _context.Employe
                                 where (GroupsId == null || GroupsId <=0 || e.GroupsId == GroupsId) && (Name == null || e.Name.Contains(Name)) && (ExternalId== null || e.ExternalId.Contains(ExternalId))
-                                select e).Include(p => p.Groups).ToListAsync();
+                                select e).Include(p => p.Groups).Include(p => p.EmployeDeductionConfigurations).ToListAsync();
             return Json(employeeList);
         }
 
@@ -208,22 +208,28 @@ namespace NKYS.Controllers
                     employeToInsertOrUpdate.GroupsId = criteria.GroupsId;
                     employeToInsertOrUpdate.EntreEntrepriseDate = criteria.EntreEntrepriseDate;
                     employeToInsertOrUpdate.ExternalId = criteria.ExternalId;
+                    employeToInsertOrUpdate.DepartDate = criteria.DepartDate;
+
+                    employeToInsertOrUpdate.IsTemporaryEmploye = criteria.IsTemporaryEmploye;
+
                     employeToInsertOrUpdate.TechnicalLevel = criteria.TechnicalLevel;
+                    employeToInsertOrUpdate.FixSalary = criteria.FixSalary;
+
                     employeToInsertOrUpdate.SelfPaySocialSercurityFee = criteria.SelfPaySocialSercurityFee;
                     employeToInsertOrUpdate.HousingReservesFee = criteria.HousingReservesFee;
                     employeToInsertOrUpdate.SocialSercurityFee = criteria.SocialSercurityFee;
 
                     employeToInsertOrUpdate.HasDorm = criteria.HasDorm;
                     employeToInsertOrUpdate.PositionPay = criteria.PositionPay;
+                    employeToInsertOrUpdate.HasTransportFee = criteria.HasTransportFee;
 
                     employeToInsertOrUpdate.IsChefOfGroup = criteria.IsChefOfGroup;
+
                     employeToInsertOrUpdate.SeniorityPay = criteria.SeniorityPay;
-                    employeToInsertOrUpdate.FixSalary = criteria.FixSalary;
+                    employeToInsertOrUpdate.PositionPay = criteria.PositionPay;
 
                     employeToInsertOrUpdate.DeductionPercentage = criteria.DeductionPercentage;
-                    employeToInsertOrUpdate.IsTemporaryEmploye = criteria.IsTemporaryEmploye;
-                    employeToInsertOrUpdate.DepartDate = criteria.DepartDate;
-
+        
                     // todo add deductionConfiguration 
                 }
 
@@ -236,6 +242,25 @@ namespace NKYS.Controllers
                     await _context.AddAsync(employeToInsertOrUpdate);
                 }
 
+                await _context.SaveChangesAsync();
+
+                // Step 1: remove 
+                var EmployeDeductionConfigurationsToRemove = await _context.EmployeDeductionConfiguration.Where(p => p.EmployeId == employeToInsertOrUpdate.Id).ToListAsync();
+                foreach (var item in EmployeDeductionConfigurationsToRemove)
+                {
+                    _context.Remove(item);
+                }
+                // Step 2: reinsert 
+                if (criteria.EmployeDeductionConfigurations.Count()>0)
+                {
+                    foreach (var item in criteria.EmployeDeductionConfigurations)
+                    {
+                        item.EmployeId = employeToInsertOrUpdate.Id;
+                        item.CreatedOn = DateTime.Now;
+                        item.CreatedBy = criteria.UserId;
+                        await _context.AddAsync(item);
+                    }
+                }
                 await _context.SaveChangesAsync();
 
                 return employeToInsertOrUpdate.Id;

@@ -5,7 +5,7 @@
 }
 
 <script type="text/javascript">
-    Application.Main.CurrentView = "SalarieSearch";
+    Application.Main.CurrentView = "SalariesValidation";
 </script>
 
 <h1>Index</h1>
@@ -16,41 +16,48 @@
     <div class="row p-2">
         <div class="col-3 form-group">
             <label asp-for="DepartmentId" class="control-label"></label>
-            <select asp-for="DepartmentId" class="form-control selectpicker" asp-items="ViewBag.Departments" id="SalariesSearchFilter_Select_DepartmentId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)">
+            <select asp-for="DepartmentId" class="form-control selectpicker" asp-items="ViewBag.Departments" id="SalariesValidation_Select_DepartmentId" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)">
                 <option selected value="-1"></option>
             </select>
         </div>
         <div class="col-3 form-group">
             <label asp-for="GroupsId" class="control-label"></label>
-            <select asp-for="GroupsId" class="form-control selectpicker" id="SalariesSearchFilter_Select_GroupId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)" asp-items="ViewBag.Groups">
+            <select asp-for="GroupsId" class="form-control selectpicker" id="SalariesValidation_Select_GroupId" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)" asp-items="ViewBag.Groups">
                 <option selected value="-1"></option>
             </select>
         </div>
-        <div class="col-3 form-group">
+        <div class="col-2 form-group">
             <label asp-for="PeriodId" class="control-label"></label>
-            <select asp-for="PeriodId" class="form-control selectpicker" asp-items="ViewBag.Periods" id="SalariesSearchFilter_Select_PeriodId" onchange="Application.ViewsScript['SalarieSearch'].OnChangeCriteria(event)">
+            <select asp-for="PeriodId" class="form-control selectpicker" asp-items="ViewBag.Periods" id="SalariesValidation_Select_PeriodId" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)">
                 <option selected value="-1"></option>
             </select>
         </div>
-        <div class="col-3">
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Search" onclick="Application.ViewsScript['SalarieSearch'].RefreshData()" />
+        <div class="col-2 form-group">
+            <label asp-for="Validity" class="control-label"></label>
+            <select asp-for="Validity" class="form-control selectpicker"  id="SalariesValidation_Select_SalaryValidity" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)">
+                <option selected value="-1"></option>
+            </select>
+        </div>
+
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesValidation_Button_Search" onclick="Application.ViewsScript['SalariesValidation'].RefreshData()" />
             Search
             </button>
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
+            @*<button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
             Edit
             </button>
             <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Validation" onclick="Application.ViewsScript['SalarieSearch'].ValidationSalariesModal()" />
             Validation
-            </button>
+            </button>*@
         </div>
 
     </div>
     <hr />
     <div class="table-responsive">
-        <table class="table table-hover table-striped table-bordered" id="SalariesSearch_Table">
-            <thead id="SalariesSearch_Table_Head" class="thead-light">
+        <table class="table table-hover table-striped table-bordered" id="SalariesValidation_Table">
+            <thead id="SalariesValidation_Table_Head" class="thead-light">
             </thead>
-            <tbody id="SalariesSearch_Table_Body">
+            <tbody id="SalariesValidation_Table_Body">
             </tbody>
         </table>
     </div>
@@ -58,44 +65,88 @@
 
 
 
-<script type="text/html" id="Tp1_SalariesSearch_Table_Head">
+<script type="text/html" id="Tp1_SalariesValidation_Table_Head">
     <tr>
         <th>@Html.DisplayNameFor(model => model.Employe.Groups)</th>
         <th>@Html.DisplayNameFor(model => model.Employe.Name)</th>
         <th>@Html.DisplayNameFor(model => model.Employe.ExternalId)</th>
 
+        <th>@Html.DisplayNameFor(model => model.TotalWorkingHours)</th>
+        <th>@Html.DisplayNameFor(model => model.WorkingDays)</th>
+        <th>@Html.DisplayNameFor(model => model.StandardWorkingHours)</th>
 
-        <th>@Html.DisplayNameFor(model => model.WorkingHoursDay)</th>
-        <th>@Html.DisplayNameFor(model => model.WorkingHoursNight)</th>
-        <th>@Html.DisplayNameFor(model => model.WorkingHoursHoliday)</th>
+        
+        <th>@Html.DisplayNameFor(model => model.AbsentHours)</th>
+        <th>@Html.DisplayNameFor(model => model.DeferredHolidayHours)</th>
 
-        <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
 
-        <th>@Html.DisplayNameFor(model => model.DormOtherFee)</th>
-        <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
+        <th>@Html.DisplayNameFor(model => model.AbsentDeduct)</th>
+        <th>@Html.DisplayNameFor(model => model.OvertimePay)</th>
+
+
+        <th>@Html.DisplayNameFor(model => model.SocialSercurityFee)</th>
+        <th>@Html.DisplayNameFor(model => model.SelfPaySocialSercurityFee)</th>
+        <th>@Html.DisplayNameFor(model => model.HousingReservesFee)</th>
+
         <th>@Html.DisplayNameFor(model => model.OtherRewardFee)</th>
         <th>@Html.DisplayNameFor(model => model.OtherPenaltyFee)</th>
-        <th>@Html.DisplayNameFor(model => model.Comment)</th>
+        <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
+        <th>@Html.DisplayNameFor(model => model.SeniorityPay)</th>
+        <th>@Html.DisplayNameFor(model => model.TransportFee)</th>
+        <th>@Html.DisplayNameFor(model => model.DormFee)</th>
+        <th>@Html.DisplayNameFor(model => model.DormOtherFee)</th>
+        <th>@Html.DisplayNameFor(model => model.PositionPay)</th>
+
+        <th>@Html.DisplayNameFor(model => model.NetSalary)</th>
+        <th>@Html.DisplayNameFor(model => model.SalaryTax)</th>
+        <th>@Html.DisplayNameFor(model => model.FinalSalary)</th>
+
     </tr>
 </script>
 
-<script type="text/html" id="Tp1_SalariesSearch_Table_Body">
-    <tr data-template-bind='[{"attribute": "data-salary-id", "value": "SalaryId"},{"attribute": "data-employee-id", "value": "Id"},{"attribute": "data-cycle-id", "value": "CycleId"},{"attribute": "class", "value": "SalaryLineClass"}]'>
-        <td data-content="GroupLabel"></td>
+<script type="text/html" id="Tp1_SalariesValidation_Table_Body">
+    <tr data-template-bind='[{"attribute": "data-salary-id", "value": "Id"},{"attribute": "data-employee-id", "value": "EmployeId"},{"attribute": "data-cycle-id", "value": "CycleId"},{"attribute": "class", "value": "SalaryLineClass"}]'>
+        <td style=" white-space: nowrap; overflow: hidden; word-break: keep-all;">
+            <div class="form-check" data-template-bind='[{"attribute": "data-check", "value": "IsNotValidated", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
+                <input class="form-check-input" type="checkbox" value="" data-template-bind='[{"attribute": "Id", "value": "Id"}]' onchange="Application.ViewsScript['SalariesValidation'].validateSalaries(event)">
+                <label class="form-check-label" data-template-bind='[{"attribute": "for", "value": "Id"}]'>
+                    <span data-content="GroupLabel"></span>
+                </label>
+            </div>
+            <sp an data-content="GroupLabel"  data-template-bind='[{"attribute": "data-checked", "value": "Validated", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'></span>
+        </td>
         <td data-content="Name"></td>
         <td data-content="ExternalId"></td>
 
-        <td data-content="WorkingHoursDayValue"></td>
-        <td data-content="WorkingHoursNightValue"></td>
-        <td data-content="WorkingHoursHolidayValue"></td>
+        <td data-content="TotalWorkingHours"></td>
+        <td data-content="WorkingDays"></td>
+        <td data-content="StandardWorkingHours"></td>
 
-        <td data-content="WorkingScoreValue"> </td>
+        <td data-content="AbsentDeduct"> </td>
+        <td data-content="OvertimePay"> </td>
 
-        <td data-content="DormOtherFeeValue"> </td>
-        <td data-content="FullPresencePayValue"> </td>
-        <td data-content="OtherRewardFeeValue"> </td>
-        <td data-content="OtherPenaltyFeeValue"> </td>
-        <td data-content="CommentValue"> </td>
+
+        <td data-content="AbsentHours"> </td>
+        <td data-content="DeferredHolidayHours"> </td>
+
+        <td data-content="SocialSercurityFee"> </td>
+        <td data-content="SelfPaySocialSercurityFee"> </td>
+        <td data-content="HousingReservesFee"> </td>
+
+
+        <td data-content="OtherRewardFee"> </td>
+        <td data-content="OtherPenaltyFee"> </td>
+        <td data-content="FullPresencePay"> </td>
+        <td data-content="SeniorityPay"> </td>
+        <td data-content="TransportFee"> </td>
+        <td data-content="DormFee"> </td>
+        <td data-content="DormOtherFee"> </td>
+        <td data-content="PositionPay"> </td>
+
+        <td data-content="NetSalary"> </td>
+        <td data-content="SalaryTax"> </td>
+        <td data-content="FinalSalary"> </td>
+
     </tr>
 </script>
 

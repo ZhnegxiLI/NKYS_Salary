@@ -13,6 +13,7 @@ namespace NKYS.Models
         [DisplayName("分成比例")]
         [Column(TypeName = "decimal(18,4)")]
         public decimal DeductionSharePropotion { get; set; }
+        [DisplayName("产值类型")]
         public ProductionValueType? LinkedProductionValueTypeId { get; set; } // 成套或钣金或收款
         public Employe Employe { get; set; }
     }

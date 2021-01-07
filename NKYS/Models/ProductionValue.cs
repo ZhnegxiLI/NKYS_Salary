@@ -12,7 +12,7 @@ namespace NKYS.Models
         [DisplayName("周期")]
         [Required]
         public long CycleId { get; set; }
-        [DisplayName("产值")]
+        [DisplayName("产值(元)")]
         [Required]
         public decimal Value { get; set; }// 产值
         [DisplayName("解释说明")]

@@ -147,5 +147,14 @@ namespace NKYS.Controllers
         {
             return _context.ProductionValue.Any(e => e.Id == id);
         }
+
+        // API
+        [HttpGet]
+        public JsonResult GetProductionValueTypeList()
+        {
+            var list = Enum.GetValues(typeof(ProductionValueType)).Cast<ProductionValueType>().Select(p=> new { Type  = p.ToString(), Value = p }).ToList();
+
+            return Json(list);
+        }
     }
 }

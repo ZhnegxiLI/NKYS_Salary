@@ -12,7 +12,11 @@
         title = "Create";
     }
 }
+<partial name="../Salaries/SalaryCalculModule.cshtml" for="SalariesCalculModel">
 
+<script type="text/javascript">
+    Application.Main.CurrentView = "CyclesModuleView";
+</script>
 
 <h1>@title</h1>
 
@@ -61,8 +65,12 @@
         </form>
         @if (ViewData["Action"] == "Update")
         {
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCycleModal">
+            @*<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCycleModal">
                 Delete
+            </button>*@
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" id="CycleModule_Button_SalaryCalcul_Modal" onclick="Application.Main.Controls.SalaryCalculModule.show({CycleId: @Model.Id});">
+                Calcul salary
             </button>
         }
 
@@ -101,7 +109,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-<script src="~/js/Cycles/CreateOrEdit.js" type="text/javascript"></script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

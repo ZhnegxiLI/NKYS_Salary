@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NKYS.Models.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,5 +37,7 @@ namespace NKYS.Models
         public DateTime? LastCalculedSalaryTime { get; set; } // 最后一次进行计算时间, 以确保没有上一次的excel作废
         public DateTime? ValidationTime { get; set; } // 确认时间，确认后该Cycle 内所有数据应该被锁定,一般在发完工资之后
 
+        [NotMapped]
+        public SalariesCalculModel SalariesCalculModel { get; set; }
     }
 }

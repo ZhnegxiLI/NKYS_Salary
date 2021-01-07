@@ -77,3 +77,17 @@ input.btn:disabled, button.btn:disabled {
 input.IsModified, textarea.IsModified {
     background-color: palegoldenrod !important;
 }
+
+#EmployeProductionValueModal_SalaryTable td, #EmployeProductionValueModal_SalaryTable th,
+#EditSalariesModal_Table td, #EditSalariesModal_Table th,
+#SalariesSearch_Table td, #SalariesSearch_Table th{
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: keep-all;
+}
+
+.modal-header.error {
+    background-color: #d9534f !important;
+    padding: 8px !important;
+    color: #fff;
+}

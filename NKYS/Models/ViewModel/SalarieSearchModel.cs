@@ -15,6 +15,12 @@ namespace NKYS.Models.ViewModel
 
         public List<Salary> Salaries { get; set; }
 
+
+        [DisplayName("当月日班工时")]
+        public decimal? StandardWorkingHours { get; set; }
+
+        [DisplayName("本月工时")]
+        public decimal? TotalWorkingHours { get; set; }
         [DisplayName("部门")]
         public long? DepartmentId { get; set; }
         [DisplayName("小组")]

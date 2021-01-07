@@ -1,19 +1,24 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NKYS.Models
+namespace NKYS.Models.ViewModel
 {
-    public class Salary: BaseObject
+    [NotMapped]
+    [Keyless]
+    public class SalariesCalculModel
     {
-        public long CycleId { get; set; }
-
-        public long EmployeId { get; set; }
-
-
+        public long SalaryId { get; set; }
+        [DisplayName("员工")]
+        public string EmployeName { get; set; }
+        [DisplayName("周期")]
+        public string CycleLabel { get; set; }
+        [DisplayName("小组")]
+        public string GroupLabel { get; set; }
 
         [DisplayName("工时")]
         public decimal? WorkingHours { get; set; }
@@ -22,9 +27,7 @@ namespace NKYS.Models
         [DisplayName("夜班工时")]
         public decimal? WorkingHoursNight { get; set; }
         [DisplayName("假日工时")]
-        public decimal? WorkingHoursHoliday{ get; set; }
-
-
+        public decimal? WorkingHoursHoliday { get; set; }
 
         [DisplayName("分数")]
         public decimal? WorkingScore { get; set; }// 工作评分
@@ -37,13 +40,6 @@ namespace NKYS.Models
         public decimal? WorkingDays { get; set; }// TODO: 改成日班夜班假日工时
 
 
-
-
-        [DisplayName("解释说明")]
-        public string Comment { get; set; }// 解释说明
-
-
-        // 工资计算列
         [DisplayName("计件工资/固定工资")]
         public decimal? BasicSalary { get; set; }
         [DisplayName("加班工资")]
@@ -89,15 +85,12 @@ namespace NKYS.Models
         public decimal? FinalSalary { get; set; }
 
 
-        [DisplayName("确认人")]
-        public long? ValidatedBy { get; set; }
-        [DisplayName("确认时间")]
-        public DateTime? ValidatedOn { get; set; }
-        [DisplayName("确认")]
-        public bool Validity { get; set; } = false;
 
-
-        public Cycle Cycle { get; set; }
-        public Employe Employe { get; set; }
+        [DisplayName("固定工资")]
+        public decimal Salary_FixPart { get; set; }
+        [DisplayName("浮动工资")]
+        public decimal Salary_VariablePart { get; set; }
+  
+        
     }
 }

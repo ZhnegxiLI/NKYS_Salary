@@ -10,8 +10,8 @@ using NKYS.Models;
 namespace NKYS.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20201222212122_GroupVariableSharePropotion")]
-    partial class GroupVariableSharePropotion
+    [Migration("20210107221934_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -395,6 +395,9 @@ namespace NKYS.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("DeductionSharePropotion")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<long>("EmployeId")
                         .HasColumnType("bigint");
 
@@ -434,7 +437,7 @@ namespace NKYS.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal?>("GroupVariableSharePropotion")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<bool>("IsFixSalary")
                         .HasColumnType("bit");
@@ -447,7 +450,7 @@ namespace NKYS.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("SharePropotion")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
@@ -591,8 +594,8 @@ namespace NKYS.Migrations
                     b.Property<long?>("ValidatedBy")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ValidatedOn")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime?>("ValidatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Validity")
                         .HasColumnType("bit");
@@ -601,6 +604,15 @@ namespace NKYS.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("WorkingHours")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursDay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursHoliday")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursNight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("WorkingScore")
@@ -622,8 +634,8 @@ namespace NKYS.Migrations
                         .HasColumnType("bigint")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CalculTime")
-                        .HasColumnType("datetime2");
+                    b.Property<long?>("CalculTime")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
@@ -652,6 +664,104 @@ namespace NKYS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SalaryCalculLog");
+                });
+
+            modelBuilder.Entity("NKYS.Models.ViewModel.SalariesCalculModel", b =>
+                {
+                    b.Property<decimal?>("AbsentDeduct")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("AbsentHours")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("BasicSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CycleLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("DeferredHolidayHours")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("DormFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("DormOtherFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EmployeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("FinalSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("FullPresencePay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("GroupLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("HousingReservesFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("NetSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("OtherPenaltyFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("OtherRewardFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("OvertimePay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("PositionPay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("SalaryTax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Salary_FixPart")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Salary_VariablePart")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SelfPaySocialSercurityFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SeniorityPay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SocialSercurityFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TransportFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingDays")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHours")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursDay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursHoliday")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingHoursNight")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("WorkingScore")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("SalariesCalculModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -719,7 +829,7 @@ namespace NKYS.Migrations
             modelBuilder.Entity("NKYS.Models.EmployeDeductionConfiguration", b =>
                 {
                     b.HasOne("NKYS.Models.Employe", "Employe")
-                        .WithMany("EmployeDeductionConfiguration")
+                        .WithMany("EmployeDeductionConfigurations")
                         .HasForeignKey("EmployeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -775,7 +885,7 @@ namespace NKYS.Migrations
 
             modelBuilder.Entity("NKYS.Models.Employe", b =>
                 {
-                    b.Navigation("EmployeDeductionConfiguration");
+                    b.Navigation("EmployeDeductionConfigurations");
                 });
 
             modelBuilder.Entity("NKYS.Models.Groups", b =>

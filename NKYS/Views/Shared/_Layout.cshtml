@@ -23,9 +23,11 @@
 
         <script src="~/js/Config/Configuration.js"></script>
         <script src="~/js/Salaries/SalarieSearch.js"></script>
+        <script src="~/js/Salaries/SalariesValidation.js"></script>
         <script src="~/js/Employe/EmployeSearch.js"></script>
         <script src="~/js/Services//CommonService.js"></script>
         <script src="~/js/Groups/GroupModuleView.js"></script>
+        <script src="~/js/Salaries/SalaryCalculModule.js"></script>
         <script src="~/js/site.js"></script>
     </environment>
     <environment include="Production">
@@ -65,8 +67,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Salaries" asp-action="SalarieSearch">Salaries</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Salaries" asp-action="SalariesValidation">SalariesValidation</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Employes" asp-action="EmployeSearch">Employes</a>
-                            </li> 
+                            </li>
+
                         }
                         else
                         {
@@ -94,6 +100,29 @@
         </div>
     </footer>
 
+
+<script type="text/html" id="tplConfirmDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div data-template-bind='[{"attribute": "class", "value": "cssClass"}]'>
+                <h4 class="modal-title" data-content="titleModal">
+                    <i18n>Confirmation</i18n>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" data-binding-options='{"ignoreUndefined": true, "ignoreNull": true}' data-content="labelClose"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body confirm" data-content-append="message">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-action btn-danger" data-binding-options='{"ignoreUndefined": true, "ignoreNull": true}' data-dismiss="modal" data-content="labelCancel">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-action btn-primary" data-dismiss="modal" data-content="labelYes" data-template-bind='[{"attribute": "onclick", "value": "onclick"}]'>
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

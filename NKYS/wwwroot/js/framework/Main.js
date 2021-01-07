@@ -2,6 +2,8 @@
 
     PileInstantiatedModal: [],
 
+    Controls: {},
+
     onload: function () {
         try {
             if (Application.Main.CurrentView != null && Application.ViewsScript[Application.Main.CurrentView]!=null) {
@@ -102,6 +104,88 @@
                 }
             }
         }
+    },
+
+    showError: function (message, cb) {
+        Application.Main.showMessage(message, cb, 'Error');
+    },
+    showConfirm: function (message, cb, isImportant, pModalId) {
+        Application.Main.showMessage(message, cb, 'Confirmation', isImportant, pModalId);
+    },
+
+    showMessage: function (message, cb, title, isImportant, pModalId, pCbOnInit) {
+
+        title = isDefined(title) ? title : translate('Confirmation');
+
+        var modalMessageId = "Modal_" + getTicks();
+        if (isDefined(pModalId)) {
+            modalMessageId = pModalId;
+        }
+        Application.Main.callBackDynamicMessageModal[modalMessageId] = function () {
+            cb && cb();
+        };
+
+        var objectModal = {
+            titleModal: title,
+            message: message,
+            labelClose: "<span aria-hidden='true'>×</span><span class='sr-only'>Close</span>",
+            labelCancel: translate("Cancel"),
+            labelYes: translate("Yes"),
+            onclick: "Application.Main.callBackDynamicMessageModal['" + modalMessageId + "']();",
+            cssClass: "modal-header"
+        };
+
+        if (title == translate('Error')) {
+            objectModal.cssClass += " error";
+            objectModal.labelYes = translate("OK");
+            delete objectModal.labelCancel;
+            delete objectModal.labelClose;
+        }
+        else if (title == translate('Information')) {
+            //objectModal.labelClose = "<span aria-hidden='true'>×</span><span class='sr-only'>Close</span>";
+            objectModal.labelYes = translate("OK");
+            delete objectModal.labelCancel;
+        }
+        else if (title == translate('Warning')) {
+            objectModal.cssClass += " warning";
+            delete objectModal.labelCancel;
+        }
+        else if (title == translate('Success')) {
+            objectModal.labelYes = translate("OK");
+            delete objectModal.labelCancel;
+        }
+
+        if (isDefined(isImportant) && isImportant == true) {
+            objectModal.labelYes = translate("Yes");
+            objectModal.labelCancel = translate("No");
+            objectModal.cssClass += " error";
+            delete objectModal.labelClose;
+        }
+
+        Application.Main.initModal(
+            modalMessageId,
+            'tplConfirmDelete',
+            objectModal,
+            function () {
+                delete Application.Main.callBackDynamicMessageModal[modalMessageId];
+            },
+            function () {
+                $("#" + modalMessageId).modal();
+                pCbOnInit && pCbOnInit(modalMessageId);
+            }
+        );
+        /*$("body").append("<div id='" + modalMessageId + "' class='modal' tabindex='-1' role='dialog' aria-hidden='true'></div>");
+        $("#" + modalMessageId).loadTemplate($('#tplConfirmDelete'), objectModal);*/
+        /*$("#" + modalMessageId).on("hidden.bs.modal", function () {
+            $("#" + modalMessageId).modal('hide');
+            $("#" + modalMessageId).html("");
+            $("#" + modalMessageId).remove();
+            delete Application.SharedControls.callBackDynamicMessageModal[modalMessageId];
+        });*/
+    },
+
+    callBackDynamicMessageModal: {
+
     },
 }
 

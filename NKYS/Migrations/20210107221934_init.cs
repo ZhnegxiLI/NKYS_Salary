@@ -92,6 +92,29 @@ namespace NKYS.Migrations
                     table.PrimaryKey("PK_Department", x => x.Id);
                 });
 
+     
+
+            migrationBuilder.CreateTable(
+                name: "SalaryCalculLog",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CalculTime = table.Column<long>(type: "bigint", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: true),
+                    PeriodId = table.Column<long>(type: "bigint", nullable: false),
+                    StatusSuccess = table.Column<bool>(type: "bit", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalaryCalculLog", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
@@ -233,7 +256,8 @@ namespace NKYS.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartmentId = table.Column<long>(type: "bigint", nullable: false),
-                    SharePropotion = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SharePropotion = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
+                    GroupVariableSharePropotion = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
                     ProductionValueTypeId = table.Column<int>(type: "int", nullable: true),
                     IsFixSalary = table.Column<bool>(type: "bit", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -264,17 +288,18 @@ namespace NKYS.Migrations
                     EntreEntrepriseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExternalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TechnicalLevel = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    SelfPaySocialSercurity = table.Column<bool>(type: "bit", nullable: false),
-                    SelfPayHousingReserves = table.Column<bool>(type: "bit", nullable: false),
-                    HasDorm = table.Column<bool>(type: "bit", nullable: false),
-                    TransportFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    PositionPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    IsChefOfGroup = table.Column<bool>(type: "bit", nullable: false),
-                    SeniorityPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     FixSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    DeductionPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     IsTemporaryEmploye = table.Column<bool>(type: "bit", nullable: false),
                     DepartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HasDorm = table.Column<bool>(type: "bit", nullable: false),
+                    HasTransportFee = table.Column<bool>(type: "bit", nullable: false),
+                    IsChefOfGroup = table.Column<bool>(type: "bit", nullable: false),
+                    PositionPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SelfPaySocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    HousingReservesFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SeniorityPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DeductionPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -298,6 +323,7 @@ namespace NKYS.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeId = table.Column<long>(type: "bigint", nullable: false),
+                    DeductionSharePropotion = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     LinkedProductionValueTypeId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
@@ -324,21 +350,34 @@ namespace NKYS.Migrations
                     CycleId = table.Column<long>(type: "bigint", nullable: false),
                     EmployeId = table.Column<long>(type: "bigint", nullable: false),
                     WorkingHours = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WorkingHoursDay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WorkingHoursNight = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WorkingHoursHoliday = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     WorkingScore = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     AbsentHours = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    AbsentDeduct = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    OvertimePay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DeferredHolidayHours = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    SocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    SelfPaySocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    HousingReserves = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WorkingDays = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BasicSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    OvertimePay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AbsentDeduct = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PositionPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TransportFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     FullPresencePay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     SeniorityPay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    TransportFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DormFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DormOtherFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    OtherFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OtherRewardFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    OtherPenaltyFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SelfPaySocialSercurityFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    HousingReservesFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    NetSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SalaryTax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    FinalSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    ValidatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    ValidatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Validity = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -456,6 +495,9 @@ namespace NKYS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Salary");
+
+            migrationBuilder.DropTable(
+                name: "SalaryCalculLog");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

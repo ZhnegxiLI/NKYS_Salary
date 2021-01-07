@@ -1,0 +1,90 @@
+﻿@model NKYS.Models.ViewModel.SalariesCalculModel
+<script type="text/html" id="Tp1_SalaryCalculModal">
+    <div class="modal-dialog" style="max-width:95%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Salary calcul</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div> 
+            <div class="modal-body table-responsive pl-0 pr-0">
+                <table id="EmployeProductionValueModal_SalaryTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.GroupLabel)</th>
+                            <th>@Html.DisplayNameFor(model => model.EmployeName)</th>
+
+                            <th>@Html.DisplayNameFor(model => model.WorkingHoursDay)</th>
+                            <th>@Html.DisplayNameFor(model => model.WorkingHoursNight)</th>
+                            <th>@Html.DisplayNameFor(model => model.WorkingHoursHoliday)</th>
+
+                            <th>@Html.DisplayNameFor(model => model.WorkingDays)</th>
+                            <th>@Html.DisplayNameFor(model => model.WorkingScore)</th>
+                            <th>@Html.DisplayNameFor(model => model.AbsentHours)</th>
+                            <th>@Html.DisplayNameFor(model => model.OvertimePay)</th>
+                            <th>@Html.DisplayNameFor(model => model.SocialSercurityFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.SelfPaySocialSercurityFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.HousingReservesFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.OtherRewardFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.OtherPenaltyFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.FullPresencePay)</th>
+                            <th>@Html.DisplayNameFor(model => model.SeniorityPay)</th>
+                            <th>@Html.DisplayNameFor(model => model.TransportFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.DormFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.DormOtherFee)</th>
+                            <th>@Html.DisplayNameFor(model => model.PositionPay)</th>
+
+                            <th>@Html.DisplayNameFor(model => model.NetSalary)</th>
+                            <th>@Html.DisplayNameFor(model => model.SalaryTax)</th>
+                            <th>@Html.DisplayNameFor(model => model.FinalSalary)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <div class="alert alert-danger d-none" role="alert" id="EmployeProductionValueModal_ErrorMessage">
+                </div>
+
+                <button type="button" class="btn btn-danger" id="SalaryCalculModal_Button_Close">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="SalaryCalculModal_Button_Save" onclick="Application.Main.Controls.SalaryCalculModule.updateSalary(event)">
+                    Validate
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/html" id="Tp1_SalaryCalcul_Table">
+    <tr>
+        <td data-content="GroupLabel"></td>
+        <td data-content="EmployeName"></td>
+
+        <td data-content="WorkingHoursDay"></td>
+        <td data-content="WorkingHoursNight"></td>
+        <td data-content="WorkingHoursHoliday"></td>
+        <td data-content="WorkingDays"></td>
+
+        <td data-content="WorkingScore"></td>
+        <td data-content="AbsentHours"></td>
+        <td data-content="OvertimePay"></td>
+        <td data-content="SocialSercurityFee"></td>
+        <td data-content="SelfPaySocialSercurityFee"></td>
+        <td data-content="HousingReservesFee"></td>
+        <td data-content="OtherRewardFee"></td>
+        <td data-content="OtherPenaltyFee"></td>
+        <td data-content="FullPresencePay"></td>
+        <td data-content="SeniorityPay"></td>
+        <td data-content="TransportFee"></td>
+        <td data-content="DormFee"></td>
+        <td data-content="DormOtherFee"></td>
+        <td data-content="PositionPay"></td>
+        <td data-content="NetSalary"></td>
+        <td data-content="SalaryTax"></td>
+        <td data-content="FinalSalary"></td>
+    </tr>
+</script>

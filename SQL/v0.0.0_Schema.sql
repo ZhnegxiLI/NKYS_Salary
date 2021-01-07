@@ -80,7 +80,16 @@ GO
 * Description : SP_CalculSalaries
 */
 
-CREATE OR ALTER PROC SP_CalculSalaries(@CycleId BIGINT, @UserId BIGINT, @EmployeeId BIGINT, @IsUpdate BIT ) 
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'SP_CalculSalaries')
+                    AND type IN ( N'P', N'PC' ) ) 
+BEGIN
+    DROP PROCEDURE [dbo].[SP_CalculSalaries]
+END
+GO
+
+CREATE PROCEDURE SP_CalculSalaries(@CycleId BIGINT, @UserId BIGINT, @EmployeeId BIGINT, @IsUpdate BIT ) 
 AS
 BEGIN
 	DECLARE @CalculStartTime DATETIME = GETDATE()
@@ -101,8 +110,9 @@ BEGIN
 
 	/* Step 3: Create temp salary table (for display and final update) */
 	DROP TABLE IF EXISTS #tempSalaries
-	CREATE TABLE #tempSalaries(SalaryId BIGINT, CycleId BIGINT, EmployeId BIGINT, 
-	WorkingHours DECIMAL(18,2) default 0, WorkingScore DECIMAL(18,2) default 0,AbsentHours DECIMAL(18,2) default 0,DeferredHolidayHours DECIMAL(18,2) default 0,WorkingDays DECIMAL(18,2) default 0, CycleStandardWorkingHours DECIMAL(18,2) default 0, CycleStandardWorkingDays DECIMAL(18,2) default 0,
+	CREATE TABLE #tempSalaries(SalaryId BIGINT, CycleId BIGINT, CycleLabel NVARCHAR(50) , EmployeId BIGINT, GroupId BIGINT, GroupLabel NVARCHAR(50), EmployeName NVARCHAR(50), 
+	WorkingHoursDay DECIMAL(18,2) default 0, WorkingHoursNight DECIMAL(18,2) default 0, WorkingHoursHoliday DECIMAL(18,2) default 0,WorkingHours DECIMAL(18,2) default 0, 
+	WorkingScore DECIMAL(18,2) default 0,AbsentHours DECIMAL(18,2) default 0,DeferredHolidayHours DECIMAL(18,2) default 0,WorkingDays DECIMAL(18,2) default 0, CycleStandardWorkingHours DECIMAL(18,2) default 0, CycleStandardWorkingDays DECIMAL(18,2) default 0,
 	AbsentDeduct DECIMAL(18,2) default 0, OvertimePay DECIMAL(18,2) default 0,  SocialSercurityFee DECIMAL(18,2) default 0, SelfPaySocialSercurityFee DECIMAL(18,2) default 0,HousingReservesFee DECIMAL(18,2) default 0, 
 	OtherRewardFee DECIMAL(18,2) default 0,OtherPenaltyFee DECIMAL(18,2) default 0,  FullPresencePay DECIMAL(18,2) default 0, SeniorityPay DECIMAL(18,2) default 0, TransportFee DECIMAL(18,2) default 0, DormFee DECIMAL(18,2) default 0,
 	DormOtherFee DECIMAL(18,2) default 0, PositionPay DECIMAL(18,2) default 0,   
@@ -111,13 +121,17 @@ BEGIN
 	/* Step 4: Fill the temp salary table according to the pre-insert data */
 	IF @CycleId IS NOT NULL
 	BEGIN
-		INSERT INTO #tempSalaries(SalaryId ,CycleId, EmployeId, WorkingHours, WorkingScore, OtherRewardFee, OtherPenaltyFee, FullPresencePay, TransportFee, DormFee, DormOtherFee, CycleStandardWorkingHours)
-		SELECT DISTINCT S.Id, s.CycleId, E.EmployeId, ISNULL(S.WorkingHours,0), ISNULL(S.WorkingScore,0), ISNULL(OtherRewardFee,0), ISNULL(OtherPenaltyFee,0), ISNULL(FullPresencePay,0), ISNULL(TransportFee,0), ISNULL(DormFee,0), ISNULL(DormOtherFee,0), ISNULL(C.StandardWorkingHours,0)
+		INSERT INTO #tempSalaries(SalaryId ,CycleId, EmployeId, GroupId, WorkingHoursDay,WorkingHoursNight, WorkingHoursHoliday, WorkingScore, OtherRewardFee, OtherPenaltyFee, FullPresencePay, TransportFee, DormFee, DormOtherFee, CycleStandardWorkingHours)
+		SELECT DISTINCT S.Id, s.CycleId, E.EmployeId, E.GroupId, ISNULL(S.WorkingHoursDay,0), ISNULL(S.WorkingHoursNight,0), ISNULL(S.WorkingHoursHoliday,0), ISNULL(S.WorkingScore,0), ISNULL(OtherRewardFee,0), ISNULL(OtherPenaltyFee,0), ISNULL(FullPresencePay,0), ISNULL(TransportFee,0), ISNULL(DormFee,0), ISNULL(DormOtherFee,0), ISNULL(C.StandardWorkingHours,0)
 		FROM Salary S 
 		INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 		INNER JOIN Cycle C ON S.CycleId = C.Id
 		WHERE S.CycleId = @CycleId
 	END
+
+	UPDATE S
+	SET S.WorkingHours = S.WorkingHoursDay + S.WorkingHoursNight + S.WorkingHoursHoliday
+	FROM #tempSalaries S 
 
 	/* Step 5: Update salary information according to temp employee table */
 	/* Step 5-1:  Update AbsentHours */
@@ -150,7 +164,7 @@ BEGIN
 
 	/* Step 5-5:  Update DormFee (单月住宿费用为100) */
 	UPDATE S
-	SET S.DormFee = 100
+	SET S.DormFee = -100
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 	WHERE E.HasDorm = 1 
@@ -161,10 +175,11 @@ BEGIN
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 
+
 	/* Step 5-7:  Update TransportFee (每日通勤费用为10) */
 	-- todo: 确认计算天数时向下取整
 	UPDATE S
-	SET S.WorkingDays = CAST (S.WorkingDays AS INT) * 10
+	SET S.TransportFee = CAST (S.WorkingHoursDay/7.5 AS INT) * 10
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 	WHERE E.HasTransportFee = 1
@@ -194,10 +209,8 @@ BEGIN
 	SET S.Salary_VariablePart = SD.Value
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
-	INNER JOIN #tempFixedSalaryDeduction SD ON E.EmployeId = S.EmployeId
+	INNER JOIN #tempFixedSalaryDeduction SD ON E.EmployeId = SD.EmployeId AND S.CycleId = SD.CycleId
 	WHERE E.IsFixSalary = 1 
-
-
 
 	/* Module production value based salary(new version) */
 	-- We need to create a temp table here to make the debug esaier
@@ -278,18 +291,34 @@ BEGIN
 	SET S.SalaryTax = - [dbo].[FN_CalculRevenueTax](S.NetSalary), S.FinalSalary = S.NetSalary - [dbo].[FN_CalculRevenueTax](S.NetSalary)
 	FROM #tempSalaries S 
 
+
+	UPDATE S 
+	SET S.EmployeName = E.Name
+	FROM #tempSalaries S
+	INNER JOIN Employe E ON E.Id = S.EmployeId
+
+	UPDATE S 
+	SET S.CycleLabel = C.Label
+	FROM #tempSalaries S
+	INNER JOIN Cycle C ON S.CycleId = C.Id
+
+	UPDATE S 
+	SET S.GroupLabel = G.Name
+	FROM #tempSalaries S
+	INNER JOIN Groups G ON S.GroupId = G.Id
+	
 	IF @IsUpdate IS NOT NULL AND @IsUpdate = 1 
 	BEGIN
 		-- todo update salary table here 
 
 		DECLARE @CalculEndTime DATETIME = GETDATE()
-		INSERT INTO SalaryCalculLog(UserId, PeriodId, StatusSuccess, CreatedBy, CreatedOn, CalculTime)
-		VALUES(@UserId, @CycleId, 'Success', -1, @CalculEndTime,@CalculStartTime)
+		--INSERT INTO SalaryCalculLog(UserId, PeriodId, StatusSuccess, CreatedBy, CreatedOn, CalculTime)
+		--VALUES(@UserId, @CycleId, 'Success', -1, @CalculEndTime,@CalculStartTime)
 		
 	END
 	ELSE
 	BEGIN
-		SELECT * FROM #tempSalaries
+		SELECT * FROM #tempSalaries order by GroupId
 	END
 END
 GO

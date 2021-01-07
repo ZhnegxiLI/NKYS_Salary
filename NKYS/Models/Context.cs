@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NKYS.Account.Model;
 using NKYS.Models;
+using NKYS.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,12 @@ namespace NKYS.Models
          : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<SalariesCalculModel>().HasNoKey();
+        }
 
         public virtual DbSet<Cycle> Cycle { get; set; }
         public virtual DbSet<Department> Department { get; set; }
@@ -25,6 +32,7 @@ namespace NKYS.Models
         public virtual DbSet<ProductionValue> ProductionValue { get; set; }
         public virtual DbSet<Salary> Salary { get; set; }
         public virtual DbSet<SalaryCalculLog> SalaryCalculLog { get; set; }
+        public virtual DbSet<SalariesCalculModel> SalariesCalculModel { get; set; }
         
     }
 }
