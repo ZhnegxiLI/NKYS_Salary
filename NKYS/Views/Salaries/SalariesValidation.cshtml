@@ -8,7 +8,7 @@
     Application.Main.CurrentView = "SalariesValidation";
 </script>
 
-<h1>Index</h1>
+<h1 data-i18n="SalariesValidation"></h1>
 
 
 
@@ -52,7 +52,13 @@
         </div>
 
     </div>
+    <div class="row p-2">
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" id="SalariesValidation_Button_Validation" data-i18n="Validation" disabled></button>
+        </div>
+    </div>
     <hr />
+    <table id="table"></table>
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered" id="SalariesValidation_Table">
             <thead id="SalariesValidation_Table_Head" class="thead-light">

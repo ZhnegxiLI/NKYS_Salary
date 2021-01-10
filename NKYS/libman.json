@@ -18,6 +18,6 @@
       "library": "jquery.loadtemplate@1.5.10",
       "destination": "wwwroot/lib/loadtemplate"
     }
-   
+
   ]
 }

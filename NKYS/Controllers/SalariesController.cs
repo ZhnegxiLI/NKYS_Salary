@@ -73,21 +73,31 @@ namespace NKYS.Controllers
         }
 
         
-        [HttpPost]
-        public async Task<long> SalariesValidation(long SalaryId)
-        {
-            var salary = _context.Salary.Where(p => p.Id == SalaryId).FirstOrDefault();
 
-            if (salary!=null)
+        [HttpPost]
+        public async Task<long> SalariesValidation(List<long> SalaryIds)
+        {
+            if (SalaryIds.Count()>0)
             {
-                salary.ValidatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
-                salary.ValidatedOn = DateTime.Now;
-                salary.Validity = true;
-                _context.Update(salary);
-                await _context.SaveChangesAsync();
-                return salary.Id;
+                foreach (var SalaryId in SalaryIds)
+                {
+                    var salary = _context.Salary.Where(p => p.Id == SalaryId && p.Validity == false).FirstOrDefault();
+
+                    if (salary != null)
+                    {
+                        salary.ValidatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
+                        salary.ValidatedOn = DateTime.Now;
+                        salary.Validity = true;
+                        _context.Update(salary);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                return SalaryIds.Count();
             }
-            return 0;
+            else
+            {
+                return 0;
+            }
         }
 
         [HttpPost]

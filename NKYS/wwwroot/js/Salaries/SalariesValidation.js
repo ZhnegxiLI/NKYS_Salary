@@ -1,5 +1,6 @@
 ﻿SalariesValidation = function () {
     var self = this;
+    self.$table = $('#table')
 
     self.employeeList = [];
     self.salarieList = [];
@@ -23,7 +24,88 @@
     ]
 
     self.groupList = [];
+
     self.init = function () {
+
+        $('#table').bootstrapTable({
+            detailView: true,
+            detailFormatter: "Application.ViewsScript.SalariesValidation.detailFormatter", // display detail info function
+            columns: [
+                {
+                    field: 'Validity',
+                    checkbox: true,
+                    formatter: function (value, row, index) {
+                        if (row.Validated === true) {//如果已经操作禁止选择
+                            return { disabled: true, }
+                        } else {
+                            return { disabled: false, }
+                        }
+                    }
+                },
+                {
+                field: 'GroupLabel',
+                title: i18next.t('Groups')
+            }, {
+                field: 'Name',
+                title: i18next.t('Name')
+            }, {
+                field: 'ExternalId',
+                title: i18next.t('ExternalId')
+                }
+                , {
+                    field: 'TotalWorkingHours',
+                    title: i18next.t('TotalWorkingHours')
+                }, {
+                    field: 'WorkingDays',
+                    title: i18next.t('WorkingDays')
+                }, {
+                    field: 'StandardWorkingHours',
+                    title: i18next.t('StandardWorkingHours')
+                }, {
+                    field: 'SocialSercurityFee',
+                    title: i18next.t('SocialSercurityFee')
+                }, {
+                    field: 'SelfPaySocialSercurityFee',
+                    title: i18next.t('SelfPaySocialSercurityFee')
+                }, {
+                    field: 'HousingReservesFee',
+                    title: i18next.t('HousingReservesFee')
+                }]
+        });
+        // Bind Check checkbox action
+        $('#table').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                // save your data, here just save the current page
+                selections = self.getIdSelections()
+                // push or splice the selections if you want to save all data selections
+                if (selections.length>0) {
+                    $('button#SalariesValidation_Button_Validation').removeAttr('disabled');
+                }
+                else {
+                    $('button#SalariesValidation_Button_Validation').prop('disabled', 'disabled');
+                }
+            })
+        // Check box check all 
+        $('#table').on('all.bs.table', function (e, name, args) {
+        });
+
+        $('button#SalariesValidation_Button_Validation').on('click', function () {
+            var SalaryIds = self.getIdSelections();
+            if (isDefined(SalaryIds) && SalaryIds.length > 0) {
+                $('table#table').mask();
+                // todo: confirmation 
+                Application.Services.CommonService.SalariesValidation({ SalaryIds: SalaryIds }, function (result) {
+                    if (result != null) {
+                        self.RefreshData();
+                    }
+                    else {
+                    }
+                    $('table#table').unmask();
+                });
+            }
+        });
+
         $('.container').css('min-width', '100%');
 
         $('.selectpicker').selectpicker('refresh');
@@ -38,6 +120,22 @@
                 self.groupList = result;
             }
         });
+    }
+
+    self.getIdSelections = function () {
+        var selectionIds = $('#table').bootstrapTable('getSelections');
+        selectionIds = selectionIds.filter(p => !isDefined(p.ValidatedBy) && !isDefined(p.ValidatedOn));
+        return $.map(selectionIds, function (row) {
+            return row.Id;
+        });
+    }
+
+    self.detailFormatter = function(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+        });
+        return html.join('');
     }
 
     self.OnChangeCriteria = function (event) {
@@ -63,8 +161,11 @@
                 if (value == 'True') {
                     self.searchCriteria.Validity = true;
                 }
-                else {
+                else if (value == 'False'){
                     self.searchCriteria.Validity = false;
+                }
+                else {
+                    self.searchCriteria.Validity = null;
                 }
             default:
                 break;
@@ -119,12 +220,13 @@
 
             $.when(dfSaleriesList).done(function () {
                 self.formatData();
-                if (isDefined(self.salarieList) && self.salarieList.length >0 ) {
-                    $('#SalariesValidation_Table_Body').loadTemplate($('#Tp1_SalariesValidation_Table_Body'), self.salarieList);
-
+                if (isDefined(self.salarieList) && self.salarieList.length > 0) {
+           
+                   // $('#SalariesValidation_Table_Body').loadTemplate($('#Tp1_SalariesValidation_Table_Body'), self.salarieList);
+                    $('#table').bootstrapTable('load', self.salarieList)
                 }
                 else {
-                    self.NoDataToDisplay();
+                   // self.NoDataToDisplay();
                 }
                
             });

@@ -6,7 +6,24 @@
 
     onload: function () {
         try {
-            if (Application.Main.CurrentView != null && Application.ViewsScript[Application.Main.CurrentView]!=null) {
+            // Load translation 
+            i18next.use(i18nextXHRBackend).init({
+                lng: 'cn', // evtl. use language-detector https://github.com/i18next/i18next-browser-languageDetector
+                resources: { // evtl. load via xhr https://github.com/i18next/i18next-xhr-backend
+                    cn: {
+                        translation: Application.i18n.cn
+                    }
+                }
+            }, function (err, t) {
+                // for options see
+                // https://github.com/i18next/jquery-i18next#initialize-the-plugin
+                jqueryI18next.init(i18next, $);
+
+                // start localizing, details:
+                // https://github.com/i18next/jquery-i18next#usage-of-selector-function
+                $('body').localize();
+            });
+            if (Application.Main.CurrentView != null && Application.ViewsScript[Application.Main.CurrentView] != null) {
                 Application.ViewsScript[Application.Main.CurrentView].init && Application.ViewsScript[Application.Main.CurrentView].init();
             }
         } catch (e) {
