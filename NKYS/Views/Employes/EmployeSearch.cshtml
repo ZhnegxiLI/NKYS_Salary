@@ -26,11 +26,11 @@
         <input class="form-control" type="text" id="EmployeSearch_Input_ExternalId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
     </div>
     <div class="col-1">
-        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Search" disabled onclick="Application.ViewsScript['EmployeSearch'].searchEmploye(event)" />Search</button>
+        <button type="button" class="btn btn-primary" data-i18n="Search" style="margin-top:30px;" id="EmployeSearch_Button_Search" disabled onclick="Application.ViewsScript['EmployeSearch'].searchEmploye(event)" /></button>
     </div>
 
     <div class="col-1">
-        <button type="button" class="btn btn-primary" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create" />Create</button>
+        <button type="button" class="btn btn-primary" data-i18n="Create" style="margin-top:30px;" id="EmployeSearch_Button_Create" disabled onclick="Application.ViewsScript['EmployeSearch'].initEmployeModal(event)" data-action="Create" /></button>
     </div>
 </div>
 <table class="table" id="EmployeSearch_Table">

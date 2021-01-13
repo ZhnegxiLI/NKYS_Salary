@@ -1,6 +1,6 @@
 ﻿SalariesValidation = function () {
     var self = this;
-    self.$table = $('#table')
+    self.$table = $('#SalariesValidation_Table')
 
     self.employeeList = [];
     self.salarieList = [];
@@ -12,22 +12,23 @@
         Validity: null
     };
 
-    self.SalaryValidityList = [
-        {
-            Label: 'True', // TODO: translate
-            Value: 'True',
-        },
-        {
-            Label: 'False', // TODO: translate 
-            Value:'False'
-        }
-    ]
+  
 
     self.groupList = [];
 
     self.init = function () {
+        self.SalaryValidityList = [
+            {
+                Label: i18next.t('Yes'),
+                Value: 'True',
+            },
+            {
+                Label: i18next.t('No'),
+                Value: 'False'
+            }
+        ];
 
-        $('#table').bootstrapTable({
+        $('#SalariesValidation_Table').bootstrapTable({
             detailView: true,
             detailFormatter: "Application.ViewsScript.SalariesValidation.detailFormatter", // display detail info function
             columns: [
@@ -70,10 +71,55 @@
                 }, {
                     field: 'HousingReservesFee',
                     title: i18next.t('HousingReservesFee')
+                },
+                {
+                    field: 'OtherRewardFee',
+                    title: i18next.t('OtherRewardFee')
+                },
+                {
+                    field: 'OtherPenaltyFee',
+                    title: i18next.t('OtherPenaltyFee')
+                },
+                {
+                    field: 'FullPresencePay',
+                    title: i18next.t('FullPresencePay')
+                },
+                {
+                    field: 'SeniorityPay',
+                    title: i18next.t('SeniorityPay')
+                },
+                {
+                    field: 'TransportFee',
+                    title: i18next.t('TransportFee')
+                },
+                {
+                    field: 'DormFee',
+                    title: i18next.t('DormFee')
+                },
+                {
+                    field: 'DormOtherFee',
+                    title: i18next.t('DormOtherFee')
+                },
+                {
+                    field: 'PositionPay',
+                    title: i18next.t('PositionPay')
+                },
+                
+                {
+                    field: 'NetSalary',
+                    title: i18next.t('NetSalary')
+                },
+                {
+                    field: 'SalaryTax',
+                    title: i18next.t('SalaryTax')
+                },
+                {
+                    field: 'FinalSalary',
+                    title: i18next.t('FinalSalary')
                 }]
         });
         // Bind Check checkbox action
-        $('#table').on('check.bs.table uncheck.bs.table ' +
+        $('#SalariesValidation_Table').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table',
             function () {
                 // save your data, here just save the current page
@@ -87,13 +133,13 @@
                 }
             })
         // Check box check all 
-        $('#table').on('all.bs.table', function (e, name, args) {
+        $('#SalariesValidation_Table').on('all.bs.table', function (e, name, args) {
         });
 
         $('button#SalariesValidation_Button_Validation').on('click', function () {
             var SalaryIds = self.getIdSelections();
             if (isDefined(SalaryIds) && SalaryIds.length > 0) {
-                $('table#table').mask();
+                $('table#SalariesValidation_Table').mask();
                 // todo: confirmation 
                 Application.Services.CommonService.SalariesValidation({ SalaryIds: SalaryIds }, function (result) {
                     if (result != null) {
@@ -101,7 +147,7 @@
                     }
                     else {
                     }
-                    $('table#table').unmask();
+                    $('table#SalariesValidation_Table').unmask();
                 });
             }
         });
@@ -123,7 +169,7 @@
     }
 
     self.getIdSelections = function () {
-        var selectionIds = $('#table').bootstrapTable('getSelections');
+        var selectionIds = $('#SalariesValidation_Table').bootstrapTable('getSelections');
         selectionIds = selectionIds.filter(p => !isDefined(p.ValidatedBy) && !isDefined(p.ValidatedOn));
         return $.map(selectionIds, function (row) {
             return row.Id;
@@ -148,6 +194,7 @@
                 if (self.groupList!=null) {
                     var targetedGroupList = self.groupList.filter(p => p.DepartmentId == value);
                     self.buildSelectOption($('#SalariesValidation_Select_GroupId'), targetedGroupList, 'Id', 'Name');
+                    self.searchCriteria.GroupsId = null;
                 }
                
                 break;
@@ -223,7 +270,7 @@
                 if (isDefined(self.salarieList) && self.salarieList.length > 0) {
            
                    // $('#SalariesValidation_Table_Body').loadTemplate($('#Tp1_SalariesValidation_Table_Body'), self.salarieList);
-                    $('#table').bootstrapTable('load', self.salarieList)
+                    $('#SalariesValidation_Table').bootstrapTable('load', self.salarieList)
                 }
                 else {
                    // self.NoDataToDisplay();

@@ -66,8 +66,8 @@ namespace NKYS.Controllers
             var salaries = await (from s in _context.Salary
                                   join e in _context.Employe on s.EmployeId equals e.Id
                                   join g in _context.Groups on e.GroupsId equals g.Id
-                                  where (DepartmentId == null || g.DepartmentId == DepartmentId) && (GroupsId == null || g.Id == GroupsId)
-                                  && (CycleId == null || s.CycleId == CycleId) && (Validity == null || s.Validity == Validity)
+                                  where (DepartmentId == null || DepartmentId <0 || g.DepartmentId == DepartmentId) && (GroupsId == null || GroupsId < 0 || g.Id == GroupsId)
+                                  && (CycleId == null || CycleId < 0 || s.CycleId == CycleId) && (Validity == null || s.Validity == Validity)
                                   select s).Include(s => s.Cycle).Include(s => s.Employe.Groups).ToListAsync();
             return Json(salaries);
         }

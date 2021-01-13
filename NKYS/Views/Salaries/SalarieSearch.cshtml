@@ -8,7 +8,7 @@
     Application.Main.CurrentView = "SalarieSearch";
 </script>
 
-<h1>Index</h1>
+<h1 data-i18n="SalariesBasicInformation"></h1>
 
 
 
@@ -33,15 +33,11 @@
             </select>
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Search" onclick="Application.ViewsScript['SalarieSearch'].RefreshData()" />
-            Search
+            <button type="button" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Search" onclick="Application.ViewsScript['SalarieSearch'].RefreshData()" />
             </button>
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
-            Edit
+            <button type="button" data-i18n="Edit" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
             </button>
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Validation" onclick="Application.ViewsScript['SalarieSearch'].ValidationSalariesModal()" />
-            Validation
-            </button>
+       
         </div>
 
     </div>

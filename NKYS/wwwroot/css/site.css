@@ -91,3 +91,12 @@ input.IsModified, textarea.IsModified {
     padding: 8px !important;
     color: #fff;
 }
+
+.bootstrap-table  .fixed-table-container .table tbody tr.selected td {
+    background-color: #c3e6cb;
+}
+#SalariesValidation_Table td {
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: keep-all;
+}
