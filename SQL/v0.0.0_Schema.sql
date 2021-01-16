@@ -79,7 +79,6 @@ GO
 * DATE : 22/12/2020 
 * Description : SP_CalculSalaries
 */
-
 IF EXISTS ( SELECT  *
             FROM    sys.objects
             WHERE   object_id = OBJECT_ID(N'SP_CalculSalaries')
@@ -169,9 +168,9 @@ BEGIN
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 	WHERE E.HasDorm = 1 
 
-	/* Step 5-6:  Update WorkingDays (每日应工作时长为7.5, 总工时/7.5 = 出勤天数) */
+	/* Step 5-6:  Update WorkingDays (每日应工作时长为7.5, 日班工时/7.5 = 出勤天数) */
 	UPDATE S
-	SET S.WorkingDays = CAST ((S.WorkingHours / 7.5) AS decimal(18,2)), S.CycleStandardWorkingDays = CAST ((S.CycleStandardWorkingHours / 7.5) AS decimal(18,2))
+	SET S.WorkingDays = CAST ((S.WorkingHoursDay / 7.5) AS decimal(18,2)), S.CycleStandardWorkingDays = CAST ((S.CycleStandardWorkingHours / 7.5) AS decimal(18,2))
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 
@@ -309,11 +308,21 @@ BEGIN
 	
 	IF @IsUpdate IS NOT NULL AND @IsUpdate = 1 
 	BEGIN
-		-- todo update salary table here 
-
 		DECLARE @CalculEndTime DATETIME = GETDATE()
 		--INSERT INTO SalaryCalculLog(UserId, PeriodId, StatusSuccess, CreatedBy, CreatedOn, CalculTime)
 		--VALUES(@UserId, @CycleId, 'Success', -1, @CalculEndTime,@CalculStartTime)
+
+		/* Step 1: Update data */
+		UPDATE S 
+		SET S.UpdatedBy = @UserId, S.Validity = 0, S.ValidatedBy = NULL, S.ValidatedOn = NULL, -- Reset to invalid
+		S.FinalSalary = TS.FinalSalary, S.SalaryTax = TS.SalaryTax, S.NetSalary = TS.NetSalary,  
+		S.SelfPaySocialSercurityFee = TS.SelfPaySocialSercurityFee, S.SocialSercurityFee = TS.SocialSercurityFee, S.HousingReservesFee = TS.HousingReservesFee,  
+		S.DormFee = TS.DormFee, S.SeniorityPay = TS.SeniorityPay, S.DormOtherFee = TS.DormOtherFee, S.OtherRewardFee = TS.OtherRewardFee,  S.OtherPenaltyFee = TS.OtherPenaltyFee, 
+		S.TransportFee = TS.TransportFee, S.PositionPay = TS.PositionPay,  S.AbsentDeduct = TS.AbsentDeduct, S.OvertimePay = TS.OvertimePay,  S.BasicSalary = TS.BasicSalary, 
+		S.WorkingDays = TS.WorkingDays,  S.DeferredHolidayHours = TS.DeferredHolidayHours,  S.AbsentHours = TS.AbsentHours, S.WorkingScore = TS.WorkingScore, S.WorkingHoursHoliday = TS.WorkingHoursHoliday,
+		S.WorkingHoursNight = TS.WorkingHoursNight, S.WorkingHoursDay = TS.WorkingHoursDay, S.WorkingHours = TS.WorkingHours
+		FROM Salary S 
+		INNER JOIN #tempSalaries TS ON S.Id = TS.SalaryId
 		
 	END
 	ELSE
