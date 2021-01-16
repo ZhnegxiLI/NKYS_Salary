@@ -17,12 +17,32 @@ namespace NKYS.Account.Controllers
             _userManager = userManager;
             _signManager = signManager;
         }
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return RedirectToAction("Login");
+        }
 
         [HttpGet]
         public IActionResult Login(string returnUrl = "")
         {
-            var model = new LoginViewModel { ReturnUrl = returnUrl };
-            return View(model);
+            if (User.Identity.IsAuthenticated != true)
+            {
+                var model = new LoginViewModel { ReturnUrl = returnUrl };
+                return View(model);
+            }
+            else
+            {
+                if (returnUrl==null|| returnUrl =="")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return Redirect(returnUrl);
+                }
+            }
+      
         }
 
         [HttpGet]
@@ -47,7 +67,10 @@ namespace NKYS.Account.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                    
+                        ModelState.AddModelError(string.Empty, "账号密码错误");
+                     
+                        return View();
                     }
                 }
             }

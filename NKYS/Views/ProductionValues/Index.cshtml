@@ -1,13 +1,11 @@
 ﻿@model NKYS.Models.ViewModel.ProductionValuesIndex
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "产值模块";
 }
 
-<h1>Index</h1>
-
 <p>
-    <a asp-action="CreateOrEdit">Create New</a>
+    <a asp-action="CreateOrEdit" data-i18n="Create">Create New</a>
 </p>
 <form class="row" asp-controller="ProductionValues" asp-action="Index" method="get">
     <div class="col-3 form-group">
@@ -23,7 +21,8 @@
         </select>
     </div>
     <div class="col-3">
-        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;" />
+        <button type="submit" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;">
+        </button>
     </div>
 </form>
 <table class="table">
@@ -65,9 +64,7 @@
                     </td>
 
                     <td>
-                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id" data-i18n="Edit"></a> 
                     </td>
                 </tr>
             }

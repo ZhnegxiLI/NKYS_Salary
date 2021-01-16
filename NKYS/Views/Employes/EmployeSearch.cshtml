@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<NKYS.Models.Employe>
 @{
-    ViewData["Title"] = "EmployeSearch";
+    ViewData["Title"] = "员工模块";
 }
 
 
@@ -10,19 +10,19 @@
 
 <div class="row">
     <div class="col-3 form-group">
-        <div class="control-label">Department</div>
+        <div class="control-label">  @Html.DisplayNameFor(model => model.Groups.Department)</div>
         <select class="form-control" id="EmployeSearch_Select_DepartmentId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></select>
     </div>
     <div class="col-3 form-group">
-        <div class="control-label">Groups</div>
+        <div class="control-label">  @Html.DisplayNameFor(model => model.Groups)</div>
         <select class="form-control" id="EmployeSearch_Select_GroupsId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></select>
     </div>
     <div class="col-2 form-group">
-        <div class="control-label">Name</div>
+        <div class="control-label"> @Html.DisplayNameFor(model => model.Name)</div>
         <input class="form-control" type="text" id="EmployeSearch_Input_Name" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
     </div>
     <div class="col-2 form-group">
-        <div class="control-label">ExternalId</div>
+        <div class="control-label">@Html.DisplayNameFor(model => model.ExternalId)</div>
         <input class="form-control" type="text" id="EmployeSearch_Input_ExternalId" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeSearchCriteria(event)"></input>
     </div>
     <div class="col-1">
@@ -187,11 +187,9 @@
                 <div class="alert alert-danger d-none" role="alert" id="EmployeProductionValueModal_ErrorMessage">
                 </div>
 
-                <button type="button" class="btn btn-danger" id="EmployeProductionValueModal_Button_Close">
-                    Close
+                <button type="button" class="btn btn-danger" id="EmployeProductionValueModal_Button_Close" data-i18n="Close">
                 </button>
-                <button type="button" class="btn btn-primary" id="EmployeProductionValueModal_Button_Save" onclick="Application.ViewsScript['EmployeSearch'].saveEmployeProductionValue(event)">
-                    Validate
+                <button type="button" class="btn btn-primary" id="EmployeProductionValueModal_Button_Save" onclick="Application.ViewsScript['EmployeSearch'].saveEmployeProductionValue(event)" data-i18n="Save">
                 </button>
             </div>
         </div>
@@ -210,7 +208,7 @@
             <div class="modal-body" style="overflow-y: auto; height: 80vh;">
 
                 <div class="card">
-                    <div class="card-header h5">Basic information</div>
+                    <div class="card-header h5" data-i18n="BasicInformation">Basic information</div>
                     <div class="row card-body">
                         <div class="col-3" data-specific="Name">
                             <div class="control-label"> @Html.DisplayNameFor(model => model.Name) <span class="text-danger">*</span></div>
@@ -248,7 +246,7 @@
                 </div>
 
                 <div class="card mt-2">
-                    <div class="card-header h5">Salary options</div>
+                    <div class="card-header h5" data-i18n="SalaryOptions">Salary options</div>
                     <div class="card-body row">
                         <div class="col-3" data-specific="TechnicalLevel">
                             <div class="control-label">@Html.DisplayNameFor(model => model.TechnicalLevel) <span class="text-danger">*</span></div>
@@ -260,14 +258,17 @@
                         </div>
 
                         <div class="col-9" data-specific="EmployeDeductionConfigurationZoom">
-                            <div class="card-header h5">Configuration<button class="btn-primary float-right btn btn-sm" type="button" onclick="Application.ViewsScript['EmployeSearch'].buildEmployeProductionValueConfigurationModal()" > Add</button></div>
+                            <div class="card-header h5">
+                            <span data-i18n="Configuration"></span>
+                            <button class="btn-primary float-right btn btn-sm" type="button" onclick="Application.ViewsScript['EmployeSearch'].buildEmployeProductionValueConfigurationModal()" data-i18n="Add"></button>
+                            </div>
                             <div class="card-body p-0">
                                 <table class="table table-bordered" id="EmployeModal_EmployeDeductionConfiguration_Table">
                                     <thead>
                                         <tr>
                                             <th>@Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.LinkedProductionValueTypeId)</th>
                                             <th>@Html.DisplayNameFor(model => model.EmployeDeductionConfiguration.DeductionSharePropotion)</th>
-                                            <th>Action</th>
+                                            <th data-i18n="Action"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -280,7 +281,7 @@
                 </div>
 
                 <div class="card mt-2">
-                    <div class="card-header h5">Salary configuration</div>
+                    <div class="card-header h5" data-i18n="SalaryConfiguration"></div>
                     <div class="card-body row">
                         <div class="col-3">
                             <div class="control-label">@Html.DisplayNameFor(model => model.SocialSercurityFee)</div>
@@ -335,12 +336,10 @@
                 <div class="alert alert-danger d-none" role="alert" id="EmployeModal_ErrorMessage">
                 </div>
 
-                <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close">
-                    Close
+                <button type="button" class="btn btn-danger" id="EmployeModal_Button_Close" data-i18n="Close">
                 </button>
 
-                <button type="button" class="btn btn-primary" id="EmployeModal_Button_Save" onclick="Application.ViewsScript['EmployeSearch'].saveEmployee(event)">
-                    Validate
+                <button type="button" class="btn btn-primary" id="EmployeModal_Button_Save" onclick="Application.ViewsScript['EmployeSearch'].saveEmployee(event)" data-i18n="Validation">
                 </button>
             </div>
         </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using NKYS.Models.ViewModel;
 
 namespace NKYS.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
         private readonly Context _context;

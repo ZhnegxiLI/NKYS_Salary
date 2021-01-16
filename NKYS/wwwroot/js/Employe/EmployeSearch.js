@@ -159,7 +159,7 @@
         }
         else {
             var numberOfColum = $('#EmployeSearch_Table thead tr th').length;
-            $('#EmployeSearch_Table tbody').html('<tr><td colspan="' + numberOfColum + '">No data to display</td></tr>');
+            $('#EmployeSearch_Table tbody').html('<tr><td colspan="' + numberOfColum + '">' + i18next.t('NoData'), + '</td></tr>');
         }
     };
 
@@ -239,7 +239,7 @@
         Application.Main.initModal(
             self.modalEmployeeTicks,
             'Tp1_EmployeModal',
-            { title: isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id >0? 'Modify': 'Create'},
+            { title: isDefined(self.Employe) && isDefined(self.Employe.Id) && self.Employe.Id > 0 ? i18next.t('Edit') : i18next.t('Create') },
             function () { $('#' + self.modalEmployeeTicks).remove(); },
             function () {
 
@@ -348,6 +348,8 @@
                 self.refreshEmployeModalProductionValueConfigurationTable();
 
                 $('button#EmployeModal_Button_Close').on("click", function (e) { $("#" + self.modalEmployeeTicks).modal('hide'); });
+
+                $('body').localize();
                 $("#" + self.modalEmployeeTicks).modal();
             });
     };
@@ -552,7 +554,7 @@
         }
         else { 
             var numberOfColum = $('#EmployeModal_EmployeDeductionConfiguration_Table thead tr th').length;
-            $('#EmployeModal_EmployeDeductionConfiguration_Table tbody').html('<tr><td colspan="' + numberOfColum + '">No data to display</td></tr>');
+            $('#EmployeModal_EmployeDeductionConfiguration_Table tbody').html('<tr><td colspan="' + numberOfColum + '">'+ i18next.t('NoData') + '</td></tr>');
         }
 
 
@@ -581,7 +583,7 @@
         Application.Main.initModal(
             self.modalEmployeeProductionValueConfigurationTicks,
             'Tp1_EmployeProductionValueModal',
-            { title: isDefined(ProductionValueConfigurationTick) ? 'Modify' : 'Create' },
+            { title: isDefined(ProductionValueConfigurationTick) ? i18next.t('Edit') : i18next.t('Create') },
             function () { $('#' + self.modalEmployeeProductionValueConfigurationTicks).remove(); },
             function () {
 
@@ -610,6 +612,8 @@
                     }
                 }
                 $('button#EmployeProductionValueModal_Button_Close').on("click", function (e) { $("#" + self.modalEmployeeProductionValueConfigurationTicks).modal('hide'); });
+
+                $('body').localize();
                 $("#" + self.modalEmployeeProductionValueConfigurationTicks).modal();
             });
         };

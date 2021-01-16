@@ -1,7 +1,7 @@
 ﻿@model NKYS.Models.Groups
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "车间";
     var title = "";
     if (ViewData["Action"] == "Update")
     {
@@ -18,7 +18,6 @@
 </script>
 
 <h1>@title</h1>
-<h4>Groups</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -61,14 +60,15 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" value="Save" class="btn btn-primary" data-i18n="Save">
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-id="ViewData["DepartmentId"]">Back to List</a>
+    <a asp-action="Index" asp-route-id="ViewData["DepartmentId"]" data-i18n="Return"></a>
 </div>
 
 @section Scripts {

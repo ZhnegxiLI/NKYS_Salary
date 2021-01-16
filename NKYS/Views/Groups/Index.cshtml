@@ -1,12 +1,11 @@
 ﻿@model NKYS.Models.ViewModel.GroupsIndex
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "车间模块";
 }
 
-<h1>Index</h1>
 
 <p>
-    <a asp-action="CreateOrEdit">Create New</a>
+    <a asp-action="CreateOrEdit" data-i18n="Create"></a>
 </p>
 
 <form class="row" asp-controller="Groups" asp-action="Index" method="get">
@@ -18,7 +17,8 @@
     </div>
 
     <div class="col-3">
-        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:30px;" />
+        <button type="submit" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;">
+        </button>
     </div>
 </form>
 <table class="table">
@@ -46,7 +46,7 @@
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                Number of employes
+                <span data-i18n="NumberOfEmployees"></span>
             </th>
             <th></th>
         </tr>
@@ -90,7 +90,7 @@
                 @item.Employes.Count()
             </td>
             <td>
-                <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a>
+                <a asp-action="CreateOrEdit" asp-route-id="@item.Id" data-i18n="Edit"></a>
             </td>
         </tr>
             }
@@ -98,7 +98,7 @@
         }
         else
         {
-            <tr><td colspan="8">No data to display</td></tr>
+            <tr><td colspan="8" data-i18n="NoData" style="text-align:center"></td></tr>
         }
     </tbody>
 </table>

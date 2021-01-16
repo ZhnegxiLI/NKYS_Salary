@@ -1,7 +1,7 @@
 ﻿@model NKYS.Models.ProductionValue
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "产值";
     
     var title = "";
     if (ViewData["Action"] == "Update")
@@ -15,8 +15,6 @@
 }
 
 <h1>@title</h1>
-
-<h4>ProductionValue</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,14 +41,15 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" data-i18n="Save" class="btn btn-primary">
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" data-i18n="Return"></a>
 </div>
 
 @section Scripts {

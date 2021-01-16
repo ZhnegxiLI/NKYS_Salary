@@ -1,16 +1,12 @@
 ﻿@model NKYS.Models.ViewModel.SalarieSearchModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "工资审核";
 }
 
 <script type="text/javascript">
     Application.Main.CurrentView = "SalariesValidation";
 </script>
-
-<h1 data-i18n="SalariesValidation"></h1>
-
-
 
 <div>
     <div class="row p-2">
@@ -40,15 +36,8 @@
         </div>
 
         <div class="col-2">
-            <button type="button" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesValidation_Button_Search" onclick="Application.ViewsScript['SalariesValidation'].RefreshData()" />
-            
+            <button type="button" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesValidation_Button_Search" onclick="Application.ViewsScript['SalariesValidation'].RefreshData()" /> 
             </button>
-            @*<button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Edit" onclick="Application.ViewsScript['SalarieSearch'].EditSalariesModal()" />
-            Edit
-            </button>
-            <button type="button" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesSearchFilter_Button_Validation" onclick="Application.ViewsScript['SalarieSearch'].ValidationSalariesModal()" />
-            Validation
-            </button>*@
         </div>
 
     </div>

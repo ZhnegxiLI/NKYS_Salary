@@ -13,6 +13,7 @@ namespace NKYS.Models
         [DisplayName("小组名")]
         [Required]
         public string Name { get; set; }
+        [DisplayName("部门")]
         [Required]
         public long DepartmentId { get; set; }
         [DisplayName("分成比例")]

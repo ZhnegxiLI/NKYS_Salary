@@ -8,12 +8,16 @@ namespace NKYS.Account.Model
 {
     public class LoginViewModel
     {
-        public string Username { get; set; }
 
+        [Display(Name = "用户名")]
+        [Required]
+        public string Username { get; set; }
+        [Display(Name = "密码")]
+        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember Me")]
+        [Display(Name = "记住我")]
         public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
     }

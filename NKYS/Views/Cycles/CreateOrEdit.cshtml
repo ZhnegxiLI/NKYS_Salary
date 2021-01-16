@@ -1,8 +1,7 @@
 ﻿@model NKYS.Models.Cycle
 
 @{
-    ViewData["Title"] = "Create";
-    var title = "";
+    var title = "周期";
     if (ViewData["Action"] == "Update")
     {
         title = "Update";
@@ -18,9 +17,7 @@
     Application.Main.CurrentView = "CyclesModuleView";
 </script>
 
-<h1>@title</h1>
-
-<h4>Cycle</h4>
+<h4>@title</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -60,7 +57,8 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" data-i18n="Save" class="btn btn-primary">
+                </button>
             </div>
         </form>
         @if (ViewData["Action"] == "Update")
@@ -69,8 +67,7 @@
                 Delete
             </button>*@
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" id="CycleModule_Button_SalaryCalcul_Modal" onclick="Application.Main.Controls.SalaryCalculModule.show({CycleId: @Model.Id});">
-                Calcul salary
+            <button data-i18n="CalculSalary" type="button" class="btn btn-primary mb-2" data-toggle="modal" id="CycleModule_Button_SalaryCalcul_Modal" onclick="Application.Main.Controls.SalaryCalculModule.show({CycleId: @Model.Id});">
             </button>
         }
 
@@ -106,7 +103,7 @@
 }
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" data-i18n="Return"></a>
 </div>
 
 

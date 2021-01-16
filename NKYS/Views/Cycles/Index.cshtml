@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<NKYS.Models.Cycle>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "周期管理模块";
 }
 
-<h1>Index</h1>
-
 <p>
-    <a asp-action="CreateOrEdit">Create New</a>
+    <a asp-action="CreateOrEdit" data-i18n="Create"></a>
 </p>
 <table class="table">
     <thead>
@@ -78,15 +76,14 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                        <a asp-action="CreateOrEdit" asp-route-id="@item.Id" data-i18n="Edit"></a>
                     </td>
                 </tr>
             }
         }
         else
         {
-            <tr><td colspan="9">No data to display</td></tr>
+            <tr><td colspan="9" data-i18n="NoData"></td></tr>
         }
 
     </tbody>

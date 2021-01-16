@@ -1,29 +1,102 @@
 ﻿@model NKYS.Account.Model.LoginViewModel
 @{
     ViewBag.Title = "Login";
+    Layout = null;
 }
-<h2>登录</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Log in</title>
 
-<form method="post" asp-controller="Account" asp-action="Login"
-      asp-route-returnurl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/lib/adminLte3/dist/css/adminlte.min.css" />
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-    <div>
-        <label asp-for="Username"></label>
-        <input asp-for="Username" />
-        <span asp-validation-for="Username"></span>
+    <environment include="Development">
+        <link rel="stylesheet" asp-href-include="css/*" asp-href-exclude="css/all.min.css" />
+
+        <!-- Import js files  -->
+        <script src="~/js/framework/NameSpaces.js"></script>
+        <script src="~/js/framework/Main.js"></script>
+
+        <script src="~/js/Config/i18n_cn.js"></script>
+        <script src="~/js/Config/Configuration.js"></script>
+    </environment>
+    <environment include="Production">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="~/min/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+</head>
+
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a asp-controller="Account" asp-action="Login"><b data-i18n="CompanyName"></b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg" data-i18n="LoginPageDescription"></p>
+
+                <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="input-group mb-3">
+                        <input class="form-control" asp-for="Username" placeholder="@Html.DisplayNameFor(modelItem => Model.Username)">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fa fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" asp-for="Password" placeholder="@Html.DisplayNameFor(modelItem => Model.Password)">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fa fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input asp-for="RememberMe" />
+                                <label asp-for="RememberMe"></label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block" data-i18n="Login"></button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <p class="mb-1">
+                    <a asp-action="Signup" data-i18n="Registre"></a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
     </div>
+    <!-- /.login-box -->
 
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
+    <script src="~/lib/i18next.min.js"></script>
+    <script src="~/lib/jquery-i18next.min.js"></script>
+    <script src="~/lib/i18nextXHRBackend.min.js"></script>
 
-    <div>
-        <label asp-for="RememberMe"></label>
-        <input asp-for="RememberMe" />
-        <span asp-validation-for="RememberMe"></span>
-    </div>
-    <input type="submit" value="登录" />
-</form>
+    <!-- Bootstrap 4 -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/lib/adminLte3/dist/js/adminlte.min.js"></script>
+</body>
+</html>

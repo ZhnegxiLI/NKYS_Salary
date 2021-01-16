@@ -87,9 +87,9 @@ namespace NKYS.Models.ViewModel
 
 
         [DisplayName("固定工资")]
-        public decimal Salary_FixPart { get; set; }
+        public decimal? Salary_FixPart { get; set; }
         [DisplayName("浮动工资")]
-        public decimal Salary_VariablePart { get; set; }
+        public decimal? Salary_VariablePart { get; set; }
   
         
     }
