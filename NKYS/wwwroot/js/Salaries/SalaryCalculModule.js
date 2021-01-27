@@ -58,6 +58,8 @@
                 }
                 $('body').unmask();
                 $('button#SalaryCalculModal_Button_Close').on("click", function (e) { $("#" + self.modalSalaryCalculTicks).modal('hide'); });
+
+                $('body').localize();
                 $("#" + self.modalSalaryCalculTicks).modal();
             });
     };

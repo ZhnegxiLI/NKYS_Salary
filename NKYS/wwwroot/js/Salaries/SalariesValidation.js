@@ -44,6 +44,15 @@
                     }
                 },
                 {
+                    field: 'FinalValidity',
+                    title: '经理审核',// todo translate
+                    formatter: function (value, row, index) {
+                        var html = '';
+                        html = '<input type="checkbox"' + ((isDefined(value) && value == true)? 'checked': '')+ ' data-type="FinalValidityCheckbox">'
+                        return html;
+                    }
+                },
+                {
                 field: 'GroupLabel',
                 title: i18next.t('Groups')
             }, {
@@ -62,36 +71,40 @@
                 }, {
                     field: 'StandardWorkingHours',
                     title: i18next.t('StandardWorkingHours')
-                }, {
-                    field: 'SocialSercurityFee',
-                    title: i18next.t('SocialSercurityFee')
-                }, {
+                },
+                {
                     field: 'SelfPaySocialSercurityFee',
                     title: i18next.t('SelfPaySocialSercurityFee')
-                }, {
+                },
+                {
                     field: 'HousingReservesFee',
                     title: i18next.t('HousingReservesFee')
-                },
-                {
-                    field: 'OtherRewardFee',
-                    title: i18next.t('OtherRewardFee')
-                },
-                {
-                    field: 'OtherPenaltyFee',
-                    title: i18next.t('OtherPenaltyFee')
                 },
                 {
                     field: 'FullPresencePay',
                     title: i18next.t('FullPresencePay')
                 },
                 {
+                    field: 'TransportFee',
+                    title: i18next.t('TransportFee')
+                },
+                {
                     field: 'SeniorityPay',
                     title: i18next.t('SeniorityPay')
                 },
                 {
-                    field: 'TransportFee',
-                    title: i18next.t('TransportFee')
+                    field: 'PositionPay',
+                    title: i18next.t('PositionPay')
                 },
+                {
+                    field: 'OtherRewardFee',
+                    title: i18next.t('OtherRewardFee')
+                },
+                {
+                    field: 'SocialSercurityFee',
+                    title: i18next.t('SocialSercurityFee')
+                },
+            
                 {
                     field: 'DormFee',
                     title: i18next.t('DormFee')
@@ -101,8 +114,8 @@
                     title: i18next.t('DormOtherFee')
                 },
                 {
-                    field: 'PositionPay',
-                    title: i18next.t('PositionPay')
+                    field: 'OtherPenaltyFee',
+                    title: i18next.t('OtherPenaltyFee')
                 },
                 
                 {
@@ -118,6 +131,7 @@
                     title: i18next.t('FinalSalary')
                 }]
         });
+
         // Bind Check checkbox action
         $('#SalariesValidation_Table').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table',
@@ -135,6 +149,7 @@
         // Check box check all 
         $('#SalariesValidation_Table').on('all.bs.table', function (e, name, args) {
         });
+    
 
         $('button#SalariesValidation_Button_Validation').on('click', function () {
             var SalaryIds = self.getIdSelections();
@@ -168,9 +183,16 @@
         });
     }
 
-    self.getIdSelections = function () {
-        var selectionIds = $('#SalariesValidation_Table').bootstrapTable('getSelections');
-        selectionIds = selectionIds.filter(p => !isDefined(p.ValidatedBy) && !isDefined(p.ValidatedOn));
+    self.getIdSelections = function (IsFinalValidity) {
+        if (isDefined(IsFinalValidity) && IsFinalValidity ==true) {
+            var selectionIds = $('[data-type="FinalValidityCheckbox"]:checked');
+            // todo 
+        }
+        else {
+            var selectionIds = $('#SalariesValidation_Table').bootstrapTable('getSelections');
+            selectionIds = selectionIds.filter(p => !isDefined(p.ValidatedBy) && !isDefined(p.ValidatedOn));
+        }
+ 
         return $.map(selectionIds, function (row) {
             return row.Id;
         });
@@ -312,6 +334,15 @@
                     salary.SalaryLineClass = 'table-warning';
                     salary.IsNotValidated = true;
                 }
+
+                if (isDefined(salary.FinalValidity) && salary.FinalValidity == true) {
+                    salary.SalaryLineClass = 'table-success';
+                    salary.FinalValidated = true;
+                }
+                else {
+                    salary.SalaryLineClass = 'table-warning';
+                    salary.IsNotFinalValidated = true;
+                }
             });
         }
     };
@@ -339,7 +370,7 @@
         if (isDefined(Id) && Id > 0) {
             $('table#SalariesValidation_Table').mask();
             // todo: confirmation 
-            Application.Services.CommonService.SalariesValidation({ SalaryId: Id}, function (result) {
+            Application.Services.CommonService.SalariesValidation({ SalaryId: Id, IsFinalValidity: false}, function (result) {
                 if (result != null) {
                     self.RefreshData();
                 }

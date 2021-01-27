@@ -97,6 +97,14 @@ namespace NKYS.Models
         public bool Validity { get; set; } = false;
 
 
+        [DisplayName("经理确认人")]
+        public long? FinalValidatedBy { get; set; }
+        [DisplayName("经理确认时间")]
+        public DateTime? FinalValidatedOn { get; set; }
+        [DisplayName("经理确认")]
+        public bool FinalValidity { get; set; } = false;
+
+
         public Cycle Cycle { get; set; }
         public Employe Employe { get; set; }
     }

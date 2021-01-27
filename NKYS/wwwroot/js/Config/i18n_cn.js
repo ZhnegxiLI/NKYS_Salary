@@ -13,7 +13,8 @@
     EmployesModule: '员工模块',
     CyclesModule: '周期管理模块',
     GroupsModule: '车间模块',
-
+    SalariesCalculModule:'工资计算模块',
+    Validate: '确认',
 
     BasicInformation: '基础信息',
     SalaryOptions: '工资选项',

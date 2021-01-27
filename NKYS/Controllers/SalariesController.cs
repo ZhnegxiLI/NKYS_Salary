@@ -77,7 +77,7 @@ namespace NKYS.Controllers
         
 
         [HttpPost]
-        public async Task<long> SalariesValidation(List<long> SalaryIds)
+        public async Task<long> SalariesValidation(List<long> SalaryIds, bool IsFinalValidity)
         {
             if (SalaryIds.Count()>0)
             {
@@ -87,9 +87,19 @@ namespace NKYS.Controllers
 
                     if (salary != null)
                     {
-                        salary.ValidatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
-                        salary.ValidatedOn = DateTime.Now;
-                        salary.Validity = true;
+                        if (IsFinalValidity== true)
+                        {
+                            salary.FinalValidatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
+                            salary.FinalValidatedOn = DateTime.Now;
+                            salary.FinalValidity = true;
+                        }
+                        else
+                        {
+                            salary.ValidatedBy = Convert.ToInt64(_userManager.GetUserId(HttpContext.User));
+                            salary.ValidatedOn = DateTime.Now;
+                            salary.Validity = true;
+                        }
+                      
                         _context.Update(salary);
                         await _context.SaveChangesAsync();
                     }
