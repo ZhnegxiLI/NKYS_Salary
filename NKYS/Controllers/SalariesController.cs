@@ -65,16 +65,21 @@ namespace NKYS.Controllers
         [HttpGet]
         public async Task<JsonResult> SalariesSearch(long? DepartmentId, long? GroupsId, long? CycleId, bool? Validity)
         {
-            var salaries = await (from s in _context.Salary
-                                  join e in _context.Employe on s.EmployeId equals e.Id
-                                  join g in _context.Groups on e.GroupsId equals g.Id
-                                  where (DepartmentId == null || DepartmentId <0 || g.DepartmentId == DepartmentId) && (GroupsId == null || GroupsId < 0 || g.Id == GroupsId)
-                                  && (CycleId == null || CycleId < 0 || s.CycleId == CycleId) && (Validity == null || s.Validity == Validity)
-                                  select s).Include(s => s.Cycle).Include(s => s.Employe.Groups).ToListAsync();
+            var salaries = await SalariesSearchData();
             return Json(salaries);
         }
 
-        
+        public async Task<List<Salary>> SalariesSearchData(long? DepartmentId, long? GroupsId, long? CycleId, bool? Validity)
+        {
+            var salaries = await (from s in _context.Salary
+                                  join e in _context.Employe on s.EmployeId equals e.Id
+                                  join g in _context.Groups on e.GroupsId equals g.Id
+                                  where (DepartmentId == null || DepartmentId < 0 || g.DepartmentId == DepartmentId) && (GroupsId == null || GroupsId < 0 || g.Id == GroupsId)
+                                  && (CycleId == null || CycleId < 0 || s.CycleId == CycleId) && (Validity == null || s.Validity == Validity)
+                                  select s).Include(s => s.Cycle).Include(s => s.Employe.Groups).ToListAsync();
+            return salaries;
+        }
+
 
         [HttpPost]
         public async Task<long> SalariesValidation(List<long> SalaryIds, bool IsFinalValidity)

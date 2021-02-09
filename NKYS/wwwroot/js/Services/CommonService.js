@@ -31,6 +31,17 @@
         });
     };
 
+    
+    self.ExportSalariesWorkingHours = function (criteira, cb) {
+        $.ajax({
+            url: Application.Configuration.baseUrl + 'Export/ExportSalariesWorkingHours', // Add into config 
+            type: "get",
+            data: criteira,
+          //  dataType: "json",
+            success: cb
+        });
+    };
+
     self.SaveSalaries = function (criteira, cb) {
         $.ajax({
             url: Application.Configuration.baseUrl + 'Salaries/SaveSalaries', // Add into config 
