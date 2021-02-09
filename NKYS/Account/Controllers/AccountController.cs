@@ -67,11 +67,16 @@ namespace NKYS.Account.Controllers
                     }
                     else
                     {
-                    
-                        ModelState.AddModelError(string.Empty, "账号密码错误");
-                     
-                        return View();
+                        return Redirect("/home");
                     }
+             
+                }
+                else
+                {
+
+                    ModelState.AddModelError(string.Empty, "账号密码错误");
+
+                    return View();
                 }
             }
 

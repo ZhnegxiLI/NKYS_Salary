@@ -30,13 +30,13 @@
         </div>
         <div class="col-2 form-group">
             <label asp-for="Validity" class="control-label"></label>
-            <select asp-for="Validity" class="form-control selectpicker"  id="SalariesValidation_Select_SalaryValidity" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)">
+            <select asp-for="Validity" class="form-control selectpicker" id="SalariesValidation_Select_SalaryValidity" onchange="Application.ViewsScript['SalariesValidation'].OnChangeCriteria(event)">
                 <option selected value="-1"></option>
             </select>
         </div>
 
         <div class="col-2">
-            <button type="button" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesValidation_Button_Search" onclick="Application.ViewsScript['SalariesValidation'].RefreshData()" /> 
+            <button type="button" data-i18n="Search" class="btn btn-primary" style="margin-top:30px;" disabled id="SalariesValidation_Button_Search" onclick="Application.ViewsScript['SalariesValidation'].RefreshData()" />
             </button>
         </div>
 
@@ -46,11 +46,15 @@
             <button type="button" class="btn btn-primary" id="SalariesValidation_Button_Validation" data-i18n="Validation" disabled></button>
         </div>
     </div>
+    <div class="row p-2">
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" id="SalariesValidation_Button_ManagerValidation" data-i18n="ManagerValidation" disabled></button>
+        </div>
+    </div>
     <hr />
- 
+
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered" id="SalariesValidation_Table">
-          
         </table>
     </div>
 </div>
