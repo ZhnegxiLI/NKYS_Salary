@@ -123,16 +123,6 @@
                     employe.TemporaryEmployeNoChecked = true;
                 }
 
-
-                if (isDefined(employe.HasDorm) && employe.HasDorm == true) {
-                    employe.HasDormChecked = true;
-                }
-                else {
-                    employe.HasDormNoChecked = true;
-                }
-
-
-
                 if (isDefined(employe.HasTransportFee) && employe.HasTransportFee == true) {
                     employe.HasTransportFeeChecked = true;
                 }
@@ -219,7 +209,7 @@
             SelfPaySocialSercurity: '',
             SocialSercurityFee: '',
             SelfPayHousingReserves: '',
-            HasDorm: false,
+            DormFee: null,
             TransportFee: null,
             PositionPay: null,
             IsChefOfGroup: null,
@@ -308,8 +298,8 @@
                     }
 
 
-                    if (isDefined(self.Employe.HasDorm) && self.Employe.HasDorm == true) {
-                        $('#EmployeModal_CheckBox_HasDorm').prop('checked',true);
+                    if (isDefined(self.Employe.DormFee) ) {
+                        $('#EmployeModal_Input_DormFee').val(self.Employe.DormFee);
                     }
 
                     if (isDefined(self.Employe.HasTransportFee) && self.Employe.HasTransportFee == true) {
@@ -470,10 +460,8 @@
                 self.Employe.HousingReservesFee = value;
                 break;
 
-            case 'EmployeModal_CheckBox_HasDorm':
-                var checked = $("#" + event.currentTarget.id).is(":checked");
-                checked = isDefined(checked) ? checked : false;
-                self.Employe.HasDorm = checked;
+            case 'EmployeModal_Input_DormFee':
+                self.Employe.DormFee = value;
                 break;
 
             case 'EmployeModal_Input_TransportFee':

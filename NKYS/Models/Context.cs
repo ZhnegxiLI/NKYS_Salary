@@ -33,6 +33,8 @@ namespace NKYS.Models
         public virtual DbSet<Salary> Salary { get; set; }
         public virtual DbSet<SalaryCalculLog> SalaryCalculLog { get; set; }
         public virtual DbSet<SalariesCalculModel> SalariesCalculModel { get; set; }
+
+        public virtual DbSet<ExportConfiguration> ExportConfiguration { get; set; }
         
     }
 }

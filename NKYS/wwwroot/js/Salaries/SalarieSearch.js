@@ -275,7 +275,24 @@
         });
     }
 
+    self.Export = function () {
+        Application.Services.CommonService.ExportSalariesWorkingHours({ CycleId: self.searchCriteria.CycleId }, function (result) {
 
+            var today = new Date();
+            today.toISOString().substring(0, 19);
+
+            self.SaveExcel(result, 'Salaries_' + today);
+        });
+    }
+
+    self.SaveExcel = function(data, name) {
+        var a = document.createElement('a');
+        var blob = new Blob([data], { 'type': 'application/vnd.ms-excel' });
+        a.href = URL.createObjectURL(blob);
+        a.download = name + '.xlsx';
+        a.click();
+    }
+    
     self.EditSalariesModal = function () {
 
         self.modalEditSalariesTicks = "Modal_" + getTicks();

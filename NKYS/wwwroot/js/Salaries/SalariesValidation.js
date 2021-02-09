@@ -132,6 +132,32 @@
                 }]
         });
 
+        /* Check all manager validation */
+        $('th input[data-type="FinalValidityCheckbox"]').on('change', function () {
+            var isChecked = $('th input[data-type="FinalValidityCheckbox"]').is(':checked');
+            if (isChecked) {
+                $('td input[data-type="FinalValidityCheckbox"]').prop('checked',true);
+            }
+            else {
+                $('td input[data-type="FinalValidityCheckbox"]').removeAttr('checked');
+            }
+        });
+
+        /* Check manager validation */
+        $('td input[data-type="FinalValidityCheckbox"]').on('change', function () {
+            var numberOfSalaries = $('td input[data-type="FinalValidityCheckbox"]').length;
+            var numberOfCheckedSalaries = $('td input[data-type="FinalValidityCheckbox"]').is(':checked').length;
+
+            if (numberOfSalaries <= numberOfCheckedSalaries) {
+                $('th input[data-type="FinalValidityCheckbox"]').prop('checked', true);
+            }
+            else {
+                $('th input[data-type="FinalValidityCheckbox"]').removeAttr('checked');
+            }
+
+        });
+
+
         // Bind Check checkbox action
         $('#SalariesValidation_Table').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table',
@@ -166,6 +192,24 @@
                 });
             }
         });
+
+
+        $('button#SalariesValidation_Button_FinalValidation').on('click', function () {
+            var SalaryIds = self.getIdSelections(true);
+            if (isDefined(SalaryIds) && SalaryIds.length > 0) {
+                $('table#SalariesValidation_Table').mask();
+                // todo: confirmation 
+                Application.Services.CommonService.SalariesValidation({ SalaryIds: SalaryIds, IsFinalValidity : true }, function (result) {
+                    if (result != null) {
+                        self.RefreshData();
+                    }
+                    else {
+                    }
+                    $('table#SalariesValidation_Table').unmask();
+                });
+            }
+        });
+
 
         $('.container').css('min-width', '100%');
 

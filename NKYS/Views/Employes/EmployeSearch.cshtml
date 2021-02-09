@@ -63,7 +63,7 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.HasDorm)
+                @Html.DisplayNameFor(model => model.DormFee)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.HasTransportFee)
@@ -100,14 +100,7 @@
         <td data-content-append="SelfPaySocialSercurityFee"></td>
         <td data-content-append="HousingReservesFee"></td>
 
-        <td>
-            <span data-template-bind='[{"attribute": "data-check", "value": "HasDormChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
-                <i class="fa fa-check" style="color:green"></i>
-            </span>
-            <span data-template-bind='[{"attribute": "data-check", "value": "HasDormNoChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
-                <i class="fa fa-times" style="color:red"></i>
-            </span>
-        </td>
+        <td data-content-append="DormFee"></td>
         <td>
             <span data-template-bind='[{"attribute": "data-check", "value": "HasTransportFeeChecked", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>
                 <i class="fa fa-check" style="color:green"></i>
@@ -308,10 +301,8 @@
                         </div>
 
                         <div class="col-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="EmployeModal_CheckBox_HasDorm" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)">
-                                <label class="form-check-label" for="EmployeModal_CheckBox_HasDorm">@Html.DisplayNameFor(model => model.HasDorm)</label>
-                            </div>
+                            <div class="control-label">@Html.DisplayNameFor(model => model.DormFee)</div>
+                            <input id="EmployeModal_Input_DormFee" class="form-control" type="number" onchange="Application.ViewsScript['EmployeSearch'].OnChangeEmployeModalCriteria(event)" />
                         </div>
 
                         <div class="col-3">
