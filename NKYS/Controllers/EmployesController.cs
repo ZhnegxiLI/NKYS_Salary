@@ -219,7 +219,7 @@ namespace NKYS.Controllers
                     employeToInsertOrUpdate.HousingReservesFee = criteria.HousingReservesFee;
                     employeToInsertOrUpdate.SocialSercurityFee = criteria.SocialSercurityFee;
 
-                    employeToInsertOrUpdate.HasDorm = criteria.HasDorm;
+                    employeToInsertOrUpdate.DormFee = criteria.DormFee;
                     employeToInsertOrUpdate.PositionPay = criteria.PositionPay;
                     employeToInsertOrUpdate.HasTransportFee = criteria.HasTransportFee;
 

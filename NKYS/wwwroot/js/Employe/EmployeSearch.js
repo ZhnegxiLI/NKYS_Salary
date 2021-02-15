@@ -392,8 +392,6 @@
                         if (isDefined(targetGroup.IsFixSalary) && targetGroup.IsFixSalary == true) {
                             $('[data-specific="FixSalary"]').removeClass('d-none');
 
-                            $('[data-specific="EmployeDeductionConfigurationZoom"]').removeClass('d-none');
-
                             $('[data-specific="TechnicalLevel"]').addClass('d-none');
 
                             self.Employe.TechnicalLevel = null;
@@ -401,8 +399,6 @@
                         else if (isDefined(targetGroup.SharePropotion) && isDefined(targetGroup.ProductionValueTypeId) ) {
 
                             $('[data-specific="FixSalary"]').addClass('d-none');
-
-                            $('[data-specific="EmployeDeductionConfigurationZoom"]').addClass('d-none');
 
                             $('[data-specific="TechnicalLevel"]').removeClass('d-none');
 

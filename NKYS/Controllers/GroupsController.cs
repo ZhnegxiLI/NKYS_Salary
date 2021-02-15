@@ -13,7 +13,6 @@ using NKYS.Models.ViewModel;
 
 namespace NKYS.Controllers
 {
-    [Authorize]
     public class GroupsController : Controller
     {
         private readonly Context _context;
@@ -25,6 +24,8 @@ namespace NKYS.Controllers
             _userManager = userManager;
         }
 
+
+        [Authorize(Roles = "SuperAdmin")]
         // GET: Groups
         public async Task<IActionResult> Index(long? DepartmentId)
         {

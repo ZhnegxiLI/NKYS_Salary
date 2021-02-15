@@ -10,7 +10,6 @@ using NKYS.Models;
 
 namespace NKYS.Controllers
 {
-    [Authorize]
     public class DepartmentsController : Controller
     {
         private readonly Context _context;
@@ -20,6 +19,7 @@ namespace NKYS.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "SuperAdmin")]
         // GET: Departments
         public async Task<IActionResult> Index()
         {

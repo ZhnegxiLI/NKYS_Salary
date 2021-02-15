@@ -53,7 +53,14 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a asp-area="" asp-controller="Home" asp-action="Privacy" class="nav-link">Contact</a>
                 </li>
+
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link"  data-toggle="modal" data-target="#logoutModal" style="cursor:pointer;">
+                        Deconnect
+                    </a>
+                </li>
             </ul>
+
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
@@ -84,7 +91,7 @@
                                 </p>
                             </a>
                         </li>
-            
+
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Home" asp-action="Privacy" class="nav-link">
                                 <p>
@@ -92,27 +99,40 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Cycles" asp-action="Index" class="nav-link">
-                                <p data-i18n="CyclesModule">
-                                    Cycles
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="ProductionValues" asp-action="Index" class="nav-link">
-                                <p data-i18n="ProductionValuesModule">
-                                    ProductionValues
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">
-                                <p data-i18n="DepartmentsModule">
-                                    Departments
-                                </p>
-                            </a>
-                        </li>
+
+
+                        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Cycles" asp-action="Index" class="nav-link">
+                                    <p data-i18n="CyclesModule">
+                                        Cycles
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="ProductionValues" asp-action="Index" class="nav-link">
+                                    <p data-i18n="ProductionValuesModule">
+                                        ProductionValues
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">
+                                    <p data-i18n="DepartmentsModule">
+                                        Departments
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Salaries" asp-action="SalarieSearch" class="nav-link">
                                 <p data-i18n="SalariesInputModule">
@@ -120,13 +140,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Salaries" asp-action="SalariesValidation" class="nav-link">
-                                <p data-i18n="SalariesValidationModule">
-                                    SalariesValidation
-                                </p>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Employes" asp-action="EmployeSearch" class="nav-link">
                                 <p data-i18n="EmployesModule">
@@ -134,7 +148,27 @@
                                 </p>
                             </a>
                         </li>
-                      
+                        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Salaries" asp-action="SalariesValidation" class="nav-link">
+                                    <p data-i18n="SalariesValidationModule">
+                                        SalariesValidation
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="User" asp-action="UserSearch" class="nav-link">
+                                    <p data-i18n="UserModule">
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
 
                     </ul>
                 </nav>
@@ -144,7 +178,7 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" >
+        <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
@@ -154,14 +188,14 @@
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
-                </div>
-                <section class="content">
-                    <div class="container-fluid">
-                        @RenderBody()
-                    </div>
-                </section>
             </div>
-       
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
@@ -171,7 +205,7 @@
             </div>
         </footer>
 
-        </div>
+    </div>
 
 
     <script type="text/html" id="tplConfirmDelete">
@@ -196,6 +230,32 @@
             </div>
         </div>
     </script>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you want to deconnect?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <button type="submit" class="btn btn-danger btn-block">Deconnect</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

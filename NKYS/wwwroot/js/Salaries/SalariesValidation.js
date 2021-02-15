@@ -48,7 +48,14 @@
                     title: '经理审核',// todo translate
                     formatter: function (value, row, index) {
                         var html = '';
-                        html = '<input type="checkbox"' + ((isDefined(value) && value == true)? 'checked': '')+ ' data-type="FinalValidityCheckbox">'
+
+                        if (isDefined(row.Validity) && row.Validity == true && isDefined(row.FinalValidity) && row.FinalValidity == false) {
+                            html = '<input type="checkbox"' + ((isDefined(value) && value == true) ? 'checked' : '') + ' data-salaryid="' + row.Id + '" data-type="FinalValidityCheckbox">'
+                        }
+                        else {
+                            html = '<input type="checkbox"' + ((isDefined(value) && value == true) ? 'checked' : '') +' data-salaryid="' + row.Id + '" data-type="FinalValidityCheckbox" disabled>'
+                        }
+                      
                         return html;
                     }
                 },
@@ -132,38 +139,12 @@
                 }]
         });
 
-        /* Check all manager validation */
-        $('th input[data-type="FinalValidityCheckbox"]').on('change', function () {
-            var isChecked = $('th input[data-type="FinalValidityCheckbox"]').is(':checked');
-            if (isChecked) {
-                $('td input[data-type="FinalValidityCheckbox"]').prop('checked',true);
-            }
-            else {
-                $('td input[data-type="FinalValidityCheckbox"]').removeAttr('checked');
-            }
-        });
-
-        /* Check manager validation */
-        $('td input[data-type="FinalValidityCheckbox"]').on('change', function () {
-            var numberOfSalaries = $('td input[data-type="FinalValidityCheckbox"]').length;
-            var numberOfCheckedSalaries = $('td input[data-type="FinalValidityCheckbox"]').is(':checked').length;
-
-            if (numberOfSalaries <= numberOfCheckedSalaries) {
-                $('th input[data-type="FinalValidityCheckbox"]').prop('checked', true);
-            }
-            else {
-                $('th input[data-type="FinalValidityCheckbox"]').removeAttr('checked');
-            }
-
-        });
-
-
         // Bind Check checkbox action
         $('#SalariesValidation_Table').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table',
             function () {
                 // save your data, here just save the current page
-                selections = self.getIdSelections()
+                var  selections = self.getIdSelections()
                 // push or splice the selections if you want to save all data selections
                 if (selections.length>0) {
                     $('button#SalariesValidation_Button_Validation').removeAttr('disabled');
@@ -175,8 +156,20 @@
         // Check box check all 
         $('#SalariesValidation_Table').on('all.bs.table', function (e, name, args) {
         });
-    
 
+     
+        
+        $('#SalariesValidation_Table').on('post-body.bs.table', function () {
+            $('[data-type="FinalValidityCheckbox"]').on('change', function () {
+                var selections = self.getIdSelections(true);
+                if (selections.length > 0) {
+                    $('button#SalariesValidation_Button_FinalValidation').removeAttr('disabled');
+                }
+                else {
+                    $('button#SalariesValidation_Button_FinalValidation').prop('disabled', 'disabled');
+                }
+            });
+        });
         $('button#SalariesValidation_Button_Validation').on('click', function () {
             var SalaryIds = self.getIdSelections();
             if (isDefined(SalaryIds) && SalaryIds.length > 0) {
@@ -228,12 +221,17 @@
     }
 
     self.getIdSelections = function (IsFinalValidity) {
+        var selectionIds = [];
         if (isDefined(IsFinalValidity) && IsFinalValidity ==true) {
-            var selectionIds = $('[data-type="FinalValidityCheckbox"]:checked');
+            var selectionNodes = $('[data-type="FinalValidityCheckbox"]:checked');
+
+            selectionNodes.each((index, value) => {
+                selectionIds.push({ Id: $(value).data('salaryid') });
+            })
             // todo 
         }
         else {
-            var selectionIds = $('#SalariesValidation_Table').bootstrapTable('getSelections');
+            selectionIds = $('#SalariesValidation_Table').bootstrapTable('getSelections');
             selectionIds = selectionIds.filter(p => !isDefined(p.ValidatedBy) && !isDefined(p.ValidatedOn));
         }
  

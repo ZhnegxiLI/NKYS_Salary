@@ -13,7 +13,8 @@
     EmployesModule: '员工模块',
     CyclesModule: '周期管理模块',
     GroupsModule: '车间模块',
-    SalariesCalculModule:'工资计算模块',
+    SalariesCalculModule: '工资计算模块',
+    UserModule: '用户管理模块',
     Validate: '确认',
 
     BasicInformation: '基础信息',
@@ -64,6 +65,9 @@
     Add: '添加',
     Action: '操作',
     Login: '登录',
+    Export: '导出',
     Registre: '注册',
-    LoginPageDescription : '登录开始使用'
+    LoginPageDescription: '登录开始使用',
+    RegistrePageDescription: '注册您的账号',
+    FinalValidation: '经理审核',
 }

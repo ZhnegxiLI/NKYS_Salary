@@ -1,0 +1,60 @@
+﻿@model NKYS.Models.ViewModel.UserUpdateOrCreateModel
+
+@{
+    var title = "用户";
+    if (ViewData["Action"] == "Update")
+    {
+        title = "Update";
+    }
+    else
+    {
+        title = "Create";
+    }
+}
+
+<script type="text/javascript">
+    Application.Main.CurrentView = "UserModuleView";
+</script>
+
+<h4>@title</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label><span class="text-danger">*</span>
+                <input asp-for="Username" class="form-control" type="text" required />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Validity"/> @Html.DisplayNameFor(model => model.Validity)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleId" class="control-label"></label><span class="text-danger">*</span>
+                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" data-i18n="Save" class="btn btn-primary">
+                </button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="UserSearch" data-i18n="Return"></a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

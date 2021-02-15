@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <span asp-validation-for="Username" class="text-danger"></span>
+
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" asp-for="Password" placeholder="@Html.DisplayNameFor(modelItem => Model.Password)">
                         <div class="input-group-append">
@@ -63,6 +63,7 @@
                             </div>
                         </div>
                     </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
                     <span asp-validation-for="Password" class="text-danger"></span>
                     <div class="row">
                         <div class="col-8">

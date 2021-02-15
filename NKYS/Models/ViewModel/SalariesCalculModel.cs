@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace NKYS.Models.ViewModel
 {
     [NotMapped]
-    [Keyless]
     public class SalariesCalculModel
     {
         public long SalaryId { get; set; }

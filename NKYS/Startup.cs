@@ -54,7 +54,7 @@ namespace NKYS
                 options.Password.RequiredLength = 8;
             });
 
-            services.AddIdentity<User, IdentityRole<long>>().AddEntityFrameworkStores<Context>();
+            services.AddIdentity<User, Role>().AddEntityFrameworkStores<Context>();
 
             services.AddAuthentication().AddCookie(options =>
             {

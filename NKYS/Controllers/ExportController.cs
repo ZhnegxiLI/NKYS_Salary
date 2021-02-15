@@ -1,8 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using NKYS.Account.Model;
+using NKYS.Models;
+using NKYS.Models.ViewModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace NKYS.Controllers
 {
@@ -10,13 +22,15 @@ namespace NKYS.Controllers
     public class ExportController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly SalariesController salariesController = new SalariesController(db, _userManager);
+        private readonly SalariesController salariesController ;
         private readonly Context db;
 
         public ExportController(Context context, UserManager<User> userManager)
         {
             db = context;
             _userManager = userManager;
+            salariesController = new SalariesController(db, _userManager);
+            
         }
         // GET: api/<controller>
         [HttpGet]
@@ -24,10 +38,17 @@ namespace NKYS.Controllers
         {
             var list = await salariesController.SalariesSearchData(null, null, CycleId, true);
 
+
             if (list.Count() > 0)
             {
+                var formatedList = new List<SalaryExportModel>();
+                foreach (var item in list)
+                {
+                    SalaryExportModel newItme = (SalaryExportModel)item;
+                    formatedList.Add(newItme);
+                }
                 var exportName = "SalariesWorkingHours";
-                var memory = ExportExcel(list, exportName);
+                var memory = ExportExcel(formatedList.ToList<dynamic>(), exportName);
                 return File(memory, "application/vnd.ms-excel", exportName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx");
             }
             else
@@ -42,7 +63,7 @@ namespace NKYS.Controllers
             if (List != null && List.Count() > 0)
             {
                 /*Step0: Create file */
-                var newFile = _appSettings.ExportPath + "/" + ExportName + ".xls";
+                var newFile =  "/" + ExportName + ".xls";
                 if (System.IO.File.Exists(newFile))
                 {
                     System.IO.File.Delete(newFile);
@@ -133,16 +154,13 @@ namespace NKYS.Controllers
 
                                 if (valueType.Name == "Boolean")
                                 {
-                                    valueFormatted = value ? "OUI" : "NON";
+                                    valueFormatted = value ? "是" : "否";
                                 }
                                 else if (valueType.Name == "DateTime")
                                 {
                                     valueFormatted = value.ToString();
                                 }
-                                if (column.Name.Contains("Path"))
-                                {
-                                    value = _httpContextAccessor.HttpContext.Request.Host + _httpContextAccessor.HttpContext.Request.PathBase + "/" + value;
-                                }
+                         
                                 if (column.Name.Contains("Price"))
                                 {
                                     value = value + "€(HT)";

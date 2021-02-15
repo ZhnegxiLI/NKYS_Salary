@@ -11,7 +11,7 @@ using NKYS.Models.ViewModel;
 
 namespace NKYS.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,Finance")]
     public class ProductionValuesController : Controller
     {
         private readonly Context _context;

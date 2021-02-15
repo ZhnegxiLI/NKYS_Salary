@@ -65,7 +65,7 @@ namespace NKYS.Controllers
         [HttpGet]
         public async Task<JsonResult> SalariesSearch(long? DepartmentId, long? GroupsId, long? CycleId, bool? Validity)
         {
-            var salaries = await SalariesSearchData();
+            var salaries = await SalariesSearchData(DepartmentId, GroupsId, CycleId, Validity);
             return Json(salaries);
         }
 
@@ -80,7 +80,7 @@ namespace NKYS.Controllers
             return salaries;
         }
 
-
+        [Authorize(Roles = "SuperAdmin,Finance")]
         [HttpPost]
         public async Task<long> SalariesValidation(List<long> SalaryIds, bool IsFinalValidity)
         {
@@ -88,7 +88,7 @@ namespace NKYS.Controllers
             {
                 foreach (var SalaryId in SalaryIds)
                 {
-                    var salary = _context.Salary.Where(p => p.Id == SalaryId && p.Validity == false).FirstOrDefault();
+                    var salary = _context.Salary.Where(p => p.Id == SalaryId && ((IsFinalValidity==false&& p.Validity == false)||(IsFinalValidity==true && p.FinalValidity == false))).FirstOrDefault();
 
                     if (salary != null)
                     {

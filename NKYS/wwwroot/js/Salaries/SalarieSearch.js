@@ -70,16 +70,25 @@
     };
 
     self.checkCriteriaValidity = function () {
+        if (self.searchCriteria.CycleId != null && self.searchCriteria.CycleId != -1) {
+            $('button#SalariesSearchFilter_Button_Export').removeAttr('disabled');
+        }
+        else {
+            $('button#SalariesSearchFilter_Button_Export').prop('disabled', true);
+        }
+
         if (self.searchCriteria.DepartmentId != null && self.searchCriteria.DepartmentId != -1 &&
             self.searchCriteria.GroupsId != null && self.searchCriteria.GroupsId != -1 &&
             self.searchCriteria.CycleId != null && self.searchCriteria.CycleId != -1) {
             $('button#SalariesSearchFilter_Button_Search').removeAttr('disabled');
+
             return true;
         }
         else {
             $('button#SalariesSearchFilter_Button_Search').prop('disabled', true);
             return false;
         }
+
     };
 
     self.RefreshData = function () {
@@ -276,13 +285,17 @@
     }
 
     self.Export = function () {
-        Application.Services.CommonService.ExportSalariesWorkingHours({ CycleId: self.searchCriteria.CycleId }, function (result) {
+        if (isDefined(self.searchCriteria.CycleId)) {
+            window.location = Application.Configuration.baseUrl + 'Export/ExportSalariesWorkingHours' + '?CycleId=' + self.searchCriteria.CycleId;
+        }
+        // 默认导出全部
+        //Application.Services.CommonService.ExportSalariesWorkingHours({ CycleId: self.searchCriteria.CycleId }, function (result) {
 
-            var today = new Date();
-            today.toISOString().substring(0, 19);
+        //    var today = new Date();
+        //    todayString = today.toISOString().substring(0, 19);
 
-            self.SaveExcel(result, 'Salaries_' + today);
-        });
+        //    self.SaveExcel(result, 'Salaries_' + todayString);
+        //});
     }
 
     self.SaveExcel = function(data, name) {

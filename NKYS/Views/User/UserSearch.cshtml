@@ -1,0 +1,52 @@
+﻿@model IEnumerable<NKYS.Models.ViewModel.UserSearchModel>
+
+@{
+    ViewData["Title"] = "用户管理模块";
+}
+
+<p>
+    <a asp-action="CreateOrEdit" data-i18n="Create"></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Validity)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @if (item.Validity)
+                {
+                    <i class="fa fa-check" style="color:green"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times" style="color:red"></i>
+                }
+            </td>
+            <td>
+                <a asp-action="CreateOrEdit" asp-route-id="@item.Id" data-i18n="Edit"></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

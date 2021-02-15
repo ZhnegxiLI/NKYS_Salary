@@ -56,6 +56,18 @@ namespace NKYS.Account.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user==null)
+                {
+                    ModelState.AddModelError(string.Empty, "该账号不存在，请重新输入");
+                    return View(model);
+                }
+                else if (user.Validity == false)
+                {
+                    ModelState.AddModelError(string.Empty, "账号未被激活，请联系管理员激活账号");
+                    return View(model);
+                }
+
                 var result = await _signManager.PasswordSignInAsync(model.Username,
                    model.Password, model.RememberMe, false);
 
@@ -75,8 +87,7 @@ namespace NKYS.Account.Controllers
                 {
 
                     ModelState.AddModelError(string.Empty, "账号密码错误");
-
-                    return View();
+                    return View(model);
                 }
             }
 
@@ -95,6 +106,12 @@ namespace NKYS.Account.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ViewResult RegistreSucess()
+        {
+            return View();
+        }
+        
         [HttpPost]
         public async Task<IActionResult> Signup(RegisterViewModel model)
         {
@@ -102,12 +119,16 @@ namespace NKYS.Account.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Username };
+                user.Validity = false;
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await _signManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    // Default user role : Employee
+                    await _userManager.AddToRoleAsync(user, "Employee");
+                    // Login
+                    return RedirectToAction("RegistreSucess", "Account");
                 }
                 else
                 {

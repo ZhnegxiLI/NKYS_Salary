@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NKYS.Models
 {
-    public class Context: IdentityDbContext<User, IdentityRole<long>, long>
+    public class Context: IdentityDbContext<User, Role, long>
     {
         public Context(DbContextOptions<Context> options)
          : base(options)
@@ -22,6 +22,7 @@ namespace NKYS.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<SalariesCalculModel>().HasNoKey();
+
         }
 
         public virtual DbSet<Cycle> Cycle { get; set; }

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace NKYS.Account.Model
 {
-    public class User: IdentityUser<long>
+    public class Role: IdentityRole<long>
     {
-        public User()
+        public Role()
         {
 
         }
-        public bool Validity { get; set; }
+
+        public string  Label { get; set; }
     }
 }

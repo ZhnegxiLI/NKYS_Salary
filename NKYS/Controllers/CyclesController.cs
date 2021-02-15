@@ -10,7 +10,7 @@ using NKYS.Models;
 
 namespace NKYS.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,Finance")]
     public class CyclesController : Controller
     {
         private readonly Context _context;

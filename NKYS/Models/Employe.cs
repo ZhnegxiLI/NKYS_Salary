@@ -41,7 +41,7 @@ namespace NKYS.Models
 
 
         [DisplayName("住宿费用")]
-        public decimal? DormFee { get; set; } = false; // 是否住宿
+        public decimal? DormFee { get; set; } // 是否住宿
         [DisplayName("是否拥有交通补贴")]
         public bool HasTransportFee { get; set; } = false; // 交通补贴
         [DisplayName("是否为小组组长")]
