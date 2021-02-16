@@ -49,14 +49,13 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <div class="alert alert-danger d-none" role="alert" id="EmployeProductionValueModal_ErrorMessage">
+                <div class="alert alert-danger d-none" role="alert" id="EmployeProductionValueModal_ErrorMessage" role="alert"  style=" width: 100%;">
                 </div>
-
+                <div class="alert alert-success d-none" role="alert" id="EmployeProductionValueModal_SuccessMessage" role="alert" style=" width: 100%;" data-i18n="Msg_CalculSalarySuccessfully">
+                </div>
                 <button type="button" class="btn btn-danger" id="SalaryCalculModal_Button_Close" data-i18n="Close">
-                    
                 </button>
                 <button type="button" class="btn btn-primary" id="SalaryCalculModal_Button_Save" onclick="Application.Main.Controls.SalaryCalculModule.updateSalary(event)" data-i18n="Validate">
-                    
                 </button>
             </div>
         </div>

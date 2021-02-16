@@ -70,4 +70,6 @@
     LoginPageDescription: '登录开始使用',
     RegistrePageDescription: '注册您的账号',
     FinalValidation: '经理审核',
+
+    Msg_CalculSalarySuccessfully: '当前周期工资计算完成!'
 }

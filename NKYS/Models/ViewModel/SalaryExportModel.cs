@@ -9,12 +9,10 @@ namespace NKYS.Models.ViewModel
     {
         public SalaryExportModel()
         {
-            EmployeeName = this.Employe.Name;
-            GroupName = this.Employe.Groups.Name;
-            DepartmentName = this.Employe.Groups.Department.Name;
         }
 
         public string EmployeeName { get; set; }
+        public string ExternalId { get; set; }
 
         public string DepartmentName { get; set; }
 

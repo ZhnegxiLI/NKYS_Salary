@@ -39,29 +39,44 @@ namespace NKYS.Controllers
             var list = await salariesController.SalariesSearchData(null, null, CycleId, true);
 
 
-            if (list.Count() > 0)
-            {
-                var formatedList = new List<SalaryExportModel>();
-                foreach (var item in list)
-                {
-                    SalaryExportModel newItme = (SalaryExportModel)item;
-                    formatedList.Add(newItme);
-                }
+         
+                var formatedList = (from i in list
+                                    select new
+                                    {
+                                        EmployeeName = i.Employe.Name,
+                                        GroupName = i.Employe.Groups.Name,
+                                        DepartmentName = (from d in db.Department
+                                                          where d.Id == i.Employe.Groups.DepartmentId
+                                                          select d.Name).FirstOrDefault(),
+                                        CycleName = i.Cycle.Label,
+
+                                        WorkingHours = i.WorkingHours,
+                                        WorkingHoursDay = i.WorkingHoursDay,
+                                        WorkingHoursNight = i.WorkingHoursNight,
+                                        WorkingHoursHoliday = i.WorkingHoursHoliday,
+
+                                        WorkingScore = i.WorkingScore,
+                                        AbsentHours = i.AbsentHours,
+                                        DeferredHolidayHours = i.DeferredHolidayHours,
+
+                                        WorkingDays = i.WorkingDays,
+                                        DormFee = i.DormFee,
+                                        DormOtherFee = i.DormOtherFee,
+
+                                        OtherRewardFee = i.OtherRewardFee,
+                                        OtherPenaltyFee = i.OtherPenaltyFee,
+                                    });
+      
                 var exportName = "SalariesWorkingHours";
                 var memory = ExportExcel(formatedList.ToList<dynamic>(), exportName);
                 return File(memory, "application/vnd.ms-excel", exportName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx");
-            }
-            else
-            {
-                return NotFound();
-            }
+           
         }
 
 
         public MemoryStream ExportExcel(List<dynamic> List, string ExportName)
         {
-            if (List != null && List.Count() > 0)
-            {
+         
                 /*Step0: Create file */
                 var newFile =  "/" + ExportName + ".xls";
                 if (System.IO.File.Exists(newFile))
@@ -72,6 +87,16 @@ namespace NKYS.Controllers
                 using (var fs = new FileStream(newFile, FileMode.Create, FileAccess.Write))
                 {
 
+
+                    /*Step3: Create Excel flow */
+                    IWorkbook workbook = new XSSFWorkbook();
+                    var sheet = workbook.CreateSheet(ExportName);
+                    var header = sheet.CreateRow(0);
+
+                if (List != null && List.Count() > 0)
+                {
+
+             
                     /* Step1: Get export model */
                     var ExportConfiguration = db.ExportConfiguration.Where(p => p.ExportName == ExportName).FirstOrDefault();
                     List<ExportModel> ExportConfigurationModel = null;
@@ -106,10 +131,7 @@ namespace NKYS.Controllers
                     }
                     targetCoulmnsWithOrder = targetCoulmnsWithOrder.OrderBy(x => x.Order).ToList();
 
-                    /*Step3: Create Excel flow */
-                    IWorkbook workbook = new XSSFWorkbook();
-                    var sheet = workbook.CreateSheet(ExportName);
-                    var header = sheet.CreateRow(0);
+               
 
                     /* Bold the title */
                     XSSFFont headerFont = (XSSFFont)workbook.CreateFont();
@@ -178,7 +200,7 @@ namespace NKYS.Controllers
 
                             var cell = datarow.CreateCell(columnsCounter);
 
-                            cell.SetCellValue(valueFormatted != null ? valueFormatted : value);
+                            cell.SetCellValue(valueFormatted != null ? valueFormatted : value.ToString());
 
                             columnsCounter++;
                         }
@@ -206,8 +228,8 @@ namespace NKYS.Controllers
                         sheet.SetColumnWidth(columnNum, columnWidth * 256);
                     }
 
-
-                    workbook.Write(fs);
+                }
+                workbook.Write(fs);
                 }
 
                 var memory = new MemoryStream();
@@ -218,9 +240,7 @@ namespace NKYS.Controllers
                 memory.Position = 0;
 
                 return memory;
-            }
-
-            return null;
+        
         }
 
     }

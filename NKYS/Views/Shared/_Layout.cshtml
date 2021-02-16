@@ -55,7 +55,7 @@
                 </li>
 
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link"  data-toggle="modal" data-target="#logoutModal" style="cursor:pointer;">
+                    <a class="nav-link" data-toggle="modal" data-target="#logoutModal" style="cursor:pointer;">
                         Deconnect
                     </a>
                 </li>
@@ -66,7 +66,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a asp-controller="Home" asp-action="Index" class="brand-link">
                 <img src="/lib/adminLte3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AdminLTE 3</span>
             </a>
@@ -85,7 +85,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
+                            <a id="Home" asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
                                 <p>
                                     Home
                                 </p>
@@ -93,7 +93,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="nav-link">
+                            <a id="Privacy" asp-area="" asp-controller="Home" asp-action="Privacy" class="nav-link">
                                 <p>
                                     Privacy
                                 </p>
@@ -104,7 +104,7 @@
                         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="Cycles" asp-action="Index" class="nav-link">
+                                <a id="CyclesModule" asp-area="" asp-controller="Cycles" asp-action="Index" class="nav-link">
                                     <p data-i18n="CyclesModule">
                                         Cycles
                                     </p>
@@ -115,7 +115,7 @@
                         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="ProductionValues" asp-action="Index" class="nav-link">
+                                <a id="ProductionValuesModule" asp-area="" asp-controller="ProductionValues" asp-action="Index" class="nav-link">
                                     <p data-i18n="ProductionValuesModule">
                                         ProductionValues
                                     </p>
@@ -125,7 +125,7 @@
                         @if (User.IsInRole("SuperAdmin"))
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">
+                                <a id="DepartmentsModule"  asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">
                                     <p data-i18n="DepartmentsModule">
                                         Departments
                                     </p>
@@ -134,7 +134,7 @@
                         }
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Salaries" asp-action="SalarieSearch" class="nav-link">
+                            <a id="SalariesInputModule" asp-area="" asp-controller="Salaries" asp-action="SalarieSearch" class="nav-link">
                                 <p data-i18n="SalariesInputModule">
                                     Salaries
                                 </p>
@@ -142,7 +142,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Employes" asp-action="EmployeSearch" class="nav-link">
+                            <a id="EmployesModule" asp-area="" asp-controller="Employes" asp-action="EmployeSearch" class="nav-link">
                                 <p data-i18n="EmployesModule">
                                     Employes
                                 </p>
@@ -151,7 +151,7 @@
                         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Finance"))
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="Salaries" asp-action="SalariesValidation" class="nav-link">
+                                <a id="SalariesValidation" asp-area="" asp-controller="Salaries" asp-action="SalariesValidation" class="nav-link">
                                     <p data-i18n="SalariesValidationModule">
                                         SalariesValidation
                                     </p>
@@ -161,7 +161,7 @@
                         @if (User.IsInRole("SuperAdmin"))
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="User" asp-action="UserSearch" class="nav-link">
+                                <a id="UserModule" asp-area="" asp-controller="User" asp-action="UserSearch" class="nav-link">
                                     <p data-i18n="UserModule">
                                         Users
                                     </p>
@@ -272,6 +272,11 @@
     <script src="~/lib/adminLte3/dist/js/adminlte.min.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    @if (ViewData["Active"] != null)
+    {
+        <script type="text/javascript">document.getElementById("@ViewData["Active"]").classList.add("active")</script>
+    }
 
 </body>
 </html>

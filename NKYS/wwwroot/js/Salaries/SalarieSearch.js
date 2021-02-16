@@ -213,10 +213,10 @@
                     }
                     else {
                         employee.IsProductionValueBasedSalary = true;
-                    }
+                    } 
                 }
 
-                if (isDefined(employee) && isDefined(employee.HasDorm) && employee.HasDorm == true) {
+                if (isDefined(employee) && isDefined(employee.DormFee)) {
                     employee.HasDormLabel = true;
                 }
                 else {

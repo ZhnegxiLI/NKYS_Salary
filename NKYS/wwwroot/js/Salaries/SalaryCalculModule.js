@@ -35,8 +35,6 @@
                     Application.Main.showError(errorMessage);
                 }
             }
-
-
         }
     };
 
@@ -77,6 +75,14 @@
             IsUpdate: isDefined(IsUpdate) ? IsUpdate: false
         }, function (result) {
                 cb && cb(result);
+        });
+    }
+
+    self.updateSalary = function () {
+        $('#' + self.modalSalaryCalculTicks).mask();
+        self.InitCalculSalary(true, function () {
+            $('#' + self.modalSalaryCalculTicks).unmask();
+            $('#EmployeProductionValueModal_SuccessMessage').removeClass('d-none');
         });
     }
 
