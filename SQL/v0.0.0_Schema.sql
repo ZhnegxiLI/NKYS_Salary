@@ -314,6 +314,7 @@ BEGIN
 		/* Step 1: Update data */
 		UPDATE S 
 		SET S.UpdatedBy = @UserId, S.Validity = 0, S.ValidatedBy = NULL, S.ValidatedOn = NULL, -- Reset to invalid
+		 S.FinalValidity = 0, S.FinalValidatedOn = NULL, S.FinalValidatedBy = NULL, -- Reset to invalid
 		S.FinalSalary = TS.FinalSalary, S.SalaryTax = TS.SalaryTax, S.NetSalary = TS.NetSalary,  
 		S.SelfPaySocialSercurityFee = TS.SelfPaySocialSercurityFee, S.SocialSercurityFee = TS.SocialSercurityFee, S.HousingReservesFee = TS.HousingReservesFee,  
 		S.DormFee = TS.DormFee, S.SeniorityPay = TS.SeniorityPay, S.DormOtherFee = TS.DormOtherFee, S.OtherRewardFee = TS.OtherRewardFee,  S.OtherPenaltyFee = TS.OtherPenaltyFee, 
