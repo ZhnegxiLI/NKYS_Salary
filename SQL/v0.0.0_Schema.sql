@@ -94,14 +94,14 @@ BEGIN
 	DECLARE @CalculStartTime DATETIME = GETDATE()
 	/* Step 1: Create temp employee table */
 	DROP TABLE IF EXISTS #tempEmployees
-	CREATE TABLE #tempEmployees(EmployeId BIGINT, ExternalId BIGINT, TechnicalLevel DECIMAL(18,2), HasTransportFee BIT, HasDorm BIT, SocialSercurityFee DECIMAL(18,2),
+	CREATE TABLE #tempEmployees(EmployeId BIGINT, ExternalId BIGINT, TechnicalLevel DECIMAL(18,2), HasTransportFee BIT, DormFee DECIMAL(18,2), SocialSercurityFee DECIMAL(18,2),
 	HousingReservesFee DECIMAL(18,2), SelfPaySocialSercurityFee DECIMAL(18,2),PositionPay DECIMAL(18,2), SeniorityPay DECIMAL(18,2), FixSalary DECIMAL(18,2), IsTemporaryEmploye BIT
 	, GroupId BIGINT, SharePropotion DECIMAL(18,4), IsFixSalary BIT, GroupProductionValueTypeId INT , GroupVariableSharePropotion  DECIMAL(18,4))
 
 	/* Step 2: Fill employee information according to Employe and Groups table (if @EmployeId is sent, calcul only the specific employe) */
-	INSERT INTO #tempEmployees(EmployeId, ExternalId, TechnicalLevel, HasTransportFee, HasDorm, SocialSercurityFee, HousingReservesFee,
+	INSERT INTO #tempEmployees(EmployeId, ExternalId, TechnicalLevel, HasTransportFee, DormFee, SocialSercurityFee, HousingReservesFee,
 	SelfPaySocialSercurityFee, PositionPay, SeniorityPay, FixSalary, IsTemporaryEmploye, GroupId,  IsFixSalary, SharePropotion, GroupProductionValueTypeId, GroupVariableSharePropotion)
-	SELECT E.Id , E.ExternalId, E.TechnicalLevel, E.HasTransportFee, E.HasDorm, E.SocialSercurityFee,  E.HousingReservesFee, E.SelfPaySocialSercurityFee,
+	SELECT E.Id , E.ExternalId, E.TechnicalLevel, E.HasTransportFee, E.DormFee, E.SocialSercurityFee,  E.HousingReservesFee, E.SelfPaySocialSercurityFee,
 	E.PositionPay, E.SeniorityPay, E.FixSalary, e.IsTemporaryEmploye, E.GroupsId, G.IsFixSalary, G.SharePropotion,  G.ProductionValueTypeId, G.GroupVariableSharePropotion
 	FROM Employe E
 	INNER JOIN Groups G ON E.GroupsId = G.Id
@@ -120,8 +120,8 @@ BEGIN
 	/* Step 4: Fill the temp salary table according to the pre-insert data */
 	IF @CycleId IS NOT NULL
 	BEGIN
-		INSERT INTO #tempSalaries(SalaryId ,CycleId, EmployeId, GroupId, WorkingHoursDay,WorkingHoursNight, WorkingHoursHoliday, WorkingScore, OtherRewardFee, OtherPenaltyFee, FullPresencePay, TransportFee, DormFee, DormOtherFee, CycleStandardWorkingHours)
-		SELECT DISTINCT S.Id, s.CycleId, E.EmployeId, E.GroupId, ISNULL(S.WorkingHoursDay,0), ISNULL(S.WorkingHoursNight,0), ISNULL(S.WorkingHoursHoliday,0), ISNULL(S.WorkingScore,0), ISNULL(OtherRewardFee,0), ISNULL(OtherPenaltyFee,0), ISNULL(FullPresencePay,0), ISNULL(TransportFee,0), ISNULL(DormFee,0), ISNULL(DormOtherFee,0), ISNULL(C.StandardWorkingHours,0)
+		INSERT INTO #tempSalaries(SalaryId ,CycleId, EmployeId, GroupId, WorkingHoursDay,WorkingHoursNight, WorkingHoursHoliday, WorkingScore, OtherRewardFee, OtherPenaltyFee, FullPresencePay, TransportFee, E.DormFee, DormOtherFee, CycleStandardWorkingHours)
+		SELECT DISTINCT S.Id, s.CycleId, E.EmployeId, E.GroupId, ISNULL(S.WorkingHoursDay,0), ISNULL(S.WorkingHoursNight,0), ISNULL(S.WorkingHoursHoliday,0), ISNULL(S.WorkingScore,0), ISNULL(OtherRewardFee,0), ISNULL(OtherPenaltyFee,0), ISNULL(FullPresencePay,0), ISNULL(TransportFee,0), ISNULL(E.DormFee,0), ISNULL(DormOtherFee,0), ISNULL(C.StandardWorkingHours,0)
 		FROM Salary S 
 		INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
 		INNER JOIN Cycle C ON S.CycleId = C.Id
@@ -163,10 +163,10 @@ BEGIN
 
 	/* Step 5-5:  Update DormFee (单月住宿费用为100) */
 	UPDATE S
-	SET S.DormFee = -100
+	SET S.DormFee = E.DormFee
 	FROM #tempSalaries S 
 	INNER JOIN #tempEmployees E ON S.EmployeId = E.EmployeId
-	WHERE E.HasDorm = 1 
+	WHERE E.DormFee IS NOT NULL 
 
 	/* Step 5-6:  Update WorkingDays (每日应工作时长为7.5, 日班工时/7.5 = 出勤天数) */
 	UPDATE S
@@ -242,7 +242,7 @@ BEGIN
 	CREATE TABLE #tempGroupHourScore(GroupId BIGINT, Fix_GroupTotalHourScore DECIMAL(18,2), NumberOfGroupMember INT,  Fix_GroupAverageHour DECIMAL(18,2), Fix_GroupAverageHourScore DECIMAL(18,2),
 	Variable_GroupTotalScore DECIMAL(18,2))
 	INSERT INTO #tempGroupHourScore(GroupId, Fix_GroupTotalHourScore, NumberOfGroupMember, Fix_GroupAverageHour, Fix_GroupAverageHourScore, Variable_GroupTotalScore)
-	SELECT E.GroupsId, SUM(S.WorkingHours * E.TechnicalLevel) AS N'总工时', COUNT(E.Id) AS N'部门人数', (SUM(S.WorkingHours)/ COUNT(E.Id)) AS N'平均工时', (G.GroupVariableSharePropotion *(SUM(S.WorkingHours)/ COUNT(E.Id))) N'平均工时分', SUM(S.WorkingScore)  AS '总分'
+	SELECT E.GroupsId, SUM(S.WorkingHours * E.TechnicalLevel) AS N'总工时', COUNT(E.Id) AS N'部门人数', (SUM(S.WorkingHours)/ COUNT(E.Id)) AS N'平均工时', (ISNULL(G.GroupVariableSharePropotion,1) *(SUM(S.WorkingHours)/ COUNT(E.Id))) N'平均工时分', SUM(S.WorkingScore)  AS '总分'
 	FROM Employe E 
 	INNER JOIN #tempProductionValueBasedSalary S ON E.Id = S.EmployeId
 	INNER JOIN Groups G ON E.GroupsId = G.Id
@@ -266,7 +266,6 @@ BEGIN
 	UPDATE PS
 	SET PS.Variable_GroupDelta = PS.GroupVariableSalary/ PS.Variable_GroupTotalScore
 	FROM #tempProductionValueBasedSalary PS
-
 
 	UPDATE S
 	SET S.Salary_FixPart = PS.Fix_EmployeHoursScore * PS.Fix_GroupDelta , S.Salary_VariablePart = PS.Variable_GroupDelta * PS.WorkingScore
@@ -325,10 +324,9 @@ BEGIN
 		INNER JOIN #tempSalaries TS ON S.Id = TS.SalaryId
 		
 	END
-	ELSE
-	BEGIN
-		SELECT * FROM #tempSalaries order by GroupId
-	END
+	
+	SELECT * FROM #tempSalaries order by GroupId
+	
 END
 GO
 /* 
