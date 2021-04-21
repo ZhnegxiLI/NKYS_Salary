@@ -25,10 +25,14 @@
 
         <script src="~/js/Config/i18n_cn.js"></script>
         <script src="~/js/Config/Configuration.js"></script>
+
+        <script src="~/lib/vue/vue.js"></script>
     </environment>
     <environment include="Production">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <script src="~/min/site.min.js" asp-append-version="true"></script>
+
+        <script src="~/lib/vue/vue.min.js"></script>
     </environment>
 
 </head>
@@ -40,14 +44,14 @@
             <a asp-controller="Account" asp-action="Login"><b data-i18n="CompanyName"></b></a>
         </div>
         <!-- /.login-logo -->
-        <div class="card">
+        <div class="card" id="Login">
             <div class="card-body login-card-body">
                 <p class="login-box-msg" data-i18n="LoginPageDescription"></p>
 
                 <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="input-group mb-3">
-                        <input class="form-control" asp-for="Username" placeholder="@Html.DisplayNameFor(modelItem => Model.Username)">
+                        <input class="form-control" v-model="username" asp-for="Username" placeholder="@Html.DisplayNameFor(modelItem => Model.Username)">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fa fa-user"></span>
@@ -56,7 +60,7 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" asp-for="Password" placeholder="@Html.DisplayNameFor(modelItem => Model.Password)">
+                        <input type="password" class="form-control" v-model="password" asp-for="Password" placeholder="@Html.DisplayNameFor(modelItem => Model.Password)">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fa fa-lock"></span>
@@ -74,7 +78,7 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block" data-i18n="Login"></button>
+                            <button type="submit" class="btn btn-primary btn-block" data-i18n="Login" v-on:click="getUserInfo"></button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -100,4 +104,19 @@
     <!-- AdminLTE App -->
     <script src="~/lib/adminLte3/dist/js/adminlte.min.js"></script>
 </body>
+
+<script>
+    new Vue({
+        el: "#Login",
+        data: {
+            username: '',
+            password: '',
+        },
+        methods: {
+            getUserInfo: function () {
+                console.log(this.username, this.password);
+            }
+        }
+    });
+</script>
 </html>
